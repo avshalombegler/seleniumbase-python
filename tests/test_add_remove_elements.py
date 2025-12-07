@@ -10,7 +10,8 @@ from pages.common.main_page.main_page import MainPage
 class TestAddRemoveElements(UiBaseCase):
     """Tests for add/remove elements page functionality"""
 
-    @pytest.mark.full
+    # @pytest.mark.full
+    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_add_elements(self) -> None:
