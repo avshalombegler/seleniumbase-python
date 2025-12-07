@@ -25,6 +25,7 @@ CACHE_VALID_RANGE = 30
 
 # Configure root logger once for the test session
 root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
+logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
 
 
 def get_worker_id() -> str:
