@@ -66,7 +66,7 @@ pipeline {
         }
         success {
             echo "✓ Tests passed and report uploaded to Allure Docker Service!"
-            echo "View reports: http://localhost:5050/projects"
+            echo "View reports: http://localhost:8080/"
         }
         failure {
             echo "✗ Tests failed. Check reports for details."
