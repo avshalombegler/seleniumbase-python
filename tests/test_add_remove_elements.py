@@ -10,6 +10,8 @@ from pages.common.main_page.main_page import MainPage
 class TestAddRemoveElements(UiBaseCase):
     """Tests for add/remove elements page functionality"""
 
+    NUM_OF_ELEMENTS = 2
+
     # @pytest.mark.full
     @pytest.mark.smoke
     @pytest.mark.ui
@@ -20,12 +22,16 @@ class TestAddRemoveElements(UiBaseCase):
         page = main_page.click_add_remove_elements_link()
 
         self.logger.info("Add two elements.")
-        page.add_elements(2)
-        count = page.count_delete_buttons()
-        self.logger.info(f"Found {count} delete buttons.")
-        assert count == 2, f"Expected 2 delete buttons, got {count}"
+        page.add_elements(self.NUM_OF_ELEMENTS)
 
-    @pytest.mark.full
+        self.logger.info("Getting delete buttons count.")
+        count = page.count_delete_buttons()
+
+        self.logger.info("Verifying delete buttons count.")
+        assert self.NUM_OF_ELEMENTS == count, f"Expected '{self.NUM_OF_ELEMENTS}' delete buttons, but got '{count}'"
+
+    # @pytest.mark.full
+    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_remove_elements(self) -> None:
@@ -34,10 +40,13 @@ class TestAddRemoveElements(UiBaseCase):
         page = main_page.click_add_remove_elements_link()
 
         self.logger.info("Ensure there are elements to remove")
-        page.add_elements(2)
+        page.add_elements(self.NUM_OF_ELEMENTS)
 
         self.logger.info("Remove all elements")
         page.remove_all_elements()
+
+        self.logger.info("Getting delete buttons count.")
         count = page.count_delete_buttons()
-        self.logger.info(f"Found {count} delete buttons.")
-        assert count == 0, f"Expected 0 delete buttons, got {count}"
+
+        self.logger.info("Verifying delete buttons count.")
+        assert count == 0, f"Expected '0' delete buttons, but got '{count}'"

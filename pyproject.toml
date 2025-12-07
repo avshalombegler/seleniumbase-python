@@ -13,7 +13,7 @@ addopts = [
     # use short traceback format
     "--tb=short",
     # capture description
-    "--capture=tee-sys",
+    # "--capture=tee-sys",
     # durations description
     # "--durations=0",
     # suppress warnings
@@ -30,8 +30,8 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
-    "-m full",
-    # "-m smoke",
+    # "-m full",
+    "-m smoke",
     # "-m current",
     # enforce marker validation
     "--strict-markers",

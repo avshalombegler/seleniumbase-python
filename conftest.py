@@ -129,6 +129,7 @@ def video_recorder(request: FixtureRequest) -> Generator[None, None, None]:
             root_logger.error(f"Failed to stop video recording: {str(e)}")
 
 
+@pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """Add browser info to Allure environment and ensure clean results directory."""
 
