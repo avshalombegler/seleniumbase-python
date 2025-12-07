@@ -59,6 +59,7 @@ markers = [
 filterwarnings = [
     "ignore::urllib3.exceptions.NotOpenSSLWarning",
     "ignore:Connection pool is full:Warning",
+    "ignore::UserWarning:pytest_html",
 ]
 
 # Main tests folder path:
