@@ -32,13 +32,10 @@ pipeline {
                                 . /opt/venv/bin/activate
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
                                     pytest \
-                                    -n ${params.WORKERS} \
-                                    --dist=loadfile \
+                                    -n ${params.WORKERS} --dist=loadfile \
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \
-                                    --junitxml=reports/junit.xml \
-                                    --reruns 1 --reruns-delay 2 \
                                     -m ${params.MARKER} || true
                             """
                         }]
@@ -129,7 +126,7 @@ def uploadToAllure(browser) {
             -s \
             "${allureUrl}/allure-docker-service/send-results?project_id=${projectId}")
         
-        echo "\$RESPONSE"
+        # echo "\$RESPONSE"
         HTTP_CODE=\$(echo "\$RESPONSE" | tail -n 1 | grep -oP '\\d+')
         if [ "\$HTTP_CODE" = "200" ]; then
             echo "✓ ${browser} report uploaded successfully!"
