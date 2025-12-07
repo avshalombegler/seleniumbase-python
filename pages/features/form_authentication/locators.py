@@ -8,14 +8,14 @@ from pages.base.base_page import Locator
 
 
 class FormAuthenticationPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h2")
-    USERNAME_TEXTBOX: Locator = (By.ID, "username")
-    PASSWORD_TEXTBOX: Locator = (By.ID, "password")
-    LOGIN_BTN: Locator = (By.CSS_SELECTOR, "button[type=submit]")
-    FLASH_MSG: Locator = (By.ID, "flash")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h2", "by": By.CSS_SELECTOR}
+    USERNAME_TEXTBOX: Locator = {"selector": "username", "by": By.ID}
+    PASSWORD_TEXTBOX: Locator = {"selector": "password", "by": By.ID}
+    LOGIN_BTN: Locator = {"selector": "button[type=submit]", "by": By.CSS_SELECTOR}
+    FLASH_MSG: Locator = {"selector": "flash", "by": By.ID}
 
 
 class SecureAreaPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h2")
-    LOGOUT_BTN: Locator = (By.CSS_SELECTOR, "a[href='/logout']")
-    FLASH_MSG: Locator = (By.ID, "flash")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h2", "by": By.CSS_SELECTOR}
+    LOGOUT_BTN: Locator = {"selector": "a[href='/logout']", "by": By.CSS_SELECTOR}
+    FLASH_MSG: Locator = {"selector": "flash", "by": By.ID}

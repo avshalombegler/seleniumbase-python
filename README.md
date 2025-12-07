@@ -2,7 +2,7 @@
 
 [![CI Status](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml/badge.svg)](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml)
 
-A modern, maintainable test automation suite using **Selenium** for <https://the-internet.herokuapp.com>.  
+A modern, maintainable test automation suite using **SeleniumBase** for <https://the-internet.herokuapp.com>.  
 Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Compose orchestration**, and **CI/CD** (GitHub Actions & Jenkins).
 
 ## Table of Contents
@@ -26,6 +26,10 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 - Automatic Allure attachments
   - Screenshot for failed tests
   - Video recording (configurable via `VIDEO_RECORDING` environment variable: true/false)
+- Automatic SeleniumBase attachments
+  - Screenshots for failed tests
+  - Video recording (built-in SeleniumBase feature)
+  - CSS/HTML snapshots
 
 ### CI/CD Features
 
@@ -58,12 +62,11 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 
 Key packages (see `requirements.txt` for full list):
 
-- `selenium==4.36.0`
+- `seleniumbase==4.28.6`
 - `pytest==8.4.2`
 - `allure-pytest==2.15.0`
 - `pytest-xdist==3.8.0`
 - `python-dotenv==1.1.1`
-- `webdriver-manager==4.0.2`
 - `pytest-sugar==1.1.1`
 - `pytest-rerunfailures==16.1`
 
@@ -141,9 +144,6 @@ MAXIMIZED=False            # Maximize browser window
 # Timeouts (seconds)
 SHORT_TIMEOUT=3            # For quick operations
 LONG_TIMEOUT=10            # For slow operations
-
-# Features
-VIDEO_RECORDING=True       # Record test execution
 
 # Test Credentials (for demo site)
 USERNAME=tomsmith
@@ -273,15 +273,12 @@ selenium-python/
 │    ├── base/                                  # BasePage, PageManager
 │    └── features/                              # Page objects per feature
 ├── pytest_plugins/                             # Modular pytest plugins
-│    ├── browser_fixtures.py                    # Browser/driver setup
 │    ├── browser_helpers.py                     # Browser utilities
-│    ├── directory_fixtures.py                  # Directory management
-│    ├── hooks.py                               # Pytest hooks
-│    ├── recording_fixtures.py                  # Video recording
-│    └── test_fixtures.py                       # Test-level fixtures
+│    ├── directory_fixtures.py                  # Directory management for downloads
+│    └── hooks.py                               # Pytest hooks
 ├── reports/                                    # Allure results and artifacts
 ├── tests/                                      # Test cases
-├── utils/                                      # Helpers (logging, video, etc.)
+├── utils/                                      # Helpers (logging, etc.)
 ├── .env                                        # Environment variables (gitignored)
 ├── conftest.py                                 # Main conftest - registers plugins
 ├── docker-compose.yml                          # Docker Compose configuration for CI/CD environment

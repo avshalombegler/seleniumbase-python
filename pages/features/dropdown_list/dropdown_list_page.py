@@ -5,19 +5,17 @@ from typing import TYPE_CHECKING
 import allure
 from selenium.webdriver.support.ui import Select
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.dropdown_list.locators import DropdownListPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class DropdownListPage(BasePage):
     """Page object for the Dropdown List page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(DropdownListPageLocators.PAGE_LOADED_INDICATOR)
 

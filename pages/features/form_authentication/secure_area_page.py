@@ -4,13 +4,11 @@ from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.form_authentication.locators import SecureAreaPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
-
-    from selenium.webdriver.remote.webdriver import WebDriver
 
     from pages.features.form_authentication.form_authentication_page import FormAuthenticationPage
 
@@ -18,11 +16,7 @@ if TYPE_CHECKING:
 class SecureAreaPage(BasePage):
     """Page object for the Secure Area page containing methods to interact with and validate page functionality"""
 
-    def __init__(
-        self,
-        driver: WebDriver,
-        logger: Logger | None = None,
-    ) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(SecureAreaPageLocators.PAGE_LOADED_INDICATOR)
 

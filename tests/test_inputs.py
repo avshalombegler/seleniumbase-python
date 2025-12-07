@@ -1,22 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.action_chains import ActionChains
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Inputs")
 @allure.story("Tests Inputs functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestInfiniteScroll:
+class TestInputs(UiBaseCase):
     """Tests Inputs functionality"""
 
     NUMBER: int = 1337
@@ -27,33 +18,38 @@ class TestInfiniteScroll:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_inputs_functionality(self, page_manager: PageManager, logger: Logger, actions: ActionChains) -> None:
-        logger.info("Tests Inputs.")
-        page = page_manager.get_inputs_page()
+    def test_inputs_functionality(self) -> None:
+        self.logger.info("Tests Inputs.")
+        main_page = MainPage(self)
+        page = main_page.click_inputs_link()
 
-        logger.info("Entering input number.")
+        self.logger.info("Entering input number.")
         page.enter_input_number(self.NUMBER)
 
-        logger.info("Getting input number value.")
+        self.logger.info("Getting input number value.")
         input_number = page.get_input_number_value()
 
-        logger.info("Getting input number value.")
-        assert self.NUMBER == input_number
+        self.logger.info("Verifying input number value.")
+        assert self.NUMBER == input_number, f"Expected '{self.NUMBER}', but got '{input_number}'"
 
-        logger.info("Increasing number value using keyboard arrow.")
-        page.increase_number_value(actions, self.INCREASE_VALUE)
+        self.logger.info("Increasing number value using keyboard arrow.")
+        page.increase_number_value(self.INCREASE_VALUE)
 
-        logger.info("Getting input number value.")
+        self.logger.info("Getting input increased number value.")
         increased_number = page.get_input_number_value()
 
-        logger.info("Getting input number value.")
-        assert self.NUMBER + self.INCREASE_VALUE == increased_number
+        self.logger.info("Verifying input number value.")
+        assert self.NUMBER + self.INCREASE_VALUE == increased_number, (
+            f"Expected '{self.NUMBER + self.INCREASE_VALUE}', but got '{increased_number}'"
+        )
 
-        logger.info("Decreasing number value using keyboard arrow.")
-        page.decrease_number_value(actions, self.DECREASE_VALUE)
+        self.logger.info("Decreasing number value using keyboard arrow.")
+        page.decrease_number_value(self.DECREASE_VALUE)
 
-        logger.info("Getting input number value.")
+        self.logger.info("Getting decreased input number value.")
         decreased_number = page.get_input_number_value()
 
-        logger.info("Getting input number value.")
-        assert self.EXPECTED_VALUE == decreased_number
+        self.logger.info("Verifying input number value.")
+        assert self.EXPECTED_VALUE == decreased_number, (
+            f"Expected '{self.EXPECTED_VALUE}', but got '{decreased_number}'"
+        )

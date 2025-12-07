@@ -1,39 +1,31 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
+from parameterized import parameterized
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Digest Authentication")
 @allure.story("Verify Digest Authentication scenarios")
-@pytest.mark.usefixtures("page_manager")
-class TestDigestAuth:
+class TestDigestAuth(UiBaseCase):
     """Tests for Digest Authentication scenarios"""
 
-    @pytest.mark.parametrize(
-        "username, password",
+    @parameterized.expand(
         [
-            ("admin", "admin"),
-            ("wrong", "admin"),
-            ("admin", "wrong"),
+            ["admin", "admin"],
+            ["wrong", "admin"],
+            ["admin", "wrong"],
         ],
     )
     @pytest.mark.full
     @allure.severity(allure.severity_level.NORMAL)
-    def test_digest_auth_login_scenarios(
-        self, page_manager: PageManager, logger: Logger, username: str, password: str
-    ) -> None:
-        logger.info("Tests for Digest Authentication scenarios.")
-        page = page_manager.get_digest_auth_page(username, password)
+    def test_digest_auth_login_scenarios(self, username: str, password: str) -> None:
+        self.logger.info("Tests for Digest Authentication scenarios.")
+        main_page = MainPage(self)
+        page = main_page.get_digest_auth_page(username, password)
 
-        logger.info("Check if login succeeded.")
+        self.logger.info("Check if login succeeded.")
         success = page.is_login_successful()
         if not success:
-            logger.info(f"Page source: {page.get_page_source_snippet()}")
+            self.logger.info(f"Page source: {page.get_page_source_snippet()}")

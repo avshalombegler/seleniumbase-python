@@ -8,5 +8,5 @@ from pages.base.base_page import Locator
 
 
 class InputsPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "h3")
-    INPUT_NUMBER: Locator = (By.CSS_SELECTOR, "input[type=number]")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "h3", "by": By.CSS_SELECTOR}
+    INPUT_NUMBER: Locator = {"selector": "input[type=number]", "by": By.CSS_SELECTOR}

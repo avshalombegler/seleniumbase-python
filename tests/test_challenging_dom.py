@@ -1,80 +1,78 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
+from parameterized import parameterized
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Challenging DOM")
 @allure.story("Verify Challenging DOM buttons interactions and table content")
-@pytest.mark.usefixtures("page_manager")
-class TestChallengingDom:
+class TestChallengingDom(UiBaseCase):
     """Tests for verifying Challenging DOM buttons interactions and table content"""
 
-    EDIT_SUFFIX = "challenging_dom#edit"
-    DEL_SUFFIX = "challenging_dom#delete"
-    BUTTONS = ["blue", "red", "green"]
+    BUTTONS = [["blue"], ["red"], ["green"]]
     COLUMNS = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet", "Diceret"]
     CELL_VALUES = ["Iuvaret", "Apeirian", "Adipisci", "Definiebas", "Consequuntur", "Phaedrum"]
+    EDIT_SUFFIX = "challenging_dom#edit"
+    DEL_SUFFIX = "challenging_dom#delete"
 
+    @parameterized.expand(BUTTONS)
     @pytest.mark.full
     @pytest.mark.ui
-    @pytest.mark.parametrize("button", BUTTONS)
     @allure.severity(allure.severity_level.NORMAL)
-    def test_each_button_clicks(self, page_manager: PageManager, logger: Logger, button: str) -> None:
-        logger.info("Verify each button in page is clickable.")
-        page = page_manager.get_challenging_dom_page()
+    def test_each_button_clicks(self, button: str) -> None:
+        self.logger.info("Verify each button in page is clickable.")
+        main_page = MainPage(self)
+        page = main_page.click_challenging_dom_link()
 
-        logger.info(f"Clicking {button} button.")
+        self.logger.info(f"Clicking {button} button.")
         page.click_colored_button(button)
 
+    @parameterized.expand(COLUMNS)
     @pytest.mark.full
     @pytest.mark.ui
-    @pytest.mark.parametrize("col", COLUMNS)
     @allure.severity(allure.severity_level.NORMAL)
-    def test_table_header_per_column(self, page_manager: PageManager, logger: Logger, col: str) -> None:
-        logger.info("Verify table head text per column.")
-        page = page_manager.get_challenging_dom_page()
+    def test_table_header_per_column(self, col: str) -> None:
+        self.logger.info("Verify table head text per column.")
+        main_page = MainPage(self)
+        page = main_page.click_challenging_dom_link()
 
-        logger.info(f"Getting table head text of column '{col}'.")
+        self.logger.info(f"Getting table head text of column '{col}'.")
         header = page.get_table_head_text(col)
         assert header == col, f"Table head value '{col}' not found (got '{header}')"
 
+    @parameterized.expand(zip(COLUMNS, CELL_VALUES))
     @pytest.mark.full
     @pytest.mark.ui
-    @pytest.mark.parametrize("col, cell", list(zip(COLUMNS, CELL_VALUES)))
     @allure.severity(allure.severity_level.NORMAL)
-    def test_cells_content_per_column(self, page_manager: PageManager, logger: Logger, col: str, cell: str) -> None:
-        logger.info("Verify cell content per column.")
-        page = page_manager.get_challenging_dom_page()
+    def test_cells_content_per_column(self, col: str, cell: str) -> None:
+        self.logger.info("Verify cell content per column.")
+        main_page = MainPage(self)
+        page = main_page.click_challenging_dom_link()
 
         for i in range(3):  # reduced repetition for faster tests; expand as needed
             expected = f"{cell}{i}"
-            logger.info(f"Getting table cell '{cell}' text under column '{col}'.")
+            self.logger.info(f"Getting table cell '{cell}' text under column '{col}'.")
             val = page.get_table_cell_text(col, expected)
             assert val == expected, f"Cell value '{expected}' under '{col}' not found (got '{val}')"
 
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_table_edit_and_delete_buttons_per_row(self, page_manager: PageManager, logger: Logger) -> None:
-        logger.info("Verify edit and delete buttons per row are clickable.")
-        page = page_manager.get_challenging_dom_page()
+    def test_table_edit_and_delete_buttons_per_row(self) -> None:
+        self.logger.info("Verify edit and delete buttons per row are clickable.")
+        main_page = MainPage(self)
+        page = main_page.click_challenging_dom_link()
 
         for i in range(3):  # reduced repetition for faster tests; expand as needed
-            logger.info("Clicking edit button in row {i}.")
+            self.logger.info(f"Clicking edit button in row {i}.")
             page.click_edit_button(i)
 
             curr_url = page.get_current_url()
             assert self.EDIT_SUFFIX in curr_url, f"Expected URL '{self.EDIT_SUFFIX} in URL', got URL: '{curr_url}'"
 
-            logger.info("Click delete button in row {i}.")
+            self.logger.info(f"Click delete button in row {i}.")
             page.click_delete_button(i)
 
             curr_url = page.get_current_url()

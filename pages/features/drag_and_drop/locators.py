@@ -8,6 +8,7 @@ from pages.base.base_page import Locator
 
 
 class DragAndDropPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "div.example h3")
-    BOX: Locator = (By.CSS_SELECTOR, "div#column-{box}")
-    BOX_HEADER: Locator = (By.CSS_SELECTOR, "div#column-{box} header")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
+    BOX_A: Locator = {"selector": "div#column-a", "by": By.CSS_SELECTOR}
+    BOX_B: Locator = {"selector": "div#column-b", "by": By.CSS_SELECTOR}
+    BOX_HEADER: Locator = {"selector": "div#column-{box} header", "by": By.CSS_SELECTOR}

@@ -1,21 +1,16 @@
-from __future__ import annotations
-
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import allure
 import pytest
+from parameterized import parameterized
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Files Upload")
 @allure.story("Tests Files Upload functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestFilesUpload:
+class TestFilesUpload(UiBaseCase):
     """Tests Files Upload functionality"""
 
     TEST_FILES_DIR = Path(__file__).parent / "files"
@@ -29,19 +24,23 @@ class TestFilesUpload:
         "TestingFile.pdf",
     ]
 
+    @parameterized.expand(FILES_NAMES)
     @pytest.mark.full
     @pytest.mark.ui
-    @pytest.mark.parametrize("filename", FILES_NAMES)
     @allure.severity(allure.severity_level.NORMAL)
-    def test_files_upload_functionality(self, page_manager: PageManager, logger: Logger, filename: str) -> None:
-        logger.info("Tests Files Upload.")
-        page = page_manager.get_file_upload_page()
+    def test_files_upload_functionality(self, filename: str) -> None:
+        self.logger.info("Tests Files Upload.")
+        main_page = MainPage(self)
+        page = main_page.click_file_upload_link()
 
         file_path = str(self.TEST_FILES_DIR / filename)
 
-        logger.info("Upload file using the Upload button.")
+        self.logger.info("Upload file using the Upload button.")
         page.select_file_to_upload(file_path)
         file_uploaded_page = page.click_upload_file()
 
-        logger.info("Verifying file uploaded sucessfully.")
-        assert file_uploaded_page.get_uploaded_file_name() == filename
+        self.logger.info("Fetting uploaded filename.")
+        uploaded_filename = file_uploaded_page.get_uploaded_file_name()
+
+        self.logger.info("Verifying file uploaded sucessfully.")
+        assert filename == uploaded_filename, f"Expected filename '{filename}', but got '{uploaded_filename}'"

@@ -6,21 +6,41 @@ requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
 addopts = [
-    # Show summary of all test results
-    "-ra",
+    # Log output:
+    # show summary of all test results
     "-v",
-    # Use short traceback format
+    "-ra",
+    # use short traceback format
     "--tb=short",
-    # Suppress warnings
-    "--disable-warnings",
-    # Enforce marker validation
-    "--strict-markers",
+    # capture description
+    "--capture=tee-sys",
+    # durations description
     # "--durations=0",
-    "-nauto",
+    # suppress warnings
+    "--disable-warnings",
+  
+    # Multi-threading:
+    # "-nauto",
+    # "--dist=loadfile",
+
+    # Reporting:
+    # "--dashboard",
+    # "--html=report.html",
+    # "--html=dashboard.html",
     # "--alluredir=reports/allure-results",
-    # "-m full",
-    "-m smoke",
+
+    # Markers:
+    "-m full",
+    # "-m smoke",
     # "-m current",
+    # enforce marker validation
+    "--strict-markers",
+
+    # Chrome-Headless-Shell:
+    # "--chs",
+
+    # Undetected-Chromedriver Mode:
+    # "--uc",
 ]
 
 markers = [

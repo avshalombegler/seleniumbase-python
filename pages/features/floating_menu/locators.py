@@ -8,5 +8,5 @@ from pages.base.base_page import Locator
 
 
 class FloatingMenuPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    MENU_ITEM: Locator = (By.LINK_TEXT, "{item}")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    MENU_ITEM: Locator = {"selector": "{item}", "by": By.LINK_TEXT}

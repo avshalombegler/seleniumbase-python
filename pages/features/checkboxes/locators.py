@@ -8,5 +8,5 @@ from pages.base.base_page import Locator
 
 
 class CheckboxesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "div.example h3")
-    CHECKBOXES: Locator = (By.CSS_SELECTOR, "form#checkboxes input[type=checkbox]")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
+    CHECKBOXES: Locator = {"selector": "form#checkboxes input[type=checkbox]", "by": By.CSS_SELECTOR}

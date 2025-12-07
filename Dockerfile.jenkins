@@ -14,16 +14,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --d
     && apt-get update && apt-get install --no-install-recommends -y google-chrome-stable \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install drivers (ChromeDriver, GeckoDriver)
-RUN CHROMEDRIVER_VERSION=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE) && \
-    wget -q https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip && \
-    unzip chromedriver-linux64.zip && mv chromedriver-linux64/chromedriver /usr/local/bin/ && chmod +x /usr/local/bin/chromedriver && \
-    chromedriver --version && \
-    GECKODRIVER_VERSION=v0.35.0 && \
-    wget -q https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz && \
-    tar -xzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz && mv geckodriver /usr/local/bin/ && chmod +x /usr/local/bin/geckodriver && \
-    geckodriver --version && \
-    rm -f chromedriver-linux64.zip geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+# SeleniumBase manages drivers automatically, no need to install manually
 
 # Install Allure CLI
 RUN ALLURE_VERSION=2.35.1 && \

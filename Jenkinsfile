@@ -17,9 +17,6 @@ pipeline {
         ALLURE_SERVER_URL = 'http://allure:5050'
         SHORT_TIMEOUT = '3'
         LONG_TIMEOUT = '10'
-        VIDEO_RECORDING = 'True'
-        HEADLESS = 'True'
-        MAXIMIZED = 'False'
         PYTHONUNBUFFERED = '1'
     }
     
@@ -50,12 +47,17 @@ pipeline {
                         [(browser): {
                             sh """
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
-                                    pytest tests/ -v -n ${params.WORKERS} --dist=loadfile \
+                                    pytest \
+                                    -n ${params.WORKERS} \
+                                    --dist=loadfile \
                                     --browser=${browser} \
+                                    --headless \
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \
-                                    --reruns 1 --reruns-delay 2 -m ${params.MARKER} || true
+                                    --junitxml=reports/junit.xml \
+                                    --reruns 1 --reruns-delay 2 \
+                                    -m ${params.MARKER} || true
                             """
                         }]
                     }

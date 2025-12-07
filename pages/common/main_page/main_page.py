@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from urllib.parse import urljoin
 
 import allure
 
-from pages.base.base_page import BasePage
+from config.env_config import BASE_URL
+from pages.base.base_page import BaseCase, BasePage
 from pages.common.main_page.locators import MainPageLocators
 from pages.features.ab_testing.ab_testing_page import ABTestingPage
 from pages.features.add_remove_elements.add_remove_elements_page import AddRemoveElementsPage
@@ -35,12 +37,13 @@ from pages.features.inputs.inputs_page import InputsPage
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class MainPage(BasePage):
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
+        if hasattr(self.driver, "request") and self.driver.request.node.get_closest_marker("ui"):
+            self.wait_for_page_to_load(MainPageLocators.PAGE_LOADED_INDICATOR)
+            self.base_url = BASE_URL
 
     @allure.step("Navigate to {page_name} page")
     def click_ab_testing_link(self, page_name: str = "A/B Testing") -> ABTestingPage:
@@ -91,8 +94,14 @@ class MainPage(BasePage):
         return ContextMenuPage(self.driver, self.logger)
 
     @allure.step("Navigate to {page_name} page")
-    def get_digest_auth_page(self, url: str, page_name: str = "Digest Authentication") -> DigestAuthPage:
+    def get_digest_auth_page(
+        self, username: str, password: str, page_name: str = "Digest Authentication"
+    ) -> DigestAuthPage:
         self.logger.info(f"Navigating to {page_name} page.")
+        if not username or not password:
+            raise ValueError(f"Invalid credentials: username='{username}', password='{password or ''}'")
+        base_path = urljoin(self.base_url, "digest_auth")
+        url = base_path.replace("https://", f"https://{username}:{password}@")
         self.navigate_to(url)
 
         return DigestAuthPage(self.driver, self.logger)

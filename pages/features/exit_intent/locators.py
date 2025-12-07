@@ -8,7 +8,7 @@ from pages.base.base_page import Locator
 
 
 class ExitIntentPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    PAGE_BODY: Locator = (By.TAG_NAME, "body")
-    MODAL_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".modal-title h3")
-    CLOSE_BTN: Locator = (By.CSS_SELECTOR, "div.modal-footer p")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    PAGE_BODY: Locator = {"selector": "body", "by": By.TAG_NAME}
+    MODAL_LOADED_INDICATOR: Locator = {"selector": ".modal-title h3", "by": By.CSS_SELECTOR}
+    CLOSE_BTN: Locator = {"selector": "div.modal-footer p", "by": By.CSS_SELECTOR}

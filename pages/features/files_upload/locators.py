@@ -8,12 +8,12 @@ from pages.base.base_page import Locator
 
 
 class FilesUploadPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    FILE_UPLOAD: Locator = (By.ID, "file-upload")
-    UPLOAD_BTN: Locator = (By.ID, "file-submit")
-    UPLOAD_BOX: Locator = (By.CSS_SELECTOR, "div[id=drag-drop-upload]")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    FILE_UPLOAD: Locator = {"selector": "file-upload", "by": By.ID}
+    UPLOAD_BTN: Locator = {"selector": "file-submit", "by": By.ID}
+    UPLOAD_BOX: Locator = {"selector": "div[id=drag-drop-upload]", "by": By.CSS_SELECTOR}
 
 
 class FileUploadedPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    UPLOADED_FILE: Locator = (By.ID, "uploaded-files")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    UPLOADED_FILE: Locator = {"selector": "uploaded-files", "by": By.ID}

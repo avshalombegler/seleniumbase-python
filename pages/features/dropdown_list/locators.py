@@ -8,6 +8,5 @@ from pages.base.base_page import Locator
 
 
 class DropdownListPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "div.example h3")
-    DROPDOWN: Locator = (By.CSS_SELECTOR, "select#dropdown")
-    OPTION: Locator = (By.NAME, "{val}")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
+    DROPDOWN: Locator = {"selector": "select#dropdown", "by": By.CSS_SELECTOR}

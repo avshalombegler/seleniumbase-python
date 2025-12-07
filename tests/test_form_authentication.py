@@ -1,31 +1,24 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
+from parameterized import parameterized
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Form Authentication")
 @allure.story("Tests Form Authentication functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestFormAuthentication:
+class TestFormAuthentication(UiBaseCase):
     """Tests Form Authentication functionality"""
 
     SUCCESSFULL_LOGIN = "You logged into a secure area!"
     SUCCESSFULL_LOGOUT = "You logged out of the secure area!"
 
-    @pytest.mark.parametrize(
-        "username, password, expected_message",
+    @parameterized.expand(
         [
-            ("tomsmith", "SuperSecretPassword!", "You logged into a secure area!"),
-            ("tomsmith", "wrong!", "Your password is invalid!"),
-            ("wrong", "SuperSecretPassword!", "Your username is invalid!"),
+            ["tomsmith", "SuperSecretPassword!", "You logged into a secure area!"],
+            ["tomsmith", "wrong!", "Your password is invalid!"],
+            ["wrong", "SuperSecretPassword!", "Your username is invalid!"],
         ],
     )
     @pytest.mark.full
@@ -33,37 +26,47 @@ class TestFormAuthentication:
     @allure.severity(allure.severity_level.NORMAL)
     def test_form_authentication_functionality(
         self,
-        page_manager: PageManager,
-        logger: Logger,
         username: str,
         password: str,
         expected_message: str,
     ) -> None:
-        logger.info("Tests Form Authentication.")
-        page = page_manager.get_form_authentication_page()
+        self.logger.info("Tests Form Authentication.")
+        main_page = MainPage(self)
+        page = main_page.click_form_authentication_link()
 
-        logger.info(f"Entering username '{username}'.")
+        self.logger.info(f"Entering username '{username}'.")
         page.enter_username(username)
 
-        logger.info(f"Entering password '{password}'.")
+        self.logger.info(f"Entering password '{password}'.")
         page.enter_password(password)
 
         if self.SUCCESSFULL_LOGIN in expected_message:
-            logger.info("Clicking login button.")
+            self.logger.info("Clicking login button.")
             secure_area_page = page.click_login_correct()
 
-            logger.info("Verifying flash message after successfull login.")
-            assert expected_message in secure_area_page.get_flash_message()
+            self.logger.info("Getting flash message.")
+            flash_message = secure_area_page.get_flash_message()
 
-            logger.info("Clicking logout button.")
+            self.logger.info("Verifying flash message after successfull login.")
+            assert expected_message in flash_message, f"Expected '{flash_message}'to contain '{expected_message}'"
+
+            self.logger.info("Clicking logout button.")
             page = secure_area_page.click_logout()
 
-            logger.info("Verifying flash message after successfull logout.")
-            assert self.SUCCESSFULL_LOGOUT in page.get_flash_message()
+            self.logger.info("Getting flash message.")
+            flash_message = page.get_flash_message()
+
+            self.logger.info("Verifying flash message after successfull login.")
+            assert self.SUCCESSFULL_LOGOUT in flash_message, (
+                f"Expected '{flash_message}'to contain '{self.SUCCESSFULL_LOGOUT}'"
+            )
 
         else:
-            logger.info("Clicking login button.")
+            self.logger.info("Clicking login button.")
             page.click_login_invalid()
 
-            logger.info("Verifying flash message after unsuccessfull login.")
-            assert expected_message in page.get_flash_message()
+            self.logger.info("Getting flash message.")
+            flash_message = page.get_flash_message()
+
+            self.logger.info("Verifying flash message after unsuccessfull login.")
+            assert expected_message in flash_message, f"Expected '{flash_message}'to contain '{expected_message}'"

@@ -34,6 +34,7 @@ env/
 
 # Downloads folder
 downloads/
+downloaded_files/
 
 # OS generated files
 .DS_Store
@@ -42,6 +43,15 @@ downloads/
 *.env
 !.env.example
 .github/workflows/*.log
+
+# SeleniumBase
+report.html
+dashboard.html
+*.html
+latest_screenshots/
+latest_videos/
+latest_logs/
+assets/
 
 # Logs
 *.log

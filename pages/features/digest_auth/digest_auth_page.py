@@ -8,19 +8,17 @@ from selenium.common.exceptions import (
     UnexpectedAlertPresentException,
 )
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.digest_auth.locators import DigestAuthPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class DigestAuthPage(BasePage):
     """Page object for the Digest Authentication page containing methods to test digest authentication scenarios"""
 
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
 
     @allure.step("Check if login succeeded")

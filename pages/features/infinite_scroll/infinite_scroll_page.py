@@ -1,26 +1,21 @@
 from __future__ import annotations
 
+from time import sleep
 from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.infinite_scroll.locators import InfiniteScrollPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class InfiniteScrollPage(BasePage):
     """Page object for the Infinite Scroll page containing methods to interact with and validate page functionality"""
 
-    def __init__(
-        self,
-        driver: WebDriver,
-        logger: Logger | None = None,
-    ) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(InfiniteScrollPageLocators.PAGE_LOADED_INDICATOR)
 
@@ -30,4 +25,5 @@ class InfiniteScrollPage(BasePage):
 
     @allure.step("Scroll to bottom of page")
     def scroll_to_bottom_of_page(self) -> None:
-        self.scroll_to_bottom(wait_after=2)
+        self.driver.scroll_down(100)
+        sleep(1)

@@ -7,17 +7,15 @@ import allure
 import requests
 from bs4 import BeautifulSoup
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 
 if TYPE_CHECKING:
     from logging import Logger
     from typing import Any
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class BasicAuthPage(BasePage):
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
 
     def _extract_message_from_response(self, response_text: str) -> str:

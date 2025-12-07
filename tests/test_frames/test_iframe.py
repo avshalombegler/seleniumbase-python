@@ -1,20 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("iframe")
 @allure.story("Tests iframe functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestIframe:
+class TestIframe(UiBaseCase):
     """Tests iframe functionality"""
 
     TEXT = "Testing switch to iframe functionality"
@@ -22,23 +15,30 @@ class TestIframe:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_iframe_functionality(self, page_manager: PageManager, logger: Logger) -> None:
-        logger.info("Tests iframe.")
-        page = page_manager.get_frames_page()
+    def test_iframe_functionality(self) -> None:
+        self.logger.info("Tests iframe.")
+        main_page = MainPage(self)
+        page = main_page.click_frames_link()
 
-        logger.info("Clicking iframe link.")
+        self.logger.info("Clicking iframe link.")
         iframe_page = page.click_iframe_link()
 
         if "read-only" in iframe_page.get_page_source(lowercase=True):
-            pytest.skip("herokuapp blocked – TinyMCE read-only mode")
+            pytest.skip("Skipping test: herokuapp blocked – TinyMCE read-only mode")
 
-        logger.info("Switching to iframe.")
+        self.logger.info("Switching to iframe.")
         iframe_page.switch_to_iframe()
 
-        logger.info("Sending text to iframe's rich text area.")
+        self.logger.info("Sending text to iframe's rich text area.")
         iframe_page.send_text_to_rich_text_area(self.TEXT)
 
-        # TODO: Test rich text area buttons
+        # TODO: Test rich text area buttons - TinyMCE always blocked.
 
-        logger.info("Verifying text in iframe's rich text area.")
-        assert self.TEXT == iframe_page.get_iframe_text()
+        self.logger.info("Getting text from iframe's rich text area.")
+        frame_text = iframe_page.get_iframe_text()
+
+        self.logger.info("Verifying text in iframe's rich text area.")
+        assert self.TEXT == frame_text, (
+            f"Expected frame text '{self.TEXT}',\
+              got '{frame_text}'"
+        )

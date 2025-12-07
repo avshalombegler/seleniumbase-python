@@ -1,22 +1,14 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.action_chains import ActionChains
-
-    from pages.base.page_manager import PageManager
+from config.env_config import VIDEO_RECORDING
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Context Menu")
 @allure.story("Verify Context Menu interactions")
-@pytest.mark.usefixtures("page_manager")
-class TestContextMenu:
+class TestContextMenu(UiBaseCase):
     """Tests for context menu functionality"""
 
     EXPECTED_ALERT_TEXT = "You selected a context menu"
@@ -24,27 +16,37 @@ class TestContextMenu:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_right_click_outside_hotspot(
-        self, page_manager: PageManager, logger: Logger, actions: ActionChains
-    ) -> None:
+    def test_right_click_outside_hotspot(self) -> None:
         """Verify right-click outside hot spot area"""
-        page = page_manager.get_context_menu_page()
+        main_page = MainPage(self)
+        page = main_page.click_context_menu_link()
 
-        logger.info("Testing right-click outside hot spot")
-        result = page.right_click_outside_hot_spot(actions)
+        self.logger.info("Testing right-click outside hot spot.")
+        result = page.right_click_outside_hot_spot()
         assert not result.alert_present, "Alert should not appear when clicking outside hot spot"
 
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_right_click_on_hotspot(self, page_manager: PageManager, logger: Logger, actions: ActionChains) -> None:
+    def test_right_click_on_hotspot(self) -> None:
         """Verify right-click on hot spot area"""
-        page = page_manager.get_context_menu_page()
+        main_page = MainPage(self)
+        page = main_page.click_context_menu_link()
 
-        logger.info("Testing right-click on hot spot")
-        alert_text = page.right_click_on_hot_spot_and_get_alert_text(actions)
+        if not VIDEO_RECORDING:
+            self.logger.info("Performing context-click on hot spot.")
+            page.right_click_on_hot_spot()
 
-        if alert_text != "VIDEO_RECORDING_ACTIVE":
-            assert alert_text == self.EXPECTED_ALERT_TEXT, (
-                f"Expected alert text '{self.EXPECTED_ALERT_TEXT}', got '{alert_text}'"
-            )
+            self.logger.info("Getting alert text.")
+            alert_text = page.get_context_menu_alert_text()
+
+            self.logger.info("Closing context menu alert.")
+            page.close_context_menu_alert()
+
+            if alert_text != "VIDEO_RECORDING_ACTIVE":
+                assert alert_text == self.EXPECTED_ALERT_TEXT, (
+                    f"Expected alert text '{self.EXPECTED_ALERT_TEXT}', got '{alert_text}'"
+                )
+
+        else:
+            self.logger.info("Video recording active – skipping alert text check")

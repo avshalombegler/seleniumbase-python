@@ -3,21 +3,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import allure
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import ElementNotVisibleException, NoSuchElementException
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.dynamic_controls.locators import DynamicControlsPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class DynamicControlsPage(BasePage):
     """Page object for the Dynamic Content page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(DynamicControlsPageLocators.PAGE_LOADED_INDICATOR)
 
@@ -34,12 +32,21 @@ class DynamicControlsPage(BasePage):
             self.logger.warning("Loader did not complete normally, continuing test...")
 
     @allure.step("Check if checkbox is present or absent")
-    def is_checkbox_present(self, timeout: int = 10) -> bool:
+    def is_checkbox_visible(self, timeout: int = 10) -> bool:
         try:
-            self.wait_for_visibility(DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
+            self.driver.wait_for_element_visible(**DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
             return True
-        except TimeoutException:
+        except (ElementNotVisibleException, NoSuchElementException):
             return False
+        # try:
+        #     self.wait_for_visibility(DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
+        #     return True
+        # except NoSuchElementException:
+        #     return False
+
+    @allure.step("Check if checkbox is present or absent")
+    def is_checkbox_not_visible(self, timeout: int = 10) -> bool:
+        return self.driver.wait_for_element_not_visible(**DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
 
     @allure.step("Click enable button")
     def click_enable_button(self, timeout: int = 10) -> None:

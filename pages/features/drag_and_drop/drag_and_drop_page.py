@@ -5,45 +5,45 @@ from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.drag_and_drop.locators import DragAndDropPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.common.action_chains import ActionChains
-    from selenium.webdriver.remote.webdriver import WebDriver
     from selenium.webdriver.remote.webelement import WebElement
 
 
 class DragAndDropPage(BasePage):
     """Page object for the Drag and Drop page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(DragAndDropPageLocators.PAGE_LOADED_INDICATOR)
 
-    @allure.step("Get box element")
-    def get_box_element(self, box: str) -> WebElement:
-        locator = DragAndDropPageLocators.BOX[1].format(box=box)
-        return self.wait_for_visibility((DragAndDropPageLocators.BOX[0], locator))
-
     @allure.step("Perform drag and drop on box")
-    def drag_and_drop_box(self, actions: ActionChains, source: WebElement, target: WebElement) -> None:
-        # Check if the driver is Firefox; if so, skip ActionChains and use JS directly
-        is_firefox = "firefox" in self.driver.name.lower()
+    def drag_and_drop_box(self) -> None:
+        # Check if the driver is Firefox; if so, skip SeleniumBase drag_and_drop and use JS directly
+        browser = self.driver.browser
 
-        if not is_firefox:
+        if browser != "firefox":
             try:
-                # Try ActionChains first for Chrome/other browsers
-                actions.drag_and_drop(source, target).perform()
-                self.logger.info("Drag and drop completed using ActionChains.")
+                # Try SeleniumBase drag_and_drop first for Chrome/other browsers
+                self.driver.drag_and_drop(
+                    drag_selector=DragAndDropPageLocators.BOX_A["selector"],
+                    drop_selector=DragAndDropPageLocators.BOX_B["by"],
+                    drag_by=DragAndDropPageLocators.BOX_A["selector"],
+                    drop_by=DragAndDropPageLocators.BOX_B["by"],
+                )
+                self.logger.info("Drag and drop completed using SeleniumBase.")
                 time.sleep(0.4)  # Allow DOM update
                 return
             except Exception as e:
-                self.logger.warning(f"ActionChains drag_and_drop failed: {e}. Falling back to JS.")
+                self.logger.warning(f"SeleniumBase drag_and_drop failed: {e}. Falling back to JS.")
 
-        # Fallback to improved JS simulation for Firefox or if ActionChains failed
+        # Fallback to improved JS simulation for Firefox or if SeleniumBase failed
+        source = self.wait_for_visibility(DragAndDropPageLocators.BOX_A)
+        target = self.wait_for_visibility(DragAndDropPageLocators.BOX_B)
         self._js_drag_and_drop(source, target)
 
     def _js_drag_and_drop(self, source: WebElement, target: WebElement) -> None:
@@ -110,5 +110,5 @@ class DragAndDropPage(BasePage):
 
     @allure.step("Get box header")
     def get_box_header(self, box: str) -> str:
-        locator = DragAndDropPageLocators.BOX_HEADER[1].format(box=box)
-        return self.get_dynamic_element_text((DragAndDropPageLocators.BOX_HEADER[0], locator))
+        locator = self.format_locator(DragAndDropPageLocators.BOX_HEADER, box=box)
+        return self.get_dynamic_element_text(locator)

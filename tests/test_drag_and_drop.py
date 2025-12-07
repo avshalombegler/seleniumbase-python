@@ -1,22 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.action_chains import ActionChains
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Drag and Drop")
 @allure.story("Tests Drag and Drop functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestDragAndDrop:
+class TestDragAndDrop(UiBaseCase):
     """Tests Drag and Drop functionality"""
 
     BOX_A = "A"
@@ -25,19 +16,14 @@ class TestDragAndDrop:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_drag_and_drop_functionality(
-        self, page_manager: PageManager, logger: Logger, actions: ActionChains
-    ) -> None:
-        logger.info("Tests Drag and Drop functionality.")
-        page = page_manager.get_drag_and_drop_page()
+    def test_drag_and_drop_functionality(self) -> None:
+        self.logger.info("Tests Drag and Drop functionality.")
+        main_page = MainPage(self)
+        page = main_page.click_drag_and_drop_link()
 
-        logger.info("Getting box elements for drag and drop.")
-        src = page.get_box_element(self.BOX_A.lower())
-        dst = page.get_box_element(self.BOX_B.lower())
+        self.logger.info("Performing drag and drop on box element.")
+        page.drag_and_drop_box()
 
-        logger.info("Performing drag and drop on box element.")
-        page.drag_and_drop_box(actions, src, dst)
-
-        logger.info("Verifying drag and drop action succeeded.")
+        self.logger.info("Verifying drag and drop action succeeded.")
         assert page.get_box_header(self.BOX_A.lower()) == self.BOX_B
         assert page.get_box_header(self.BOX_B.lower()) == self.BOX_A

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.dynamic_loading.example_1_page import Example1Page
 from pages.features.dynamic_loading.example_2_page import Example2Page
 from pages.features.dynamic_loading.locators import DynamicLoadingPageLocators
@@ -12,13 +12,11 @@ from pages.features.dynamic_loading.locators import DynamicLoadingPageLocators
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class DynamicLoadingPage(BasePage):
     """Page object for the Dynamic Loading page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: WebDriver, logger: Logger | None = None) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(DynamicLoadingPageLocators.PAGE_LOADED_INDICATOR)
 

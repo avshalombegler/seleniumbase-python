@@ -4,23 +4,17 @@ from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.floating_menu.locators import FloatingMenuPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
 
-    from selenium.webdriver.remote.webdriver import WebDriver
-
 
 class FloatingMenuPage(BasePage):
     """Page object for the Floating Menu page containing methods to interact with and validate page functionality"""
 
-    def __init__(
-        self,
-        driver: WebDriver,
-        logger: Logger | None = None,
-    ) -> None:
+    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
         super().__init__(driver, logger)
         self.wait_for_page_to_load(FloatingMenuPageLocators.PAGE_LOADED_INDICATOR)
 
@@ -30,5 +24,5 @@ class FloatingMenuPage(BasePage):
 
     @allure.step("Click floating menu item '{item}'")
     def click_floating_menu_item(self, item: str) -> None:
-        locator = (FloatingMenuPageLocators.MENU_ITEM[0], FloatingMenuPageLocators.MENU_ITEM[1].format(item=item))
+        locator = self.format_locator(FloatingMenuPageLocators.MENU_ITEM, item=item)
         self.click_element(locator)

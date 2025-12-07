@@ -8,11 +8,11 @@ from pages.base.base_page import Locator
 
 
 class HoversPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    FIGURE: Locator = (By.CSS_SELECTOR, "div.figure:nth-of-type({index})")
-    NAME: Locator = (By.CSS_SELECTOR, "div.figure:nth-of-type({index}) > .figcaption > h5")
-    VIEW_PROFILE_BTN: Locator = (By.CSS_SELECTOR, "div.figure:nth-of-type({index}) > .figcaption > a")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    FIGURE: Locator = {"selector": "div.figure:nth-of-type({index})", "by": By.CSS_SELECTOR}
+    NAME: Locator = {"selector": "div.figure:nth-of-type({index}) > .figcaption > h5", "by": By.CSS_SELECTOR}
+    VIEW_PROFILE_BTN: Locator = {"selector": "div.figure:nth-of-type({index}) > .figcaption > a", "by": By.CSS_SELECTOR}
 
 
 class HoversUserPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "h1")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "h1", "by": By.CSS_SELECTOR}

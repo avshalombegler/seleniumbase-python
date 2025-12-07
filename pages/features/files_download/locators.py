@@ -8,6 +8,6 @@ from pages.base.base_page import Locator
 
 
 class FilesDownloadPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    FILE_LINK: Locator = (By.CSS_SELECTOR, ".example a")
-    FILE_NAME_LINK: Locator = (By.LINK_TEXT, "{file_name}")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    FILE_LINK: Locator = {"selector": ".example a", "by": By.CSS_SELECTOR}
+    FILE_NAME_LINK: Locator = {"selector": "{file_name}", "by": By.LINK_TEXT}

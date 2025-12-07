@@ -8,6 +8,6 @@ from pages.base.base_page import Locator
 
 
 class HorizontalSliderPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    SLIDER: Locator = (By.CSS_SELECTOR, "input[type=range]")
-    SLIDER_VALUE: Locator = (By.ID, "range")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    SLIDER: Locator = {"selector": "input[type=range]", "by": By.CSS_SELECTOR}
+    SLIDER_VALUE: Locator = {"selector": "range", "by": By.ID}

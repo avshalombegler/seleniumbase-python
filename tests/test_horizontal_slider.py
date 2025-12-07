@@ -1,22 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.action_chains import ActionChains
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Horizontal Slider")
 @allure.story("Tests Horizontal Slider functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestHorizontalSlider:
+class TestHorizontalSlider(UiBaseCase):
     """Tests Horizontal Slider functionality"""
 
     EXPECTED_MIN_RANGE: float = 0.0
@@ -29,35 +20,45 @@ class TestHorizontalSlider:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_horizontal_slider_functionality_using_mouse(
-        self, page_manager: PageManager, logger: Logger, actions: ActionChains
-    ) -> None:
-        logger.info("Tests Horizontal Slider.")
-        page = page_manager.get_horizontal_slider_page()
+    def test_horizontal_slider_functionality_using_mouse(self) -> None:
+        self.logger.info("Tests Horizontal Slider.")
+        main_page = MainPage(self)
+        page = main_page.click_horizontal_slider_link()
 
-        logger.info("Setting horizontal slider value using drag and drop.")
-        page.set_horizontal_slider_value_using_mouse(actions, self.MAX_RANGE)
+        self.logger.info("Setting horizontal slider value using mouse.")
+        page.set_horizontal_slider_value_using_mouse(self.MAX_RANGE)
 
-        logger.info("Verifying horizontal slider new value.")
-        assert self.EXPECTED_MAX_RANGE == page.get_horizontal_slider_value()
+        self.logger.info("Verifying horizontal slider new value.")
+        slider_value = page.get_horizontal_slider_value()
+        assert self.EXPECTED_MAX_RANGE == slider_value, (
+            f"Expected slider value '{self.EXPECTED_MAX_RANGE}',\
+              got '{slider_value}'"
+        )
 
-        logger.info("Setting horizontal slider value using drag and drop.")
-        page.set_horizontal_slider_value_using_mouse(actions, self.MIN_RANGE)
+        self.logger.info("Setting horizontal slider value using drag and drop.")
+        page.set_horizontal_slider_value_using_mouse(self.MIN_RANGE)
 
-        logger.info("Verifying horizontal slider new value.")
-        assert self.EXPECTED_MIN_RANGE == page.get_horizontal_slider_value()
+        self.logger.info("Verifying horizontal slider new value.")
+        slider_value = page.get_horizontal_slider_value()
+        assert self.EXPECTED_MIN_RANGE == slider_value, (
+            f"Expected slider value '{self.EXPECTED_MIN_RANGE}',\
+              got '{slider_value}'"
+        )
 
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_horizontal_slider_functionality_using_keys(
-        self, page_manager: PageManager, logger: Logger, actions: ActionChains
-    ) -> None:
-        logger.info("Tests Horizontal Slider.")
-        page = page_manager.get_horizontal_slider_page()
+    def test_horizontal_slider_functionality_using_keys(self) -> None:
+        self.logger.info("Tests Horizontal Slider.")
+        main_page = MainPage(self)
+        page = main_page.click_horizontal_slider_link()
 
-        logger.info("Setting horizontal slider value using arrow key.")
-        page.set_horizontal_slider_value_using_keys(actions, self.KEYS_RANGE)
+        self.logger.info("Setting horizontal slider value using arrow key.")
+        page.set_horizontal_slider_value_using_keys(self.KEYS_RANGE)
 
-        logger.info("Verifying horizontal slider new value.")
-        assert self.EXPECTED_KEYS_RANGE == page.get_horizontal_slider_value()
+        self.logger.info("Verifying horizontal slider new value.")
+        slider_value = page.get_horizontal_slider_value()
+        assert self.EXPECTED_KEYS_RANGE == slider_value, (
+            f"Expected slider value '{self.EXPECTED_KEYS_RANGE}',\
+              got '{slider_value}'"
+        )

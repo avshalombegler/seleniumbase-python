@@ -1,40 +1,34 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Infinite Scroll")
 @allure.story("Tests Infinite Scroll functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestInfiniteScroll:
+class TestInfiniteScroll(UiBaseCase):
     """Tests Infinite Scroll functionality"""
 
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_infinite_scroll_functionality(self, page_manager: PageManager, logger: Logger) -> None:
-        logger.info("Tests Infinite Scroll.")
-        page = page_manager.get_infinite_scroll_page()
+    def test_infinite_scroll_functionality(self) -> None:
+        self.logger.info("Tests Infinite Scroll.")
+        main_page = MainPage(self)
+        page = main_page.click_infinite_scroll_link()
 
         for _ in range(5):
-            logger.info("Getting old page height.")
+            self.logger.info("Getting old page height.")
             old_height = page.get_page_height()
 
-            logger.info("Scrolling to bottom of page.")
+            self.logger.info("Scrolling to bottom of page.")
             page.scroll_to_bottom_of_page()
 
-            logger.info("Getting new page height.")
+            self.logger.info("Getting new page height.")
             new_height = page.get_page_height()
 
-            logger.info("Verifying new page height is bigger than old page height.")
+            self.logger.info("Verifying new page height is bigger than old page height.")
             assert old_height < new_height, (
                 f"Expected 'old height < new height', but got 'old height: {old_height} < height: {new_height}'"
             )

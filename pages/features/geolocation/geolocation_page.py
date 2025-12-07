@@ -4,13 +4,11 @@ from typing import TYPE_CHECKING
 
 import allure
 
-from pages.base.base_page import BasePage
+from pages.base.base_page import BaseCase, BasePage
 from pages.features.geolocation.locators import GeolocationPageLocators
 
 if TYPE_CHECKING:
     from logging import Logger
-
-    from selenium.webdriver.remote.webdriver import WebDriver
 
 
 class GeolocationPage(BasePage):
@@ -18,7 +16,7 @@ class GeolocationPage(BasePage):
 
     def __init__(
         self,
-        driver: WebDriver,
+        driver: BaseCase,
         logger: Logger | None = None,
         wait_for_load: bool = True,
     ) -> None:
@@ -26,9 +24,30 @@ class GeolocationPage(BasePage):
         if wait_for_load:
             self.wait_for_page_to_load(GeolocationPageLocators.PAGE_LOADED_INDICATOR)
 
+        # Inject geolocation mock for Chrome after page loads
+        if self.driver.browser == "chrome":
+            self._inject_chrome_geolocation_mock()
+
         # Inject geolocation mock for Firefox after page loads
-        if driver.capabilities.get("browserName", "").lower() == "firefox":
+        if self.driver.browser == "firefox":
             self._inject_firefox_geolocation_mock()
+
+    def _inject_chrome_geolocation_mock(self) -> None:
+        """Inject geolocation mock for Chrome browser."""
+        import config.conftest_config as conftest_config
+
+        self.driver.execute_cdp_cmd(
+            "Browser.grantPermissions",
+            {"origin": "https://the-internet.herokuapp.com", "permissions": ["geolocation"]},
+        )
+        self.driver.execute_cdp_cmd(
+            "Emulation.setGeolocationOverride",
+            {
+                "latitude": conftest_config.geolocation_lat,
+                "longitude": conftest_config.geolocation_lon,
+                "accuracy": 100,
+            },
+        )
 
     def _inject_firefox_geolocation_mock(self) -> None:
         """Inject geolocation mock for Firefox browser."""

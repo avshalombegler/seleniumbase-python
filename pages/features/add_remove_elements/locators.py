@@ -8,7 +8,7 @@ from pages.base.base_page import Locator
 
 
 class AddRemoveElementsPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "div#content h3")
-    ADD_ELEMENT_BTN: Locator = (By.CSS_SELECTOR, ".example > button")
-    DELETE_BTN: Locator = (By.CSS_SELECTOR, "#elements > button:first-child")
-    DELETE_BTNS: Locator = (By.CSS_SELECTOR, "#elements > button")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "div#content h3", "by": By.CSS_SELECTOR}
+    ADD_ELEMENT_BTN: Locator = {"selector": ".example > button", "by": By.CSS_SELECTOR}
+    DELETE_BTN: Locator = {"selector": "#elements > button:first-child", "by": By.CSS_SELECTOR}
+    DELETE_BTNS: Locator = {"selector": "#elements > button", "by": By.CSS_SELECTOR}

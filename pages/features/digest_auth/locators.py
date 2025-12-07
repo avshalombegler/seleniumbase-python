@@ -8,4 +8,4 @@ from pages.base.base_page import Locator
 
 
 class DigestAuthPageLocators:
-    AUTHORIZED_INDICATOR: Locator = (By.CSS_SELECTOR, "div#content p")
+    AUTHORIZED_INDICATOR: Locator = {"selector": "div#content p", "by": By.CSS_SELECTOR}

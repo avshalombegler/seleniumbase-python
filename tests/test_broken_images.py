@@ -1,20 +1,13 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Broken Images")
 @allure.story("Verify the correct number of broken and valid images on the page")
-@pytest.mark.usefixtures("page_manager")
-class TestBrokenImages:
+class TestBrokenImages(UiBaseCase):
     """Tests for verifying broken and valid images"""
 
     EXPECTED_BROKEN_IMAGES = 2
@@ -23,13 +16,14 @@ class TestBrokenImages:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_broken_images_count(self, page_manager: PageManager, logger: Logger) -> None:
-        logger.info("Verify broken images count.")
-        page = page_manager.get_broken_images_page()
+    def test_broken_images_count(self) -> None:
+        self.logger.info("Verify broken images count.")
+        main_page = MainPage(self)
+        page = main_page.click_broken_images_link()
 
-        logger.info("Getting broken images count.")
+        self.logger.info("Getting broken images count.")
         broken_count = page.get_broken_images_count()
-        logger.info(f"Found {broken_count} broken images.")
+        self.logger.info(f"Found {broken_count} broken images.")
         assert broken_count == self.EXPECTED_BROKEN_IMAGES, (
             f"Expected {self.EXPECTED_BROKEN_IMAGES} broken images, found {broken_count}"
         )
@@ -37,13 +31,14 @@ class TestBrokenImages:
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_valid_images_count(self, page_manager: PageManager, logger: Logger) -> None:
-        logger.info("Verify valid images count.")
-        page = page_manager.get_broken_images_page()
+    def test_valid_images_count(self) -> None:
+        self.logger.info("Verify valid images count.")
+        main_page = MainPage(self)
+        page = main_page.click_broken_images_link()
 
-        logger.info("Getting valid images count.")
+        self.logger.info("Getting valid images count.")
         valid_count = page.get_valid_images_count()
-        logger.info(f"Found {valid_count} valid images.")
+        self.logger.info(f"Found {valid_count} valid images.")
         assert valid_count == self.EXPECTED_VALID_IMAGES, (
             f"Expected {self.EXPECTED_VALID_IMAGES} valid images, found {valid_count}"
         )

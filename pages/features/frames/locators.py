@@ -8,18 +8,18 @@ from pages.base.base_page import Locator
 
 
 class FramesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    NESTED_FRAMES_LINK: Locator = (By.LINK_TEXT, "Nested Frames")
-    IFRAME_LINK: Locator = (By.LINK_TEXT, "iFrame")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    NESTED_FRAMES_LINK: Locator = {"selector": "Nested Frames", "by": By.LINK_TEXT}
+    IFRAME_LINK: Locator = {"selector": "iFrame", "by": By.LINK_TEXT}
 
 
 class NestedFramesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, "frameset")
-    NESTED_FRAME: Locator = (By.CSS_SELECTOR, "frame[name='frame-{value}']")
-    NESTED_FRAME_BODY: Locator = (By.TAG_NAME, "body")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "frameset", "by": By.CSS_SELECTOR}
+    NESTED_FRAME: Locator = {"selector": "frame[name='frame-{value}']", "by": By.CSS_SELECTOR}
+    NESTED_FRAME_BODY: Locator = {"selector": "body", "by": By.TAG_NAME}
 
 
 class IframesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
-    IFRAME: Locator = (By.CSS_SELECTOR, ".tox-edit-area__iframe")
-    RICH_TEXT_AREA: Locator = (By.CSS_SELECTOR, "#tinymce > p")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    IFRAME: Locator = {"selector": ".tox-edit-area__iframe", "by": By.CSS_SELECTOR}
+    RICH_TEXT_AREA: Locator = {"selector": "#tinymce > p", "by": By.CSS_SELECTOR}

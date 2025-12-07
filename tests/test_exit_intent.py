@@ -1,41 +1,32 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 import allure
 import pytest
 
-if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.action_chains import ActionChains
-
-    from pages.base.page_manager import PageManager
+from pages.base.ui_base_case import UiBaseCase
+from pages.common.main_page.main_page import MainPage
 
 
 @allure.feature("Exit Intent")
 @allure.story("Tests Exit Intent functionality")
-@pytest.mark.usefixtures("page_manager")
-class TestExitIntent:
+class TestExitIntent(UiBaseCase):
     """Tests Exit Intent functionality"""
 
     @pytest.mark.skip(reason="Test is not yet complete")
     @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_modal_window_functionality(self, page_manager: PageManager, logger: Logger, actions: ActionChains) -> None:
-        logger.info("Tests Exit Intent.")
-        page = page_manager.get_exit_intent_page()
+    def test_modal_window_functionality(self) -> None:
+        self.logger.info("Tests Exit Intent.")
+        main_page = MainPage(self)
+        page = main_page.click_exit_intent_link()
 
-        logger.info("Moving mouse out of the viewport pane.")
-        # page.move_mouse_to_trigger_exit_intent(actions)
+        self.logger.info("Moving mouse out of the viewport pane.")
         page.trigger_exit_intent_js()
 
-        logger.info("Verifying modal display.")
+        self.logger.info("Verifying modal display.")
         assert page.is_modal_displayed()
 
-        logger.info("Clicking close button.")
+        self.logger.info("Clicking close button.")
         page.click_close_modal()
 
-        logger.info("Verifying modal close.")
+        self.logger.info("Verifying modal close.")
         assert not page.is_modal_displayed()

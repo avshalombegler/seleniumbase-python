@@ -8,4 +8,4 @@ from pages.base.base_page import Locator
 
 
 class InfiniteScrollPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = (By.CSS_SELECTOR, ".example h3")
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
