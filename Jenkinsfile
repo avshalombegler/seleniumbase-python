@@ -29,6 +29,7 @@ pipeline {
                     parallel browsers.collectEntries { browser -> 
                         [(browser): {
                             sh """
+                                export BROWSER=${browser}
                                 . /opt/venv/bin/activate
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
                                     pytest \
