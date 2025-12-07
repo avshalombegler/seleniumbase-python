@@ -25,7 +25,7 @@ CACHE_VALID_RANGE = 30
 
 # Configure root logger once for the test session
 root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
-logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 
 
 def get_worker_id() -> str:
@@ -48,6 +48,10 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
 def clean_directories_at_start(request: FixtureRequest) -> None:
     """Clean downloads directory at session start (screenshots/videos handled by SeleniumBase)."""
     worker_id = get_worker_id()
+
+    # Clean videos
+    videos_dir = Path("tests_recordings") / worker_id
+    clean_directory(videos_dir, worker_id)
 
     # Clean downloads and store path in config
     downloads_dir = Path("downloads") / worker_id

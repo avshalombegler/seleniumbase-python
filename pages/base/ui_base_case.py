@@ -21,7 +21,8 @@ class UiBaseCase(BaseCase):
 
         # Check if test has @pytest.mark.ui decorator
         if hasattr(self, "request") and self.request.node.get_closest_marker("ui"):
-            self.open(env_config.BASE_URL)
+            with allure.step(f"Navigate to base URL: {env_config.BASE_URL}"):
+                self.open(env_config.BASE_URL)
 
     def tearDown(self) -> None:
         # Attach screenshot to Allure on failure
