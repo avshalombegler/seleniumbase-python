@@ -27,16 +27,16 @@ pipeline {
             }
         }
         
-        stage('Setup Python') {
-            steps {
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                '''
-            }
-        }
+        // stage('Setup Python') {
+        //     steps {
+        //         sh '''
+        //             python3 -m venv venv
+        //             . venv/bin/activate
+        //             pip install --upgrade pip
+        //             pip install -r requirements.txt
+        //         '''
+        //     }
+        // }
         
         stage('Run Tests') {
             steps {
@@ -47,7 +47,6 @@ pipeline {
                         [(browser): {
                             sh """
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
-                                    . venv/bin/activate \
                                     pytest \
                                     -n ${params.WORKERS} \
                                     --dist=loadfile \

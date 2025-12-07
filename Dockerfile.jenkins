@@ -14,8 +14,6 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --d
     && apt-get update && apt-get install --no-install-recommends -y google-chrome-stable \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# SeleniumBase manages drivers automatically, no need to install manually
-
 # Install Allure CLI
 RUN ALLURE_VERSION=2.35.1 && \
     if [ ! -d "/usr/local/allure" ]; then \
@@ -27,8 +25,12 @@ RUN ALLURE_VERSION=2.35.1 && \
         rm -f allure-${ALLURE_VERSION}.zip; \
     fi
 
-# Install Python packages globally
+# Create virtual environment and install Python packages
 COPY requirements.txt /tmp/
-RUN pip3 install --no-cache-dir --break-system-packages -r /tmp/requirements.txt && rm /tmp/requirements.txt
+RUN python3 -m venv /opt/venv && \
+    . /opt/venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm /tmp/requirements.txt
 
 USER jenkins
