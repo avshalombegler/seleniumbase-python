@@ -50,8 +50,6 @@ pipeline {
                                     pytest \
                                     -n ${params.WORKERS} \
                                     --dist=loadfile \
-                                    --browser=${browser} \
-                                    --headless \
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \
