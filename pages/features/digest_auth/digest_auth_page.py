@@ -32,5 +32,5 @@ class DigestAuthPage(BasePage):
 
     @allure.step("Get page source for debug")
     def get_page_source_snippet(self) -> str:
-        source = self.driver.page_source
+        source = self.driver.get_page_source()
         return source[:500]
