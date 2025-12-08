@@ -27,7 +27,7 @@ class DigestAuthPage(BasePage):
         try:
             self.get_dynamic_element_text(DigestAuthPageLocators.AUTHORIZED_INDICATOR)
             return True
-        except (TimeoutException, UnexpectedAlertPresentException, NoSuchElementException):
+        except (TimeoutException, UnexpectedAlertPresentException, NoSuchElementException, Exception):
             return False
 
     @allure.step("Get page source for debug")
