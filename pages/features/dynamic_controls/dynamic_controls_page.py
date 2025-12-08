@@ -36,7 +36,7 @@ class DynamicControlsPage(BasePage):
         try:
             self.driver.wait_for_element_visible(**DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
             return True
-        except (ElementNotVisibleException, NoSuchElementException):
+        except (ElementNotVisibleException, NoSuchElementException, Exception):
             return False
 
     @allure.step("Click enable button")
