@@ -29,8 +29,3 @@ class DigestAuthPage(BasePage):
             return True
         except (TimeoutException, UnexpectedAlertPresentException, NoSuchElementException, Exception):
             return False
-
-    @allure.step("Get page source for debug")
-    def get_page_source_snippet(self) -> str:
-        source = self.driver.get_page_source()
-        return source[:500]

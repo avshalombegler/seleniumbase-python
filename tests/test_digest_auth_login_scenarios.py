@@ -28,5 +28,4 @@ class TestDigestAuth(UiBaseCase):
 
         self.logger.info("Check if login succeeded.")
         success = page.is_login_successful()
-        if not success:
-            self.logger.info(f"Page source: {page.get_page_source_snippet()}")
+        self.logger.info("Login " + ("succeeded" if success else "denied"))
