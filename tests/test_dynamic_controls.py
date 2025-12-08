@@ -10,8 +10,7 @@ from pages.common.main_page.main_page import MainPage
 class TestDynamicControls(UiBaseCase):
     """Tests Dynamic Controls functionality"""
 
-    # @pytest.mark.full
-    @pytest.mark.smoke
+    @pytest.mark.full
     @pytest.mark.ui
     # @pytest.mark.flaky(reruns=2)
     @allure.severity(allure.severity_level.NORMAL)
@@ -47,8 +46,7 @@ class TestDynamicControls(UiBaseCase):
         self.logger.info("Verifying add message text.")
         assert "It's back!" in message, f"Expected '{message}' to contain 'It's back!'"
 
-    # @pytest.mark.full
-    @pytest.mark.smoke
+    @pytest.mark.full
     @pytest.mark.ui
     # @pytest.mark.flaky(reruns=2)
     @allure.severity(allure.severity_level.NORMAL)

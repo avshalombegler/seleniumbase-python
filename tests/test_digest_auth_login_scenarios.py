@@ -18,8 +18,7 @@ class TestDigestAuth(UiBaseCase):
             ["admin", "wrong"],
         ],
     )
-    # @pytest.mark.full
-    @pytest.mark.smoke
+    @pytest.mark.full
     @allure.severity(allure.severity_level.NORMAL)
     def test_digest_auth_login_scenarios(self, username: str, password: str) -> None:
         self.logger.info("Tests for Digest Authentication scenarios.")
