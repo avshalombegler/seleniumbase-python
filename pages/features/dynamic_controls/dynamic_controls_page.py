@@ -31,22 +31,13 @@ class DynamicControlsPage(BasePage):
         if not self.wait_for_loader(DynamicControlsPageLocators.WAIT_LOADER, timeout=timeout):
             self.logger.warning("Loader did not complete normally, continuing test...")
 
-    @allure.step("Check if checkbox is present or absent")
+    @allure.step("Check if checkbox is visible or not visible")
     def is_checkbox_visible(self, timeout: int = 10) -> bool:
         try:
             self.driver.wait_for_element_visible(**DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
             return True
         except (ElementNotVisibleException, NoSuchElementException):
             return False
-        # try:
-        #     self.wait_for_visibility(DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
-        #     return True
-        # except NoSuchElementException:
-        #     return False
-
-    @allure.step("Check if checkbox is present or absent")
-    def is_checkbox_not_visible(self, timeout: int = 10) -> bool:
-        return self.driver.wait_for_element_not_visible(**DynamicControlsPageLocators.A_CHECKBOX, timeout=timeout)
 
     @allure.step("Click enable button")
     def click_enable_button(self, timeout: int = 10) -> None:

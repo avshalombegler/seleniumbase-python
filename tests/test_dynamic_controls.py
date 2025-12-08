@@ -21,13 +21,13 @@ class TestDynamicControls(UiBaseCase):
         page = main_page.click_dynamic_controls_link()
 
         self.logger.info("Checking if checkbox is present.")
-        assert page.is_checkbox_present(), "Expected checkbox to be present"
+        assert page.is_checkbox_visible(), "Expected checkbox to be present"
 
         self.logger.info("Clicking remove button.")
         page.click_remove_button()
 
         self.logger.info("Checking if checkbox absent.")
-        assert not page.is_checkbox_present(), "Expected checkbox to be absent"
+        assert not page.is_checkbox_visible(), "Expected checkbox to be absent"
 
         self.logger.info("Getting remove message text.")
         message = page.get_remove_add_message()
@@ -39,7 +39,7 @@ class TestDynamicControls(UiBaseCase):
         page.click_add_button()
 
         self.logger.info("Checking if checkbox is present.")
-        assert page.is_checkbox_present(), "Expected checkbox to be present"
+        assert page.is_checkbox_visible(), "Expected checkbox to be present"
 
         self.logger.info("Getting add message text.")
         message = page.get_remove_add_message()

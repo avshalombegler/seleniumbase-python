@@ -10,8 +10,7 @@ from pages.common.main_page.main_page import MainPage
 class TestInfiniteScroll(UiBaseCase):
     """Tests Infinite Scroll functionality"""
 
-    # @pytest.mark.full
-    @pytest.mark.smoke
+    @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_infinite_scroll_functionality(self) -> None:

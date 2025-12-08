@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import allure
 from selenium.common.exceptions import (
+    NoSuchElementException,
     TimeoutException,
     UnexpectedAlertPresentException,
 )
@@ -26,7 +27,7 @@ class DigestAuthPage(BasePage):
         try:
             self.get_dynamic_element_text(DigestAuthPageLocators.AUTHORIZED_INDICATOR)
             return True
-        except (TimeoutException, UnexpectedAlertPresentException):
+        except (TimeoutException, UnexpectedAlertPresentException, NoSuchElementException):
             return False
 
     @allure.step("Get page source for debug")
