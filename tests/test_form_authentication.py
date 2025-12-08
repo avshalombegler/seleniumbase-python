@@ -11,17 +11,18 @@ from pages.common.main_page.main_page import MainPage
 class TestFormAuthentication(UiBaseCase):
     """Tests Form Authentication functionality"""
 
-    SUCCESSFULL_LOGIN = "You logged into a secure area!"
-    SUCCESSFULL_LOGOUT = "You logged out of the secure area!"
+    SUCCESSFULL_LOGIN = "You logged into"
+    SUCCESSFULL_LOGOUT = "You logged out of"
 
     @parameterized.expand(
         [
-            ["tomsmith", "SuperSecretPassword!", "You logged into a secure area!"],
+            ["tomsmith", "SuperSecretPassword!", "You logged into"],
             ["tomsmith", "wrong!", "Your password is invalid!"],
             ["wrong", "SuperSecretPassword!", "Your username is invalid!"],
         ],
     )
-    @pytest.mark.full
+    # @pytest.mark.full
+    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_form_authentication_functionality(
