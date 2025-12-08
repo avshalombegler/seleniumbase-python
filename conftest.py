@@ -151,7 +151,7 @@ def pytest_configure(config: pytest.Config) -> None:
         config.option.recorder_mode = "video"
 
     # Get the allure results directory from pytest options
-    allure_results_dir = getattr(config.option, "allure_report_dir", None)
+    allure_results_dir = config.getoption("alluredir", None)
 
     if not allure_results_dir:
         # Fallback to default if not specified

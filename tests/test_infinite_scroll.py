@@ -30,5 +30,5 @@ class TestInfiniteScroll(UiBaseCase):
 
             self.logger.info("Verifying new page height is bigger than old page height.")
             assert old_height < new_height, (
-                f"Expected 'old height < new height', but got 'old height: {old_height} < height: {new_height}'"
+                f"Expected 'old height < new height', but got 'old height: {old_height}, new height: {new_height}'"
             )
