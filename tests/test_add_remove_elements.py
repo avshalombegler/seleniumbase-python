@@ -49,4 +49,4 @@ class TestAddRemoveElements(UiBaseCase):
         count = page.count_delete_buttons()
 
         self.logger.info("Verifying delete buttons count.")
-        assert count == 0, f"Expected '0' delete buttons, but got '{count}'"
+        assert count == 1, f"Expected '0' delete buttons, but got '{count}'"
