@@ -17,6 +17,7 @@ pipeline {
         ALLURE_SERVER_URL = 'http://allure:5050'
         SHORT_TIMEOUT = '3'
         LONG_TIMEOUT = '10'
+        VIDEO_RECORDING = 'True'
         PYTHONUNBUFFERED = '1'
     }
     
