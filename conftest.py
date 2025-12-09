@@ -46,7 +46,7 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
 
 
 @pytest.fixture(scope="session", autouse=True)
-def clean_directories_at_start(pytestconfig: pytest.Config) -> None:
+def clean_directories_at_start() -> None:
     """Clean downloads directory at session start."""
     worker_id = get_worker_id()
 
@@ -57,11 +57,6 @@ def clean_directories_at_start(pytestconfig: pytest.Config) -> None:
     # Clean videos
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
-
-    # Clean allure
-    allure_results_dir = getattr(pytestconfig.option, "allure_report_dir", None)
-    allure_results_path = Path(allure_results_dir)
-    clean_directory(allure_results_path)
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -160,7 +155,10 @@ def pytest_configure(config: pytest.Config) -> None:
         # In CI or xdist, just ensure directory exists
         allure_results_path.mkdir(parents=True, exist_ok=True)
         if is_ci_environment:
-            root_logger.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
+            if allure_results_path.exists():
+                root_logger.info(f"Cleaning Allure results directory: {allure_results_path}")
+                shutil.rmtree(allure_results_path, ignore_errors=True)
+            # root_logger.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
 
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
