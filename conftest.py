@@ -3,13 +3,11 @@
 import logging
 import os
 import shutil
-import time
+import threading
 from collections.abc import Generator
 from pathlib import Path
 
-import allure
 import pytest
-from _pytest.fixtures import FixtureRequest
 from _pytest.main import Session
 from _pytest.nodes import Item
 from filelock import FileLock
@@ -17,7 +15,6 @@ from seleniumbase.fixtures import constants
 
 import config.env_config as env_config
 from utils.logging_helper import configure_root_logger, set_current_test
-from utils.video_recorder import start_video_recording
 
 # Constants shared across plugins
 DEBUG_PORT_BASE = 9222
@@ -27,6 +24,10 @@ CACHE_VALID_RANGE = 30
 # Configure root logger once for the test session
 root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
+
+# Store recording state (accessed by UiBaseCase)
+_video_recordings = {}
+_video_recordings_lock = threading.Lock()
 
 
 def get_worker_id() -> str:
@@ -38,7 +39,9 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
     """Helper to clean and recreate a directory with file locking."""
     lock_file = dir_path / f"{lock_suffix}.lock"
     dir_path.mkdir(parents=True, exist_ok=True)
-    with FileLock(lock_file):
+    
+    # Add timeout to prevent deadlocks
+    with FileLock(lock_file, timeout=30):
         if dir_path.exists():
             shutil.rmtree(dir_path, ignore_errors=True)
         dir_path.mkdir(parents=True, exist_ok=True)
@@ -54,63 +57,9 @@ def clean_directories_at_start() -> None:
     videos_dir = Path("tests_recordings") / worker_id
     clean_directory(videos_dir, worker_id)
 
-    # Clean videos
+    # Clean downloads
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
-
-
-@pytest.fixture(scope="function", autouse=True)
-def video_recorder(request: FixtureRequest) -> Generator[None, None, None]:
-    """
-    Automatically records video of the test session using Chrome DevTools Protocol.
-    Recording is enabled only if VIDEO_RECORDING is True in config and driver is Chrome.
-    Skips recording for non-Chrome drivers or when disabled.
-    """
-    if not getattr(env_config, "VIDEO_RECORDING", False):
-        yield
-        return
-
-    # For class-based tests inheriting from BaseCase, get driver from the test instance
-    if hasattr(request.instance, "driver"):
-        driver = request.instance.driver
-    else:
-        # For function-based tests, assume 'sb' fixture is used
-        driver = request.getfixturevalue("sb")
-
-    worker_id = get_worker_id()
-    test_name = request.node.name.replace(":", "_").replace("/", "_")
-
-    stop_func, video_path = start_video_recording(driver, test_name, worker_id)
-    root_logger.info(f"Started recording: {video_path}")
-
-    try:
-        yield
-    finally:
-        try:
-            root_logger.info("Stopping video recording...")
-            stop_func()
-
-            # Wait briefly to ensure video is fully written
-            time.sleep(1.0)
-
-            # Attach video to test body
-            video_path_obj = Path(video_path)
-            if video_path_obj.exists() and video_path_obj.stat().st_size > 0:
-                try:
-                    lock_file = video_path_obj.parent / f"{worker_id}.lock"
-                    with FileLock(lock_file):
-                        allure.attach.file(
-                            str(video_path_obj),
-                            name="Test Recording",
-                            attachment_type=allure.attachment_type.MP4,
-                        )
-                        root_logger.info(f"Video attached to test body: {video_path_obj}")
-                except Exception as e:
-                    root_logger.error(f"Failed to attach video: {str(e)}")
-            else:
-                root_logger.warning(f"Video file not found or empty: {video_path_obj}")
-        except Exception as e:
-            root_logger.error(f"Failed to stop video recording: {str(e)}")
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -125,8 +74,8 @@ def pytest_configure(config: pytest.Config) -> None:
     config.option.headless = env_config.HEADLESS
 
     # if not is_xdist_worker and env_config.VIDEO_RECORDING:
-    if env_config.VIDEO_RECORDING:
-        config.option.recorder_mode = "video"
+    # if env_config.VIDEO_RECORDING:
+    # config.option.recorder_mode = "video"
 
     # Get the allure results directory from pytest options
     allure_results_dir = getattr(config.option, "allure_report_dir", None)
@@ -225,3 +174,15 @@ def logger(request) -> logging.Logger:
     test_class = getattr(request.instance, "__class__", None)
     name = test_class.__name__ if test_class else request.node.name
     return get_logger(name)
+
+
+def start_recording_safely(nodeid, stop_func, video_path):
+    """Thread-safe way to store recording info."""
+    with _video_recordings_lock:
+        _video_recordings[nodeid] = (stop_func, video_path)
+
+
+def stop_recording_safely(nodeid):
+    """Thread-safe way to retrieve and remove recording info."""
+    with _video_recordings_lock:
+        return _video_recordings.pop(nodeid, None)

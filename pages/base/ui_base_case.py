@@ -55,7 +55,50 @@ class UiBaseCase(BaseCase):
             with allure.step(f"Navigate to base URL: {env_config.BASE_URL}"):
                 self.open(env_config.BASE_URL)
 
+        # Start video recording after driver is initialized
+        if getattr(env_config, "VIDEO_RECORDING", False) and self.driver:
+            from conftest import start_recording_safely
+            from utils.video_recorder import start_video_recording
+
+            test_name = self.request.node.name.replace(":", "_").replace("/", "_")
+
+            try:
+                stop_func, video_path = start_video_recording(self.driver, test_name, self.worker_id)
+                start_recording_safely(self.request.node.nodeid, stop_func, video_path)
+                self.logger.info(f"Started recording: {video_path}")
+            except Exception as e:
+                self.logger.error(f"Failed to start recording: {str(e)}")
+
     def tearDown(self) -> None:
+        # Stop video recording before teardown
+        if getattr(env_config, "VIDEO_RECORDING", False):
+            import time
+            from pathlib import Path
+
+            from conftest import stop_recording_safely
+
+            recording_info = stop_recording_safely(self.request.node.nodeid)
+            if recording_info:
+                stop_func, video_path = recording_info
+                try:
+                    self.logger.info("Stopping video recording...")
+                    stop_func()
+                    time.sleep(1.0)
+
+                    video_path_obj = Path(video_path)
+                    if video_path_obj.exists() and video_path_obj.stat().st_size > 0:
+                        # No lock needed - each worker has separate files
+                        allure.attach.file(
+                            str(video_path_obj),
+                            name="Test Recording",
+                            attachment_type=allure.attachment_type.MP4,
+                        )
+                        self.logger.info(f"Video attached to test body: {video_path_obj}")
+                    else:
+                        self.logger.warning(f"Video file not found or empty: {video_path_obj}")
+                except Exception as e:
+                    self.logger.error(f"Failed to stop recording: {str(e)}")
+
         # Attach screenshot to Allure on failure
         if hasattr(self, "request") and hasattr(self, "_outcome") and self._outcome.errors:
             try:
