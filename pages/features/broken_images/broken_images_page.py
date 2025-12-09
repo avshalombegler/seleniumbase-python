@@ -38,7 +38,7 @@ class BrokenImagesPage(BasePage):
     def _get_image_natural_width(self, image: WebElement) -> dict:
         self.logger.info("Check if image is broken.")
         locator = self._get_locator_from_element(image)
-        natural_width = self.get_element_attr_js(locator, "naturalWidth")
+        natural_width = self.get_element_attr(locator, "naturalWidth")
         return {"natural_width": natural_width}
 
     @allure.step("Get count of broken images")

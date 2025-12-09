@@ -39,7 +39,7 @@ class TestHovers(UiBaseCase):
             user_page = page.click_view_profile_link(user_index)
 
             self.logger.info("Getting current browser url.")
-            current_url = user_page.get_current_browser_url()
+            current_url = self.get_current_url()
 
             self.logger.info("Verifying user name in current url.")
             assert self.USERS + str(user_index) in current_url, (

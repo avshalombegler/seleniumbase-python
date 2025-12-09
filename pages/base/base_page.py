@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import time
 from logging import Logger
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urljoin
 
 import allure
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase import BaseCase
 
@@ -51,22 +50,34 @@ class BasePage:
     # WAIT METHODS
     # ============================================================================
 
-    def wait_for_page_to_load(self, indicator_locator: Locator, timeout: int | float | None = None) -> None:
+    def wait_for_page_to_load(
+        self, indicator_locator: Locator | None, timeout: int | float | None = None, use_ready_state: bool = True
+    ) -> None:
         """
-        Wait for page to load by checking visibility of an indicator element.
+        Wait for page to load. Combines a document ready-state check with an optional
+        page-specific indicator element.
 
         Args:
             indicator_locator: String locator for the indicator element
             timeout: Optional timeout in seconds (defaults to LONG_TIMEOUT)
+            use_ready_state: Boolean for document ready-state check
 
         Raises:
             TimeoutException: If the indicator is not visible within timeout
             NoSuchElementException: If the locator is invalid
         """
         timeout = timeout or self.long_wait
-        self.logger.info(f"Waiting for page to load with indicator '{indicator_locator}' for {timeout}s.")
-        self.driver.wait_for_element_visible(**indicator_locator, timeout=timeout)
-        self.logger.info(f"Page loaded successfully with indicator '{indicator_locator}'.")
+
+        if use_ready_state:
+            try:
+                self.driver.wait_for_ready_state_complete()
+            except Exception as e:
+                self.logger.debug(f"readyState check failed or timed out: {e}")
+
+        if indicator_locator:
+            self.logger.info(f"Waiting for page to load with indicator '{indicator_locator}' for {timeout}s.")
+            self.driver.wait_for_element_visible(**indicator_locator, timeout=timeout)
+            self.logger.info(f"Page loaded successfully with indicator '{indicator_locator}'.")
 
     def wait_for_visibility(self, locator: Locator, timeout: int | float | None = None) -> Any:
         """
@@ -151,134 +162,107 @@ class BasePage:
     # FRAME/WINDOW METHODS
     # ============================================================================
 
-    def switch_to_frame(self, locator: Locator, retry: int = 2) -> None:
+    def switch_to_frame(self, locator: Locator) -> None:
         """
-        Switch to an iframe or frame with retry.
+        Switch to an iframe or frame.
 
         Args:
             locator: Frame element locator dict
-            retry: Number of retry attempts
 
         Raises:
-            Exception: If frame switch fails after all retries
+            Exception: If frame switch fails
         """
-        for attempt in range(retry):
-            try:
-                self.driver.switch_to_frame(locator["selector"])
-                self.logger.debug(f"Switched to frame with locator '{locator}'.")
-                return
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for frame '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for frame '{locator}'")
-                    raise
+        try:
+            self.driver.switch_to_frame(locator["selector"])
+            self.logger.debug(f"Switched to frame with locator '{locator}'.")
+            return
+        except Exception as e:
+            self.logger.error(f"Failed to switch to frame '{locator}': {str(e)}")
+            raise
 
     # ============================================================================
     # ELEMENT INTERACTION METHODS
     # ============================================================================
 
-    def click_element(self, locator: Locator, retry: int = 2) -> None:
+    def click_element(self, locator: Locator) -> None:
         """
-        Click an element with retry for stale/intercepted exceptions.
+        Click an element (single attempt).
 
         Args:
             locator: Element locator dict
-            retry: Number of retry attempts
 
         Raises:
-            Exception: If click fails after all retries
+            Exception: If click fails
         """
-        for attempt in range(retry):
-            try:
-                self.driver.click(**locator)
-                self.logger.debug(f"Clicked on element with locator '{locator}'.")
-                return
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for click '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for click '{locator}'")
-                    raise
+        try:
+            self.driver.click(**locator)
+            self.logger.debug(f"Clicked on element with locator '{locator}'.")
+            return
+        except Exception as e:
+            self.logger.error(f"Failed to click element '{locator}': {str(e)}")
+            raise
 
-    def send_keys_to_element(self, locator: Locator, text: str, retry: int = 2) -> None:
+    def send_keys_to_element(self, locator: Locator, text: str) -> None:
         """
-        Send keys to an element with retry.
+        Send keys to an element (single attempt).
 
         Args:
             locator: Element locator dict
             text: Text to send to the element
-            retry: Number of retry attempts
 
         Raises:
-            Exception: If send keys fails after all retries
+            Exception: If send keys fails
         """
         self.logger.info(f"Sending keys '{text}' to element '{locator}'.")
-        for attempt in range(retry):
-            try:
-                self.driver.type(text=text, **locator)
-                self.logger.debug(f"Sent keys to '{locator}'.")
-                return
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for send keys '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for send keys '{locator}'")
-                    raise
+        try:
+            self.driver.type(text=text, **locator)
+            self.logger.debug(f"Sent keys to '{locator}'.")
+            return
+        except Exception as e:
+            self.logger.error(f"Failed to send keys to '{locator}': {str(e)}")
+            raise
 
-    def perform_right_click(self, locator: Locator, retry: int = 2) -> None:
+    def perform_right_click(self, locator: Locator) -> None:
         """
-        Perform right-click on an element with retry.
+        Perform right-click on an element (single attempt).
 
         Args:
             locator: Element locator dict
-            retry: Number of retry attempts
 
         Raises:
-            Exception: If right-click fails after all retries
+            Exception: If right-click fails
         """
         self.logger.info(f"Performing right-click on element '{locator}'.")
-        for attempt in range(retry):
-            try:
-                # self.driver.right_click(**locator)
-                elem = self.wait_for_visibility(locator)
-                self.actions.context_click(elem).perform()
-                self.logger.debug(f"Right-clicked on '{locator}'.")
-                return
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for right-click '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for right-click '{locator}'")
-                    raise
+        try:
+            elem = self.wait_for_visibility(locator)
+            self.actions.context_click(elem).perform()
+            self.logger.debug(f"Right-clicked on '{locator}'.")
+            return
+        except Exception as e:
+            self.logger.error(f"Failed to perform right-click on '{locator}': {str(e)}")
+            raise
 
-    def download_file(
-        self, locator: Locator, file_name: str, timeout: int | float | None = None, retry: int = 2
-    ) -> None:
+    def download_file(self, locator: Locator, file_name: str, timeout: int | float | None = None) -> None:
         """
-        Click a download link for a specific file with retry.
+        Click a download link for a specific file (single attempt).
 
         Args:
             locator: Download link locator dict with selector having {file_name} placeholder
             file_name: Name of the file to download
             timeout: Optional timeout for waiting
-            retry: Number of retry attempts
 
         Raises:
-            Exception: If download click fails after all retries
+            Exception: If download click fails
         """
         self.logger.info(f"Downloading file '{file_name}'.")
         formatted_locator = self.format_locator(locator, file_name=file_name)
-
-        for attempt in range(retry):
-            try:
-                self.driver.wait_for_element_visible(**formatted_locator, timeout=timeout or self.short_wait)
-                self.driver.click(**formatted_locator)
-                self.logger.debug(f"Clicked download link for file: {file_name}")
-                return
-            except Exception as e:
-                self.logger.warning(
-                    f"Attempt {attempt + 1}/{retry} failed for download '{formatted_locator}': {str(e)}"
-                )
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for download '{formatted_locator}'")
-                    raise
+        try:
+            self.driver.click(**formatted_locator)
+            self.logger.debug(f"Clicked download link for file: {file_name}")
+            return
+        except Exception as e:
+            self.logger.error(f"Failed to click download link '{formatted_locator}': {str(e)}")
+            raise
 
     # ============================================================================
     # ELEMENT STATE METHODS
@@ -286,98 +270,114 @@ class BasePage:
 
     def is_element_visible(self, locator: Locator, timeout: int | float | None = None) -> bool:
         """
-        Check if element is visible (in DOM and displayed).
+        Check if element is visible.
 
-        Args:
-            locator: Element locator dict
-            timeout: Optional timeout for waiting
-
-        Returns:
-            bool: True if element is visible, False otherwise
+        Fast-path (no wait): provide timeout=0 -> uses driver.is_element_visible() when available.
+        Default: waits up to short_wait (or provided timeout) with wait_for_element_visible.
         """
+        timeout = timeout if timeout is not None else self.short_wait
         try:
-            self.driver.wait_for_element_visible(**locator, timeout=timeout or self.short_wait)
+            # Fast immediate check (no waiting)
+            if timeout == 0 and hasattr(self.driver, "is_element_visible"):
+                visible = bool(self.driver.is_element_visible(**locator))
+                self.logger.debug(f"is_element_visible({locator}) -> {visible} (fast)")
+                return visible
+
+            # Wait for visibility
+            self.driver.wait_for_element_visible(**locator, timeout=timeout)
+            self.logger.debug(f"is_element_visible({locator}) -> True (waited)")
             return True
-        except Exception:
+
+        except (TimeoutException, NoSuchElementException) as e:
+            self.logger.debug(f"is_element_visible({locator}) -> False ({e})")
             return False
+        except Exception as e:
+            self.logger.error(f"Unexpected error checking visibility for {locator}: {e}")
+            raise
 
-    def is_element_selected(self, locator: Locator, timeout: int | float | None = None, retry: int = 2) -> bool:
+    def is_element_selected(self, locator: Locator, timeout: int | float | None = None) -> bool:
         """
-        Check if element is selected (e.g., checkbox, radio button).
+        Check if element is selected.
 
-        Args:
-            locator: Element locator dict
-            timeout: Optional timeout for waiting
-            retry: Number of retry attempts
-
-        Returns:
-            bool: True if element is selected, False otherwise
+        Fast-path (no wait): provide timeout=0 -> uses driver.is_selected() when available.
+        Default: waits up to short_wait (or provided timeout) for visibility then checks selected state.
         """
+        timeout = timeout if timeout is not None else self.short_wait
         self.logger.info(f"Checking selected state for element '{locator}'.")
-        for attempt in range(retry):
-            try:
-                return self.driver.is_selected(**locator)
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for selected check '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for selected check '{locator}'")
-                    return False
+        try:
+            if timeout == 0 and hasattr(self.driver, "is_selected"):
+                selected = bool(self.driver.is_selected(**locator))
+                self.logger.debug(f"is_element_selected({locator}) -> {selected} (fast)")
+                return selected
 
-    def is_element_enabled(self, locator: Locator, timeout: int | float | None = None, retry: int = 2) -> bool:
+            # Wait for visibility then check selected
+            self.driver.wait_for_element_visible(**locator, timeout=timeout)
+            selected = bool(self.driver.is_selected(**locator))
+            self.logger.debug(f"is_element_selected({locator}) -> {selected} (waited)")
+            return selected
+        except (TimeoutException, NoSuchElementException) as e:
+            self.logger.debug(f"is_element_selected({locator}) -> False ({e})")
+            return False
+        except Exception as e:
+            self.logger.error(f"Unexpected error checking selected state for {locator}: {e}")
+            raise
+
+    def is_element_enabled(self, locator: Locator, timeout: int | float | None = None) -> bool:
         """
-        Check if element is enabled (not disabled).
+        Check if element is enabled.
 
-        Args:
-            locator: Element locator dict
-            timeout: Optional timeout for waiting
-            retry: Number of retry attempts
-
-        Returns:
-            bool: True if element is enabled, False otherwise
+        Fast-path (no wait): provide timeout=0 -> uses driver.is_element_enabled() when available.
+        Default: waits up to short_wait (or provided timeout) for visibility then checks enabled state.
         """
+        timeout = timeout if timeout is not None else self.short_wait
         self.logger.info(f"Checking enabled state for element '{locator}'.")
-        for attempt in range(retry):
-            try:
-                return self.driver.is_element_enabled(**locator)
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed for enabled check '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"All retries failed for enabled check '{locator}'")
-                    return False
+        try:
+            if timeout == 0 and hasattr(self.driver, "is_element_enabled"):
+                enabled = bool(self.driver.is_element_enabled(**locator))
+                self.logger.debug(f"is_element_enabled({locator}) -> {enabled} (fast)")
+                return enabled
+
+            # Wait for visibility then check enabled
+            self.driver.wait_for_element_visible(**locator, timeout=timeout)
+            enabled = bool(self.driver.is_element_enabled(**locator))
+            self.logger.debug(f"is_element_enabled({locator}) -> {enabled} (waited)")
+            return enabled
+        except (TimeoutException, NoSuchElementException) as e:
+            self.logger.debug(f"is_element_enabled({locator}) -> False ({e})")
+            return False
+        except Exception as e:
+            self.logger.error(f"Unexpected error checking enabled state for {locator}: {e}")
+            raise
 
     # ============================================================================
     # ELEMENT QUERY METHODS
     # ============================================================================
 
-    def get_dynamic_element_text(self, locator: Locator, timeout: int | float | None = None, retry: int = 2) -> str:
+    def get_dynamic_element_text(self, locator: Locator, timeout: int | float | None = None) -> str:
         """
-        Get text from an element with retry for stale elements.
+        Get text from an element (single attempt).
 
         Args:
             locator: Element locator dict
             timeout: Optional timeout in seconds (defaults to LONG_TIMEOUT)
-            retry: Number of retry attempts for stale elements
 
         Returns:
             str: Text content of the element
 
         Raises:
-            Exception: If element cannot be found after retries
+            Exception: If element cannot be found
         """
         timeout = timeout or self.long_wait
 
         self.logger.debug(f"Waiting for '{locator}' visibility.")
-        for attempt in range(retry):
-            try:
-                self.driver.wait_for_element_visible(**locator, timeout=timeout)
-                text = self.driver.get_text(**locator)
-                self.logger.debug(f"Retrieved text: '{text}'.")
-                return text
-            except Exception as e:
-                self.logger.warning(f"Attempt {attempt + 1}/{retry} failed to get text for '{locator}': {str(e)}")
-                if attempt == retry - 1:
-                    self.logger.error(f"Failed to get text for '{locator}' after {retry} attempts")
-                    raise
+        try:
+            self.driver.wait_for_element_visible(**locator, timeout=timeout)
+            text = self.driver.get_text(**locator)
+            self.logger.debug(f"Retrieved text: '{text}'.")
+            return text
+        except Exception as e:
+            self.logger.error(f"Failed to get text for '{locator}': {str(e)}")
+            raise
 
     def get_all_elements(self, locator: Locator) -> list:
         """
@@ -412,7 +412,7 @@ class BasePage:
         self.logger.debug(f"Found {count} elements with locator '{locator}'.")
         return count
 
-    def get_element_attr_js(self, locator: Locator, attribute: str) -> Any | None:
+    def get_element_attr(self, locator: Locator, attribute: str) -> Any | None:
         """
         Get element attribute using JavaScript execution.
 
@@ -431,17 +431,6 @@ class BasePage:
             self.logger.error(f"Failed to get {attribute}: {str(e)}")
             return None
 
-    def get_current_url(self) -> str:
-        """
-        Get the current page URL.
-
-        Returns:
-            str: Current URL
-        """
-        url = self.driver.get_current_url()
-        self.logger.debug(f"Current URL: {url}")
-        return url
-
     def get_base_url(self) -> str:
         """
         Get the base URL from configuration.
@@ -453,89 +442,9 @@ class BasePage:
         self.logger.debug(f"Base URL: {url}")
         return url
 
-    def get_page_source(self, timeout: int | float | None = None, lowercase: bool = False) -> str:
-        """
-        Get the page source with optional wait for page readiness.
-
-        Args:
-            timeout: Optional timeout for waiting for document ready state
-            lowercase: If True, return lowercase version of page source
-
-        Returns:
-            str: Page source HTML (optionally lowercased)
-        """
-        timeout = timeout or self.long_wait
-        self.logger.info("Getting page source.")
-
-        try:
-            # Wait for document ready state
-            self.driver.wait_for_ready_state_complete(timeout=timeout)
-
-            time.sleep(1)
-            page_source = self.driver.get_page_source()
-
-            if lowercase:
-                page_source = page_source.lower()
-                self.logger.debug("Retrieved page source (lowercased).")
-            else:
-                self.logger.debug("Retrieved page source.")
-
-            return page_source
-
-        except Exception as e:
-            self.logger.warning(f"Error getting page source: {str(e)}")
-            # Return page source anyway
-            page_source = self.driver.get_page_source()
-            return page_source.lower() if lowercase else page_source
-
     # ============================================================================
     # UTILITY METHODS
     # ============================================================================
-
-    def check_accessibility(self) -> None:
-        """
-        Run accessibility check using axe-core (built into SeleniumBase).
-
-        Raises:
-            Exception: If accessibility violations are found
-        """
-        self.logger.info("Running accessibility check.")
-        try:
-            self.driver.check_accessibility()
-            self.logger.info("Accessibility check passed.")
-        except Exception as e:
-            self.logger.error(f"Accessibility check failed: {str(e)}")
-            raise
-
-    def check_visual_baseline(self, name: str) -> None:
-        """
-        Check visual baseline for regression testing (SeleniumBase feature).
-
-        Args:
-            name: Name for the baseline screenshot
-
-        Raises:
-            Exception: If visual regression detected
-        """
-        self.logger.info(f"Checking visual baseline: {name}")
-        try:
-            self.driver.check_window(name=name)
-            self.logger.info(f"Visual baseline check passed for {name}.")
-        except Exception as e:
-            self.logger.error(f"Visual baseline check failed for {name}: {str(e)}")
-            raise
-
-    def get_files_in_directory(self, directory_path: Path) -> list:
-        """
-        Get all files in a directory.
-
-        Args:
-            directory_path: Path to the directory
-
-        Returns:
-            list: List of file paths in the directory
-        """
-        return [item for item in directory_path.iterdir() if item.is_file()]
 
     def format_locator(self, locator: Locator, **kwargs) -> Locator:
         """
@@ -547,9 +456,6 @@ class BasePage:
 
         Returns:
             Locator: Updated locator dict with the formatted selector.
-
-        Raises:
-            KeyError: If a required placeholder in the selector is missing from kwargs.
         """
         formatted_selector = locator["selector"].format(**kwargs)
         return {"selector": formatted_selector, "by": locator["by"]}

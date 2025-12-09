@@ -69,11 +69,13 @@ class TestChallengingDom(UiBaseCase):
             self.logger.info(f"Clicking edit button in row {i}.")
             page.click_edit_button(i)
 
-            curr_url = page.get_current_url()
-            assert self.EDIT_SUFFIX in curr_url, f"Expected URL '{self.EDIT_SUFFIX} in URL', got URL: '{curr_url}'"
+            current_url = self.get_current_url()
+            assert self.EDIT_SUFFIX in current_url, (
+                f"Expected URL '{self.EDIT_SUFFIX} in URL', got URL: '{current_url}'"
+            )
 
             self.logger.info(f"Click delete button in row {i}.")
             page.click_delete_button(i)
 
-            curr_url = page.get_current_url()
-            assert self.DEL_SUFFIX in curr_url, f"Expected URL '{self.DEL_SUFFIX} in URL', got URL: '{curr_url}'"
+            current_url = self.get_current_url()
+            assert self.DEL_SUFFIX in current_url, f"Expected URL '{self.DEL_SUFFIX} in URL', got URL: '{current_url}'"

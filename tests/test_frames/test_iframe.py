@@ -23,8 +23,10 @@ class TestIframe(UiBaseCase):
         self.logger.info("Clicking iframe link.")
         iframe_page = page.click_iframe_link()
 
-        if "read-only" in iframe_page.get_page_source(lowercase=True):
-            pytest.skip("Skipping test: herokuapp blocked – TinyMCE read-only mode")
+        self.logger.info("Checking if herokuapp blocked – TinyMCE read-only mode.")
+        if "read-only" in self.get_page_source():
+            self.logger.info("Skipping test: herokuapp blocked – TinyMCE read-only mode.")
+            pytest.skip("herokuapp blocked – TinyMCE read-only mode")
 
         self.logger.info("Switching to iframe.")
         iframe_page.switch_to_iframe()

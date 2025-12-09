@@ -18,10 +18,6 @@ class HoversUserPage(BasePage):
         super().__init__(driver, logger)
         self.wait_for_page_to_load(HoversUserPageLocators.PAGE_LOADED_INDICATOR)
 
-    @allure.step("Get current browser url")
-    def get_current_browser_url(self) -> str:
-        return self.get_current_url()
-
     @allure.step("Navigate back")
     def navigate_back_page(self) -> None:
         self.navigate_back()

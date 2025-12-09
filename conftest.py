@@ -13,6 +13,7 @@ from _pytest.fixtures import FixtureRequest
 from _pytest.main import Session
 from _pytest.nodes import Item
 from filelock import FileLock
+from seleniumbase.fixtures import constants
 
 import config.env_config as env_config
 from utils.logging_helper import configure_root_logger, set_current_test
@@ -46,38 +47,15 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
 
 @pytest.fixture(scope="session", autouse=True)
 def clean_directories_at_start(request: FixtureRequest) -> None:
-    """Clean downloads directory at session start (screenshots/videos handled by SeleniumBase)."""
+    """Clean downloads directory at session start."""
     worker_id = get_worker_id()
 
     # Clean videos
     videos_dir = Path("tests_recordings") / worker_id
     clean_directory(videos_dir, worker_id)
 
-    # Clean downloads and store path in config
-    downloads_dir = Path("downloads") / worker_id
+    downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
-    request.config.downloads_directory = downloads_dir  # type: ignore[attr-defined]
-
-
-@pytest.fixture(scope="function")
-def downloads_directory(request: FixtureRequest) -> Generator[Path, None, None]:
-    """Provides clean downloads directory for tests marked with @pytest.mark.clean_downloads."""
-    worker_id = get_worker_id()
-    downloads_dir = Path("downloads") / worker_id
-
-    # Only clean if test is marked
-    if request.node.get_closest_marker("clean_downloads"):
-        clean_directory(downloads_dir, worker_id)
-
-    yield downloads_dir
-
-    # Clean after test if marked
-    if request.node.get_closest_marker("clean_downloads"):
-        try:
-            clean_directory(downloads_dir, worker_id)
-            root_logger.info(f"Cleaned downloads after test: {request.node.name}")
-        except Exception as e:
-            root_logger.warning(f"Failed to clean downloads: {str(e)}")
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -137,7 +115,6 @@ def video_recorder(request: FixtureRequest) -> Generator[None, None, None]:
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """Add browser info to Allure environment and ensure clean results directory."""
-
     browser = os.environ.get("BROWSER", env_config.BROWSER).lower()
 
     # Store for use in fixtures

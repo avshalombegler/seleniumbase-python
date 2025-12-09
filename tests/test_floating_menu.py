@@ -27,14 +27,14 @@ class TestFloatingMenu(UiBaseCase):
         main_page = MainPage(self)
         page = main_page.click_floating_menu_link()
 
-        self.logger.info("Scroll down.")
+        self.logger.info("Scrolling down.")
         page.scroll_down()
 
         self.logger.info(f"Clicking floating menu item '{item}'.")
         page.click_floating_menu_item(item)
 
         self.logger.info("Getting current URL.")
-        current_url = page.get_current_url()
+        current_url = self.get_current_url()
 
         self.logger.info("Verifying url updated after click on menu item.")
         assert item.lower() in current_url, f"Expected '{current_url}' to contain '{item.lower()}'"

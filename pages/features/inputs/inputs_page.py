@@ -37,6 +37,6 @@ class InputsPage(BasePage):
 
     @allure.step("Get input number value")
     def get_input_number_value(self) -> int:
-        value = self.get_element_attr_js(InputsPageLocators.INPUT_NUMBER, "value")
+        value = self.get_element_attr(InputsPageLocators.INPUT_NUMBER, "value")
         assert value is not None, "Input value attribute is None"
         return int(value)

@@ -47,7 +47,6 @@ markers = [
     "full: full test suite",
     "current: current tests to run",
     "ui: user interface interactions - auto-navigate to base url",
-    "clean_downloads: downloads-related tests that clean the download directory after successful runs",
     "fix: test need to be fixed",
     "smoke: critical path tests",
     # "regression: full regression suite",
