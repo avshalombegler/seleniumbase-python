@@ -21,6 +21,22 @@ pipeline {
     }
     
     stages {
+        stage('Cleanup') {
+            steps {
+                script {
+                    def browsers = params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER]
+                    
+                    browsers.each { browser ->
+                        sh """
+                            rm -rf allure-results-${browser}
+                            mkdir -p allure-results-${browser}
+                            echo "Cleaned allure-results-${browser} directory"
+                        """
+                    }
+                }
+            }
+        }
+        
         stage('Run Tests') {
             steps {
                 script {

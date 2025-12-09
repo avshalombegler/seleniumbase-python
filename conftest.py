@@ -180,7 +180,6 @@ def pytest_runtest_makereport(item: Item) -> Generator[None, None, None]:
     """
     Pytest hook to handle:
         - Test duration logging.
-        - Screenshot taking on test failure (Locally and to Allure Report).
     """
     outcome = yield
     report = outcome.get_result()  # type: ignore[attr-defined]
@@ -196,10 +195,6 @@ def pytest_runtest_makereport(item: Item) -> Generator[None, None, None]:
         # Log outcome explicitly
         outcome_str = "PASSED" if report.passed else "FAILED" if report.failed else "SKIPPED"
         root_logger.info(f"Test {outcome_str}: {test_name} (Duration: {duration:.2f}s).")
-
-        # Take screenshot only on failure (handled by SeleniumBase)
-        if report.failed:
-            root_logger.info("Test failed - screenshot captured by SeleniumBase BaseCase")
 
     elif report.when == "teardown":
         set_current_test(None)
