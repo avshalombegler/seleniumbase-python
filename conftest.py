@@ -105,16 +105,17 @@ def pytest_configure(config: pytest.Config) -> None:
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
         f.write(f"Browser={browser.capitalize()}\n")
+        f.write(f"Video_Recording={env_config.VIDEO_RECORDING}\n")
         f.write(f"Headless={env_config.HEADLESS}\n")
         f.write(f"Maximized={env_config.MAXIMIZED}\n")
-        f.write(f"Base.URL={env_config.BASE_URL}\n")
-        f.write(f"Window.Size={WINDOW_WIDTH}x{WINDOW_HEIGHT}\n")
+        f.write(f"Base_URL={env_config.BASE_URL}\n")
+        f.write(f"Window_Size={WINDOW_WIDTH}x{WINDOW_HEIGHT}\n")
         if os.environ.get("GITHUB_ACTIONS"):
-            f.write(f"Run.ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
+            f.write(f"Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
             f.write(f"Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
         elif os.environ.get("JENKINS_HOME"):
-            f.write(f"Build.Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
-            f.write(f"Job.Name={os.environ.get('JOB_NAME', 'N/A')}\n")
+            f.write(f"Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
+            f.write(f"Job_Name={os.environ.get('JOB_NAME', 'N/A')}\n")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
