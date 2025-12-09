@@ -33,7 +33,6 @@ pipeline {
                             mkdir -p allure-results-${browser}
                             echo "Cleaned allure-results-${browser} directory"
                         """
-                        """
                     }
                 }
             }
