@@ -106,7 +106,13 @@ def uploadToAllure(browser) {
         fi
         
         # Send results files - separate find commands
-        FILES_TO_SEND=\$(find "${resultsDir}" -type f \( -name '*.json' -o -name '*.png' -o -name '*.txt' -o -name '*.properties' -o -name '*.mp4' \))
+        FILES_TO_SEND=\$(
+            find "${resultsDir}" -type f -name '*.json';
+            find "${resultsDir}" -type f -name '*.png';
+            find "${resultsDir}" -type f -name '*.txt';
+            find "${resultsDir}" -type f -name '*.properties'
+            find "${resultsDir}" -type f -name '*.mp4'
+        )
          FILES_TO_SEND=\$(echo "\$FILES_TO_SEND" | tr '\\n' ' ')
         
         if [ -z "\$FILES_TO_SEND" ]; then
