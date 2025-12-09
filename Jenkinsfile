@@ -111,6 +111,7 @@ def uploadToAllure(browser) {
             find "${resultsDir}" -type f -name '*.png';
             find "${resultsDir}" -type f -name '*.txt';
             find "${resultsDir}" -type f -name '*.properties'
+            find "${resultsDir}" -type f -name '*.mp4'
         )
          FILES_TO_SEND=\$(echo "\$FILES_TO_SEND" | tr '\\n' ' ')
         
