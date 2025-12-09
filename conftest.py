@@ -73,10 +73,6 @@ def pytest_configure(config: pytest.Config) -> None:
     config.option.browser = browser
     config.option.headless = env_config.HEADLESS
 
-    # if not is_xdist_worker and env_config.VIDEO_RECORDING:
-    # if env_config.VIDEO_RECORDING:
-    # config.option.recorder_mode = "video"
-
     # Get the allure results directory from pytest options
     allure_results_dir = getattr(config.option, "allure_report_dir", None)
 
@@ -104,10 +100,7 @@ def pytest_configure(config: pytest.Config) -> None:
         # In CI or xdist, just ensure directory exists
         allure_results_path.mkdir(parents=True, exist_ok=True)
         if is_ci_environment:
-            if allure_results_path.exists():
-                root_logger.info(f"Cleaning Allure results directory: {allure_results_path}")
-                shutil.rmtree(allure_results_path, ignore_errors=True)
-            # root_logger.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
+            root_logger.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
 
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
