@@ -13,8 +13,7 @@ class TestFilesDownload(UiBaseCase):
     """Tests Files Download functionality"""
 
     # @pytest.mark.xfail(reason="One file link is broken")
-    # @pytest.mark.full
-    @pytest.mark.smoke
+    @pytest.mark.full
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.skipif(
