@@ -31,7 +31,7 @@ class TestAddRemoveElements(UiBaseCase):
         assert self.NUM_OF_ELEMENTS == count, f"Expected '{self.NUM_OF_ELEMENTS}' delete buttons, but got '{count}'"
 
     # @pytest.mark.full
-    # @pytest.mark.smoke
+    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_remove_elements(self) -> None:

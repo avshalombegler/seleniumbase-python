@@ -112,10 +112,10 @@ def pytest_configure(config: pytest.Config) -> None:
         f.write(f"Window_Size={WINDOW_WIDTH}x{WINDOW_HEIGHT}\n")
         if os.environ.get("GITHUB_ACTIONS"):
             f.write(f"Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
-            f.write(f"Workflow={'GitHub Actions: ' + os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
+            f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
         elif os.environ.get("JENKINS_HOME"):
             f.write(f"Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
-            f.write(f"Job_Name={'Jenkins: ' + os.environ.get('JOB_NAME', 'N/A')}\n")
+            f.write(f"Jenkins_Job_Name={os.environ.get('JOB_NAME', 'N/A')}\n")
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
