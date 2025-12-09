@@ -28,9 +28,11 @@ pipeline {
                     
                     browsers.each { browser ->
                         sh """
+                            ls -la allure-results-${browser}
                             rm -rf allure-results-${browser}
                             mkdir -p allure-results-${browser}
                             echo "Cleaned allure-results-${browser} directory"
+                        """
                         """
                     }
                 }
