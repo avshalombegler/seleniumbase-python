@@ -31,11 +31,6 @@ pipeline {
                         [(browser): {
                             sh """
                                 export BROWSER=${browser}
-                                
-                                # Clean previous results directory
-                                rm -rf allure-results-${browser}
-                                mkdir -p allure-results-${browser}
-                                
                                 . /opt/venv/bin/activate
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
                                     pytest \
