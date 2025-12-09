@@ -46,7 +46,7 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
 
 
 @pytest.fixture(scope="session", autouse=True)
-def clean_directories_at_start(request: FixtureRequest) -> None:
+def clean_directories_at_start(pytestconfig: pytest.Config) -> None:
     """Clean downloads directory at session start."""
     worker_id = get_worker_id()
 
@@ -54,8 +54,14 @@ def clean_directories_at_start(request: FixtureRequest) -> None:
     videos_dir = Path("tests_recordings") / worker_id
     clean_directory(videos_dir, worker_id)
 
+    # Clean videos
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
+
+    # Clean allure
+    allure_results_dir = getattr(pytestconfig.option, "allure_report_dir", None)
+    allure_results_path = Path(allure_results_dir)
+    clean_directory(allure_results_path)
 
 
 @pytest.fixture(scope="function", autouse=True)
