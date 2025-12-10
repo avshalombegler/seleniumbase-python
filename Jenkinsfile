@@ -30,14 +30,14 @@ pipeline {
                         [(browser): {
                             sh """#!/bin/bash
                                 . /opt/venv/bin/activate
-                                python -m pytest \
-                                -n ${params.WORKERS} --dist=loadfile \
-                                --xvfb \
-                                --headless \
-                                --alluredir=allure-results-${browser} \
-                                --html=report-${browser}.html \
-                                --self-contained-html \
-                                -m ${params.MARKER}
+                                    pytest \
+                                    -n ${params.WORKERS} --dist=loadfile \
+                                    --xvfb \
+                                    --headless \
+                                    --alluredir=allure-results-${browser} \
+                                    --html=report-${browser}.html \
+                                    --self-contained-html \
+                                    -m ${params.MARKER}
                             """
                         }]
                     }
