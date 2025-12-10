@@ -23,13 +23,7 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 - Headless & headed mode
 - Parallel test execution via `pytest-xdist`
 - Allure reports generation with history & trends
-- Automatic Allure attachments
-  - Screenshot for failed tests
-  - Video recording (configurable via `VIDEO_RECORDING` environment variable: true/false)
-- Automatic SeleniumBase attachments
-  - Screenshots for failed tests
-  - Video recording (built-in SeleniumBase feature)
-  - CSS/HTML snapshots
+- Automatic screenshot attachment to Allure Report for failed tests
 
 ### CI/CD Features
 
@@ -62,7 +56,7 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 
 Key packages (see `requirements.txt` for full list):
 
-- `seleniumbase==4.28.6`
+- `seleniumbase==4.44.20`
 - `pytest==8.4.2`
 - `allure-pytest==2.15.0`
 - `pytest-xdist==3.8.0`
@@ -255,7 +249,7 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 
 **Local Access:** [View Report](http://localhost:8080) (via Nginx reverse proxy to Allure UI)
 
-**Public Access:** [View Report](https://x-y-z.ngrok-free.dev) (dynamic tunnel URL provided by ngrok)
+**Public Access:** [View Report](https://url-place-holder.ngrok-free.dev) (dynamic tunnel URL provided by ngrok)
 
 > Reports update automatically after each CI run.
 
@@ -272,10 +266,6 @@ selenium-python/
 ├── pages/                                      # Page Object Model classes
 │    ├── base/                                  # BasePage, PageManager
 │    └── features/                              # Page objects per feature
-├── pytest_plugins/                             # Modular pytest plugins
-│    ├── browser_helpers.py                     # Browser utilities
-│    ├── directory_fixtures.py                  # Directory management for downloads
-│    └── hooks.py                               # Pytest hooks
 ├── reports/                                    # Allure results and artifacts
 ├── tests/                                      # Test cases
 ├── utils/                                      # Helpers (logging, etc.)
