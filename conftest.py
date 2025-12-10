@@ -91,7 +91,7 @@ def pytest_configure(config: pytest.Config) -> None:
         f.write(f"Browser={browser.capitalize()}\n")
         f.write(f"Headless={env_config.HEADLESS}\n")
         f.write(f"Maximized={env_config.MAXIMIZED}\n")
-        f.write(f"Base\\ URL={env_config.BASE_URL}\n")
+        f.write(f"Base_URL={env_config.BASE_URL}\n")
         if os.environ.get("GITHUB_ACTIONS"):
             f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
             f.write(f"GitHub_Actions_Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
