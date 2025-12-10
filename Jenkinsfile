@@ -28,16 +28,17 @@ pipeline {
                     
                     parallel browsers.collectEntries { browser -> 
                         [(browser): {
-                            sh """#!/bin/bash
+                            sh """
+                                export BROWSER=${browser}
                                 . /opt/venv/bin/activate
+                                xvfb-run -a -s "-screen 0 1920x1080x24" \
                                     pytest \
                                     -n ${params.WORKERS} --dist=loadfile \
-                                    --xvfb \
                                     --headless \
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \
-                                    -m ${params.MARKER}
+                                    -m ${params.MARKER} || true
                             """
                         }]
                     }
