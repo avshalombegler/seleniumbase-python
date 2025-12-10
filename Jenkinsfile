@@ -35,6 +35,7 @@ pipeline {
                                 xvfb-run -a -s "-screen 0 1920x1080x24" \
                                     pytest \
                                     -n ${params.WORKERS} --dist=loadfile \
+                                    --headless \
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \

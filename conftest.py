@@ -3,7 +3,6 @@
 import logging
 import os
 import shutil
-import threading
 from collections.abc import Generator
 from pathlib import Path
 
@@ -18,28 +17,17 @@ from utils.logging_helper import configure_root_logger, set_current_test
 
 # Constants shared across plugins
 DEBUG_PORT_BASE = 9222
-WINDOW_WIDTH, WINDOW_HEIGHT = 1920, 1080
-CACHE_VALID_RANGE = 30
 
 # Configure root logger once for the test session
 root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
-
-# Store recording state (accessed by UiBaseCase)
-_video_recordings = {}
-_video_recordings_lock = threading.Lock()
-
-
-def get_worker_id() -> str:
-    """Get worker ID for xdist or fallback to local PID."""
-    return os.environ.get("PYTEST_XDIST_WORKER") or "local"
 
 
 def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
     """Helper to clean and recreate a directory with file locking."""
     lock_file = dir_path / f"{lock_suffix}.lock"
     dir_path.mkdir(parents=True, exist_ok=True)
-    
+
     # Add timeout to prevent deadlocks
     with FileLock(lock_file, timeout=30):
         if dir_path.exists():
@@ -51,11 +39,7 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
 @pytest.fixture(scope="session", autouse=True)
 def clean_directories_at_start() -> None:
     """Clean downloads directory at session start."""
-    worker_id = get_worker_id()
-
-    # Clean videos
-    videos_dir = Path("tests_recordings") / worker_id
-    clean_directory(videos_dir, worker_id)
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
 
     # Clean downloads
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
@@ -105,11 +89,9 @@ def pytest_configure(config: pytest.Config) -> None:
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
         f.write(f"Browser={browser.capitalize()}\n")
-        f.write(f"Video_Recording={env_config.VIDEO_RECORDING}\n")
         f.write(f"Headless={env_config.HEADLESS}\n")
         f.write(f"Maximized={env_config.MAXIMIZED}\n")
-        f.write(f"Base_URL={env_config.BASE_URL}\n")
-        # f.write(f"Window_Size={WINDOW_WIDTH}x{WINDOW_HEIGHT}\n")
+        f.write(f"'Base URL'={env_config.BASE_URL}\n")
         if os.environ.get("GITHUB_ACTIONS"):
             f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
             f.write(f"GitHub_Actions_Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
@@ -168,15 +150,3 @@ def logger(request) -> logging.Logger:
     test_class = getattr(request.instance, "__class__", None)
     name = test_class.__name__ if test_class else request.node.name
     return get_logger(name)
-
-
-def start_recording_safely(nodeid, stop_func, video_path):
-    """Thread-safe way to store recording info."""
-    with _video_recordings_lock:
-        _video_recordings[nodeid] = (stop_func, video_path)
-
-
-def stop_recording_safely(nodeid):
-    """Thread-safe way to retrieve and remove recording info."""
-    with _video_recordings_lock:
-        return _video_recordings.pop(nodeid, None)

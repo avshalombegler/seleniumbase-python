@@ -18,6 +18,9 @@ addopts = [
     # "--durations=0",
     # suppress warnings
     "--disable-warnings",
+
+    # Screenshot of test failure:
+    "--screenshot",
   
     # Multi-threading:
     # "-nauto",
