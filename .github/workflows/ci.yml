@@ -235,8 +235,7 @@ jobs:
   
   deploy:
     needs: [test, check-skip]
-    # if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
-    if: github.ref == 'refs/heads/feature/seleniumbase-integration' && needs.check-skip.outputs.should_skip != 'true'
+    if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -341,8 +340,7 @@ jobs:
 
   clean:
     needs: [deploy, check-skip]
-    # if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
-    if: github.ref == 'refs/heads/feature/seleniumbase-integration' && needs.check-skip.outputs.should_skip != 'true'
+    if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
