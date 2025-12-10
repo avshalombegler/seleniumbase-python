@@ -6,6 +6,7 @@ from pages.base.ui_base_case import UiBaseCase
 from pages.common.main_page.main_page import MainPage
 
 
+@allure.epic("Frames")
 @allure.feature("Nested Frames")
 @allure.story("Tests Nested Frames functionality")
 class TestNestedFrames(UiBaseCase):

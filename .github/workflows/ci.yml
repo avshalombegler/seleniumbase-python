@@ -77,9 +77,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install ffmpeg, rsync
-        run: sudo apt-get install -y ffmpeg rsync
-
       - name: Cache APT packages
         uses: actions/cache@v3
         with:
@@ -115,8 +112,9 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "BASE_URL=${{ secrets.BASE_URL }}" > .env
           echo "BROWSER=${{ matrix.browser }}" >> .env
+          echo "MAXIMIZED=False" >> .env
+          echo "BASE_URL=${{ secrets.BASE_URL }}" > .env
           echo "SHORT_TIMEOUT=3" >> .env
           echo "LONG_TIMEOUT=10" >> .env
           echo "USERNAME=${{ secrets.TEST_USERNAME }}" >> .env
@@ -128,9 +126,6 @@ jobs:
 
       - name: Create reports directories
         run: mkdir -p reports/allure-results reports/allure-report
-
-      - name: Create additional directories
-        run: mkdir -p tests_recordings tests_screenshots
 
       - name: Run Pytest with Allure
         continue-on-error: true
@@ -230,20 +225,12 @@ jobs:
           path: reports/allure-report/latest-with-history/
           retention-days: 7
 
-      - name: Upload Videos
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-videos-${{ matrix.browser }}-${{ github.run_id }}
-          path: tests_recordings/
-          retention-days: 7
-
       - name: Upload Screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-screenshots-${{ matrix.browser }}-${{ github.run_id }}
-          path: tests_screenshots/
+          path: latest_logs/
           retention-days: 7
   
   deploy:

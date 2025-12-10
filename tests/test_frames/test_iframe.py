@@ -5,6 +5,7 @@ from pages.base.ui_base_case import UiBaseCase
 from pages.common.main_page.main_page import MainPage
 
 
+@allure.epic("Frames")
 @allure.feature("iframe")
 @allure.story("Tests iframe functionality")
 class TestIframe(UiBaseCase):
