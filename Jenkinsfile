@@ -38,6 +38,7 @@ pipeline {
                                     --alluredir=allure-results-${browser} \
                                     --html=report-${browser}.html \
                                     --self-contained-html \
+                                    --junitxml=reports/junit.xml \
                                     -m ${params.MARKER} || true
                             """
                         }]
@@ -61,6 +62,7 @@ pipeline {
     
     post {
         always {
+            junit allowEmptyResults: true, testResults: 'reports/junit.xml'
             cleanWs()
         }
         success {
