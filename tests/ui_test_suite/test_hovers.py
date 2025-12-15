@@ -16,7 +16,7 @@ class TestHovers(UiBaseCase):
     FIRST_USER: int = 1
     NUM_OF_USERS: int = 3
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_hovers_functionality(self) -> None:

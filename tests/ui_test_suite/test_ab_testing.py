@@ -11,7 +11,7 @@ from pages.common.main_page.main_page import MainPage
 class TestABTesting(UiBaseCase):
     """Tests for verifying title and paragraph content of page"""
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_ab_testing_content(self) -> None:

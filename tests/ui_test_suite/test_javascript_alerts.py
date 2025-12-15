@@ -17,7 +17,7 @@ class TestJavaScriptAlerts(UiBaseCase):
     PROMPT_ENTERED_MSG = "testing js prompt alert"
     PROMPT_NULL_MSG = "null"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
@@ -38,7 +38,7 @@ class TestJavaScriptAlerts(UiBaseCase):
         self.logger.info("Verifying result text.")
         assert self.ALERT_SUCCESS_MSG in result.lower(), f"Expected '{result}', to contain '{self.ALERT_SUCCESS_MSG}'"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
@@ -71,7 +71,7 @@ class TestJavaScriptAlerts(UiBaseCase):
         self.logger.info("Verifying result text.")
         assert self.CONFIRM_CANCEL_MSG in result.lower(), f"Expected '{result}', to contain '{self.CONFIRM_CANCEL_MSG}'"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)

@@ -3,7 +3,7 @@ pipeline {
     
     parameters {
         choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox'], description: 'Browser to run tests on')
-        choice(name: 'MARKER', choices: ['full', 'smoke', 'regression'], description: 'Test marker to run')
+        choice(name: 'MARKER', choices: ['smoke', 'regression', 'ui', 'api'], description: 'Test marker to run')
         string(name: 'WORKERS', defaultValue: 'auto', description: 'Number of parallel workers')
     }
     

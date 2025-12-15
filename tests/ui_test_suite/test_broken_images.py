@@ -14,7 +14,7 @@ class TestBrokenImages(UiBaseCase):
     EXPECTED_BROKEN_IMAGES = 2
     EXPECTED_VALID_IMAGES = 1
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_broken_images_count(self) -> None:
@@ -29,7 +29,7 @@ class TestBrokenImages(UiBaseCase):
             f"Expected {self.EXPECTED_BROKEN_IMAGES} broken images, found {broken_count}"
         )
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_valid_images_count(self) -> None:

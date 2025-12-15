@@ -20,7 +20,7 @@ class TestFloatingMenu(UiBaseCase):
     ]
 
     @parameterized.expand(FLOATING_MENU_ITEM)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_floating_menu_functionality(self, item: str) -> None:

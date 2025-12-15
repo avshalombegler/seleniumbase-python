@@ -14,7 +14,7 @@ class TestCheckboxes(UiBaseCase):
     CHECKBOX_INDEX_0 = 0
     CHECKBOX_INDEX_1 = 1
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_checkboxes_functionality(self) -> None:

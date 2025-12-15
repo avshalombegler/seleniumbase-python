@@ -43,8 +43,8 @@ jobs:
         browser: [chrome, firefox]
         workers: [auto]
         include:
-          # - suite: full
-          #   marker: full
+          # - suite: regression
+          #   marker: regression
           - suite: smoke
             marker: smoke
     

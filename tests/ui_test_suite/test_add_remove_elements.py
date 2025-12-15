@@ -14,7 +14,7 @@ class TestAddRemoveElements(UiBaseCase):
     NUM_OF_ELEMENTS = 2
     NO_ELEMENTS = 0
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)

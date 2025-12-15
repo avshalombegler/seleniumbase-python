@@ -26,7 +26,7 @@ class TestFilesUpload(UiBaseCase):
     ]
 
     @parameterized.expand(FILES_NAMES)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_files_upload_functionality(self, filename: str) -> None:

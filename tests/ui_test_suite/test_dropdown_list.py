@@ -15,7 +15,7 @@ class TestDropdownList(UiBaseCase):
     OPTIONS = [["Option 1"], ["Option 2"]]
 
     @parameterized.expand(OPTIONS)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_dropdown_list_functionality(self, option: str) -> None:

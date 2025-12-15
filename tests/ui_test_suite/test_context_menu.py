@@ -13,7 +13,7 @@ class TestContextMenu(UiBaseCase):
 
     EXPECTED_ALERT_TEXT = "You selected a context menu"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_right_click_outside_hotspot(self) -> None:
@@ -25,7 +25,7 @@ class TestContextMenu(UiBaseCase):
         result = page.right_click_outside_hot_spot()
         assert not result.alert_present, "Alert should not appear when clicking outside hot spot"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_right_click_on_hotspot(self) -> None:

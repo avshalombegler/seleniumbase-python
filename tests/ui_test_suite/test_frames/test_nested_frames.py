@@ -17,7 +17,7 @@ class TestNestedFrames(UiBaseCase):
     NESTED_FRAMES = [["left"], ["middle"], ["right"]]
 
     @parameterized.expand(NESTED_FRAMES)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_top_nested_frames_functionality(self, frame: str) -> None:
@@ -43,7 +43,7 @@ class TestNestedFrames(UiBaseCase):
               got '{frame_text}'"
         )
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_bottom_nested_frames_functionality(self) -> None:

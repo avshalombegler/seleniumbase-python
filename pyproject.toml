@@ -33,8 +33,10 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
-    # "-m full",
     "-m smoke",
+    # "-m regression",
+    # "-m ui",
+    # "-m api",
     # "-m current",
     # enforce marker validation
     "--strict-markers",

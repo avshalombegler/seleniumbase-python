@@ -13,7 +13,7 @@ class TestIframe(UiBaseCase):
 
     TEXT = "Testing switch to iframe functionality"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_iframe_functionality(self) -> None:

@@ -11,7 +11,7 @@ from pages.common.main_page.main_page import MainPage
 class TestDynamicLoading(UiBaseCase):
     """Tests Dynamic Loading functionality"""
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_example_1(self) -> None:
@@ -25,7 +25,7 @@ class TestDynamicLoading(UiBaseCase):
         self.logger.info("Verifying success message.")
         assert "Hello World!" in page.get_success_message()
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_example_2(self) -> None:

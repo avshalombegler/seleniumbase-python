@@ -14,7 +14,7 @@ class TestDragAndDrop(UiBaseCase):
     BOX_A = "A"
     BOX_B = "B"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_drag_and_drop_functionality(self) -> None:

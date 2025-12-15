@@ -18,7 +18,7 @@ class TestHorizontalSlider(UiBaseCase):
     MAX_RANGE: int = 80
     KEYS_RANGE: int = 4
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_horizontal_slider_functionality_using_mouse(self) -> None:
@@ -46,7 +46,7 @@ class TestHorizontalSlider(UiBaseCase):
               got '{slider_value}'"
         )
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_horizontal_slider_functionality_using_keys(self) -> None:

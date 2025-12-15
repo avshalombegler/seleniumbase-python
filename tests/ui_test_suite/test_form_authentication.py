@@ -22,7 +22,7 @@ class TestFormAuthentication(UiBaseCase):
             ["wrong", "SuperSecretPassword!", "Your username is invalid!"],
         ],
     )
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_form_authentication_functionality(

@@ -14,7 +14,7 @@ LONG_VAL = 34.7818
 class TestGeolocation(UiBaseCase):
     """Tests Geolocation functionality"""
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_geolocation_functionality(self) -> None:

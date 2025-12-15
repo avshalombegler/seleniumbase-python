@@ -21,7 +21,7 @@ class TestJQueryUIMenus(UiBaseCase):
 
     @parameterized.expand(zip(LINK_MENU_ITEMS, FILES_EXTENSIONS))
     @pytest.mark.skip(reason="Test is not yet complete")
-    @pytest.mark.full
+    @pytest.mark.regression
     # @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)

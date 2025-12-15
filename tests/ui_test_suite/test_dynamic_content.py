@@ -11,7 +11,7 @@ from pages.common.main_page.main_page import MainPage
 class TestDynamicContent(UiBaseCase):
     """Tests for Dynamic Content functionality"""
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_content_changes_after_refresh(self) -> None:

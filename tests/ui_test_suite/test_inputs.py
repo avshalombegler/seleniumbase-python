@@ -16,7 +16,7 @@ class TestInputs(UiBaseCase):
     DECREASE_VALUE: int = 2
     EXPECTED_VALUE: int = NUMBER + INCREASE_VALUE - DECREASE_VALUE
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_inputs_functionality(self) -> None:

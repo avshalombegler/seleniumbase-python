@@ -19,7 +19,7 @@ class TestChallengingDom(UiBaseCase):
     DEL_SUFFIX = "challenging_dom#delete"
 
     @parameterized.expand(BUTTONS)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_each_button_clicks(self, button: str) -> None:
@@ -31,7 +31,7 @@ class TestChallengingDom(UiBaseCase):
         page.click_colored_button(button)
 
     @parameterized.expand(COLUMNS)
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_table_header_per_column(self, col: str) -> None:
@@ -44,7 +44,7 @@ class TestChallengingDom(UiBaseCase):
         assert header == col, f"Table head value '{col}' not found (got '{header}')"
 
     @parameterized.expand(zip(COLUMNS, CELL_VALUES))
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_cells_content_per_column(self, col: str, cell: str) -> None:
@@ -58,7 +58,7 @@ class TestChallengingDom(UiBaseCase):
             val = page.get_table_cell_text(col, expected)
             assert val == expected, f"Cell value '{expected}' under '{col}' not found (got '{val}')"
 
-    @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_table_edit_and_delete_buttons_per_row(self) -> None:
