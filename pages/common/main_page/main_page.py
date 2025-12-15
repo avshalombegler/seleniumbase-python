@@ -34,6 +34,9 @@ from pages.features.hovers.hovers_page import HoversPage
 from pages.features.infinite_scroll.infinite_scroll_page import InfiniteScrollPage
 from pages.features.inputs.inputs_page import InputsPage
 from pages.features.javascript_alerts.javascript_alerts_page import JavaScriptAlertsPage
+from pages.features.javascript_onload_event_error.javascript_onload_event_error_page import (
+    JavaScriptOnloadRventErrorPage,
+)
 from pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenusPage
 
 if TYPE_CHECKING:
@@ -246,3 +249,12 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.JAVASCRIPT_ALERTS_LINK)
 
         return JavaScriptAlertsPage(self.driver, self.logger)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_javascript_onload_event_error_link(
+        self, page_name: str = "JavaScript Alerts"
+    ) -> JavaScriptOnloadRventErrorPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.JAVASCRIPT_ONLOAD_EVENT_ERROR_LINK)
+
+        return JavaScriptOnloadRventErrorPage(self.driver, self.logger)

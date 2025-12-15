@@ -35,3 +35,4 @@ class MainPageLocators:
     INPUTS_LINK: Locator = {"selector": "Inputs", "by": By.LINK_TEXT}
     JQUERY_UI_MENUS_LINK: Locator = {"selector": "JQuery UI Menus", "by": By.LINK_TEXT}
     JAVASCRIPT_ALERTS_LINK: Locator = {"selector": "JavaScript Alerts", "by": By.LINK_TEXT}
+    JAVASCRIPT_ONLOAD_EVENT_ERROR_LINK: Locator = {"selector": "JavaScript onload event error", "by": By.LINK_TEXT}
