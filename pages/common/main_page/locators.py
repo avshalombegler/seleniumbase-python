@@ -33,3 +33,5 @@ class MainPageLocators:
     HOVERS_LINK: Locator = {"selector": "Hovers", "by": By.LINK_TEXT}
     INFINITE_SCROLL_LINK: Locator = {"selector": "Infinite Scroll", "by": By.LINK_TEXT}
     INPUTS_LINK: Locator = {"selector": "Inputs", "by": By.LINK_TEXT}
+    JQUERY_UI_MENUS_LINK: Locator = {"selector": "JQuery UI Menus", "by": By.LINK_TEXT}
+    JAVASCRIPT_ALERTS_LINK: Locator = {"selector": "JavaScript Alerts", "by": By.LINK_TEXT}

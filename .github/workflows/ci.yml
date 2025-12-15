@@ -139,7 +139,6 @@ jobs:
               --alluredir=reports/allure-results \
               --html=reports/report-${browser}.html \
               --self-contained-html \
-              --junitxml=reports/junit.xml \
               --reruns 1 --reruns-delay 2 \
               -m ${{ matrix.marker }}
 

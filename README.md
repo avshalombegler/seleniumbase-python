@@ -1,4 +1,4 @@
-# Selenium-Python Test Automation Suite
+# SeleniumBase-Python Test Automation Suite
 
 [![CI Status](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml/badge.svg)](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml)
 

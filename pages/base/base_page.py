@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from logging import Logger
 from typing import TYPE_CHECKING, Any
-from urllib.parse import urljoin
 
 import allure
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
@@ -137,14 +136,48 @@ class BasePage:
             self.logger.warning(f"Loader timeout after {timeout}s: {str(e)}")
             return False
 
+    def wait_for_file_to_download(self, filename: str, timeout: int | float | None = None) -> bool:
+        """
+        Wait for file to finish download.
+
+        Args:
+            filename: Name of the file to wait for
+            timeout: Optional timeout in seconds
+
+        Returns:
+            bool: True if file download completed, False if timeout
+        """
+        import time
+
+        timeout = timeout or self.short_wait
+        self.logger.info(f"Waiting for file '{filename}' to download (timeout: {timeout}s).")
+
+        start_time = time.time()
+        poll_interval = 0.5  # Check every 500ms
+
+        try:
+            while time.time() - start_time < timeout:
+                if self.driver.is_downloaded_file_present(filename):
+                    elapsed = time.time() - start_time
+                    self.logger.debug(f"File '{filename}' downloaded successfully after {elapsed:.2f}s.")
+                    return True
+                time.sleep(poll_interval)
+
+            self.logger.warning(f"File '{filename}' not found after {timeout}s timeout.")
+            return False
+        except Exception as e:
+            self.logger.error(f"Error while waiting for file '{filename}': {str(e)}")
+            return False
+
     # ============================================================================
     # NAVIGATION METHODS
     # ============================================================================
 
     @allure.step("Navigate to the page")
-    def navigate_to(self, path: str = "") -> None:
-        url = urljoin(self.base_url, path)
+    def navigate_to(self, url: str) -> None:
+        self.logger.info(f"Navigating to url: {url}.")
         self.driver.open(url)
+        self.logger.info("Navigation completed.")
 
     def refresh_page(self) -> None:
         """Refresh the current page."""

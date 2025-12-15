@@ -15,9 +15,6 @@ from seleniumbase.fixtures import constants
 import config.env_config as env_config
 from utils.logging_helper import configure_root_logger, set_current_test
 
-# Constants shared across plugins
-DEBUG_PORT_BASE = 9222
-
 # Configure root logger once for the test session
 root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
