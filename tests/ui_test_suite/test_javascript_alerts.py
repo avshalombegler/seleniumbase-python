@@ -42,7 +42,6 @@ class TestJavaScriptAlerts(UiBaseCase):
         )
 
     @pytest.mark.regression
-    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_js_confirm(self) -> None:

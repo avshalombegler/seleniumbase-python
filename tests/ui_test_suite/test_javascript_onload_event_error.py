@@ -14,7 +14,6 @@ class TestJavaScriptOnloadRventError(UiBaseCase):
     EXPECTE_ERROR_MSG = "Cannot read properties of undefined (reading 'xyz')"
 
     @pytest.mark.regression
-    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_javascript_onload_event_error_functionality(self) -> None:
