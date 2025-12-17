@@ -1,7 +1,20 @@
-from typing import Literal
+from enum import Enum
 
-from pydantic import AnyUrl, Field, PositiveInt, SecretStr
+from pydantic import AnyUrl, Field, PositiveInt, field_validator
+from pydantic import SecretStr as PydanticSecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class EnvEnum(str, Enum):
+    dev = "dev"
+    staging = "staging"
+    ci = "ci"
+    prod = "prod"
+
+
+class BrowserEnum(str, Enum):
+    chrome = "chrome"
+    firefox = "firefox"
 
 
 class Settings(BaseSettings):
@@ -15,10 +28,10 @@ class Settings(BaseSettings):
     )
 
     # Environment
-    ENV: Literal["dev", "staging", "ci", "prod"] = "dev"
+    ENV: EnvEnum = EnvEnum.dev
 
     # Browser & SeleniumBase
-    BROWSER: Literal["chrome", "firefox"] = "chrome"
+    BROWSER: BrowserEnum = BrowserEnum.chrome
     HEADLESS: bool = Field(default=True, description="Run in headless mode")
     MAXIMIZED: bool = False
     UC_MODE: bool = True
@@ -37,7 +50,7 @@ class Settings(BaseSettings):
 
     # Test data
     TEST_USERNAME: str = Field(..., env="TEST_USERNAME", min_length=1)
-    TEST_PASSWORD: SecretStr = Field(..., env="TEST_PASSWORD", min_length=8)
+    TEST_PASSWORD: PydanticSecretStr = Field(..., env="TEST_PASSWORD")
 
     # Geolocation for tests
     GEOLOCATION_LAT: float = Field(
@@ -54,6 +67,24 @@ class Settings(BaseSettings):
         env="GEOLOCATION_LON",
         description="Longitude for browser geolocation override (Tel Aviv default)",
     )
+
+    # Validators
+    @field_validator("BASE_URL", mode="before")
+    @classmethod
+    def _normalize_base_url(cls, v) -> str:
+        s = str(v)
+        if not s.endswith("/"):
+            s = s + "/"
+        return s
+
+    @field_validator("TEST_PASSWORD", mode="after")
+    @classmethod
+    def _validate_password_length(cls, v: PydanticSecretStr) -> PydanticSecretStr:
+        # Ensure SecretStr meets minimum length (Field(min_length) may not validate SecretStr length)
+        raw = v.get_secret_value() if hasattr(v, "get_secret_value") else str(v)
+        if len(raw) < 8:
+            raise ValueError("TEST_PASSWORD must be at least 8 characters")
+        return v
 
 
 # Singleton instance
