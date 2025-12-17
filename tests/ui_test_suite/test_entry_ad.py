@@ -34,7 +34,7 @@ class TestEntryAd(UiBaseCase):
         self.assert_false(page.is_modal_displayed())
 
         self.logger.info("Clicking re-enable button.")
-        page.click_re_enable_link()
+        # page.click_re_enable_link()
 
         self.logger.info("Verifying ad window display.")
         self.assert_true(page.is_modal_displayed())

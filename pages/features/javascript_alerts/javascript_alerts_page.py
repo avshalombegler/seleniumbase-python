@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.javascript_alerts.locators import JavaScriptAlertsPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class JavaScriptAlertsPage(BasePage):
     """Page object for the JavaScript Alerts page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(JavaScriptAlertsPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Click JS Alert button")

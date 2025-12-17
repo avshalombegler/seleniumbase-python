@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.dynamic_loading.locators import Example1PageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class Example1Page(BasePage):
     """Page object for the Dynamic Content page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(Example1PageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Click start button")

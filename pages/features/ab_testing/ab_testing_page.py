@@ -8,12 +8,12 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.ab_testing.locators import AbTestingPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class ABTestingPage(BasePage):
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(AbTestingPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Get title text")

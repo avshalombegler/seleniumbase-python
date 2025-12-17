@@ -9,7 +9,7 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.geolocation.locators import GeolocationPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class GeolocationPage(BasePage):
@@ -18,10 +18,9 @@ class GeolocationPage(BasePage):
     def __init__(
         self,
         driver: BaseCase,
-        logger: Logger | None = None,
         wait_for_load: bool = True,
     ) -> None:
-        super().__init__(driver, logger)
+        super().__init__(driver)
         if wait_for_load:
             self.wait_for_page_to_load(GeolocationPageLocators.PAGE_LOADED_INDICATOR)
 

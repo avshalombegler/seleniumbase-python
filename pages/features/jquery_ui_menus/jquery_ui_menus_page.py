@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.jquery_ui_menus.locators import JQueryUIMenusPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class JQueryUIMenusPage(BasePage):
     """Page object for the JQueryUI - Menu page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(JQueryUIMenusPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Hover over menu item '{item}'")

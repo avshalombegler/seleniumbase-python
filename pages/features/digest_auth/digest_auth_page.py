@@ -13,14 +13,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.digest_auth.locators import DigestAuthPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class DigestAuthPage(BasePage):
     """Page object for the Digest Authentication page containing methods to test digest authentication scenarios"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
 
     @allure.step("Check if login succeeded")
     def is_login_successful(self) -> bool:

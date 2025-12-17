@@ -10,7 +10,7 @@ from pages.base.ui_base_case import UiBaseCase
 from pages.common.main_page.main_page import MainPage
 
 if TYPE_CHECKING:
-    from typing import dict
+    pass
 
 
 @allure.parent_suite("UI Test Suite")
@@ -28,7 +28,7 @@ class TestKeyPresses(UiBaseCase):
         main_page = MainPage(self)
         page = main_page.click_key_presses_link()
 
-        test_cases: dict[Keys, str] = {
+        test_cases: dict[str, str] = {
             Keys.SPACE: "You entered: SPACE",
             Keys.NUMPAD0: "You entered: NUMPAD0",
             Keys.NUMPAD5: "You entered: NUMPAD5",

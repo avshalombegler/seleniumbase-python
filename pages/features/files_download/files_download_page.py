@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.files_download.locators import FilesDownloadPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class FilesDownloadPage(BasePage):
     """Page object for the Files Download page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(FilesDownloadPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Get list of files links")
@@ -24,6 +24,6 @@ class FilesDownloadPage(BasePage):
         return [elem.get_attribute("href") for elem in elements]
 
     @allure.step("Get list of files links")
-    def download_files(self, files_links, dest_folder) -> None:
+    def download_files(self, files_links: list[str], dest_folder: str) -> None:
         for link in files_links:
             self.driver.download_file(link, dest_folder)

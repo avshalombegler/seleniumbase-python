@@ -54,4 +54,5 @@ latest_logs/
 assets/
 
 # Logs
+test_logs.jsonl
 *.log

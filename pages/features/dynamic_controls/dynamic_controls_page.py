@@ -9,14 +9,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.dynamic_controls.locators import DynamicControlsPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class DynamicControlsPage(BasePage):
     """Page object for the Dynamic Content page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(DynamicControlsPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Click remove button")

@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.challenging_dom.locators import ChallengingDomPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class ChallengingDomPage(BasePage):
     """Page object for the Challenging DOM page containing methods to interact with and validate page web elements."""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(ChallengingDomPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Click {button_color} button")

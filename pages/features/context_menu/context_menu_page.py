@@ -12,7 +12,7 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.context_menu.locators import ContextMenuPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 @dataclass
@@ -24,8 +24,8 @@ class ClickResult:
 class ContextMenuPage(BasePage):
     """Page object for the Context Menu page containing methods to interact with and validate page context menu"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(ContextMenuPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Perform right click outside hot spot area")

@@ -9,17 +9,17 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.checkboxes.locators import CheckboxesPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class CheckboxesPage(BasePage):
     """Page object for the Checkboxes page containing methods to interact with and validate checkboxes."""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(CheckboxesPageLocators.PAGE_LOADED_INDICATOR)
 
-    def _get_checkbox_locator(self, index: int) -> tuple[str, str]:
+    def _get_checkbox_locator(self, index: int) -> dict[str, str]:
         """
         Returns a locator for the checkbox at the given index (0-based).
         Example: index=0 → first checkbox, index=1 → second checkbox

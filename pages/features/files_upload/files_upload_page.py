@@ -9,14 +9,14 @@ from pages.features.files_upload.file_uploaded_page import FileUploadedPage
 from pages.features.files_upload.locators import FilesUploadPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class FileUploadPage(BasePage):
     """Page object for the Files Upload page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(FilesUploadPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Select file '{file_path}' to upload")
@@ -26,4 +26,4 @@ class FileUploadPage(BasePage):
     @allure.step("Click Upload button - return File Uploaded Page object")
     def click_upload_file(self) -> FileUploadedPage:
         self.click_element(FilesUploadPageLocators.UPLOAD_BTN)
-        return FileUploadedPage(self.driver, self.logger)
+        return FileUploadedPage(self.driver)

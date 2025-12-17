@@ -1,25 +1,31 @@
-import logging
+from __future__ import annotations
+
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import allure
 import pytest
+import structlog
 from seleniumbase import BaseCase
 from seleniumbase.fixtures import constants
 
 from config import settings
 
+if TYPE_CHECKING:
+    from typing import Any
+
 
 class UiBaseCase(BaseCase):
     @pytest.fixture(autouse=True)
-    def _inject_request(self, request) -> None:
+    def _inject_request(self, request: pytest.FixtureRequest) -> None:
         """Inject pytest request object for parametrization support"""
         self.request = request
 
-    def get_new_driver(self, *args, **kwargs):
+    def get_new_driver(self, *args: Any, **kwargs: Any) -> Any:
         """Override to set download directory before driver creation."""
-        worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
-        downloads_dir = os.path.abspath(os.path.join(constants.Files.DOWNLOADS_FOLDER, worker_id))
+        worker_id: str = os.environ.get("PYTEST_XDIST_WORKER") or "local"
+        downloads_dir: str = os.path.abspath(os.path.join(constants.Files.DOWNLOADS_FOLDER, worker_id))
         os.makedirs(downloads_dir, exist_ok=True)
 
         self.downloads_folder = downloads_dir
@@ -27,8 +33,8 @@ class UiBaseCase(BaseCase):
 
         if self.browser == "chrome":
             driver.execute_cdp_cmd("Page.setDownloadBehavior", {"behavior": "allow", "downloadPath": downloads_dir})
-            self.logger = logging.getLogger(self.__class__.__name__)
-            self.logger.info(f"Chrome download directory set to: {downloads_dir}")
+            self.logger = structlog.get_logger(self.__class__.__name__)
+            self.logger.info("Chrome download directory set to", download_path=downloads_dir)
 
         return driver
 
@@ -44,7 +50,7 @@ class UiBaseCase(BaseCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = structlog.get_logger(self.__class__.__name__)
         self.worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
 
         # Navigate to base URL if @pytest.mark.ui

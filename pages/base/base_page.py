@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-from logging import Logger
 from typing import TYPE_CHECKING, Any
 
 import allure
+import structlog
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase import BaseCase
 
 from config import settings
-from utils.logging_helper import get_logger
 
 if TYPE_CHECKING:
+    from logging import Logger
+
+    from pydantic import AnyUrl
+
     Locator = dict[str, str]
 else:
     Locator = Any
@@ -37,9 +40,12 @@ class BasePage:
     # ============================================================================
 
     def __init__(self, base_case: BaseCase, logger: Logger | None = None) -> None:
+        # Accept an optional `logger` for backward compatibility with pages
+        # that pass a logger to `super().__init__`. We derive our structured
+        # logger instance below regardless of the passed value.
         self.driver = base_case
         self.actions = ActionChains(self.driver.driver)
-        self.logger = logger if logger is not None else get_logger(self.__class__.__name__)
+        self.logger = structlog.get_logger(self.__class__.__name__).bind(page=self.__class__.__name__)
         self.short_wait = settings.SHORT_TIMEOUT
         self.long_wait = settings.LONG_TIMEOUT
         self.base_url = settings.BASE_URL
@@ -463,7 +469,7 @@ class BasePage:
             self.logger.error(f"Failed to get {attribute}: {str(e)}")
             return None
 
-    def get_base_url(self) -> str:
+    def get_base_url(self) -> str | AnyUrl:
         """
         Get the base URL from configuration.
 
@@ -478,7 +484,7 @@ class BasePage:
     # UTILITY METHODS
     # ============================================================================
 
-    def format_locator(self, locator: Locator, **kwargs) -> Locator:
+    def format_locator(self, locator: Locator, **kwargs: Any) -> Locator:
         """
         Format a locator's selector string with provided keyword arguments and return the updated locator.
 

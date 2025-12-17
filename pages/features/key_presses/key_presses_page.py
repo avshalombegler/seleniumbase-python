@@ -8,23 +8,21 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.key_presses.locators import KeyPressesPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
-
-    from selenium.webdriver.common.keys import Keys
+    pass
 
 
 class KeyPressesPage(BasePage):
     """Page object for the Key Presses page containing methods to interact with and validate
     page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(KeyPressesPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Press key")
-    def press_key(self, key: Keys) -> None:
+    def press_key(self, key: str) -> None:
         elem = self.wait_for_visibility(KeyPressesPageLocators.TEXT_INPUT)
-        self.actions.send_keys_to_element(elem, key).perform()
+        elem.send_keys(key)
 
     @allure.step("Get result")
     def get_result(self) -> str:

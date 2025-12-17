@@ -9,14 +9,14 @@ from pages.features.form_authentication.locators import FormAuthenticationPageLo
 from pages.features.form_authentication.secure_area_page import SecureAreaPage
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class FormAuthenticationPage(BasePage):
     """Page object for the Form Auth page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(FormAuthenticationPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Enter username '{username}'")
@@ -30,7 +30,7 @@ class FormAuthenticationPage(BasePage):
     @allure.step("Click login - correct")
     def click_login_correct(self) -> SecureAreaPage:
         self.click_element(FormAuthenticationPageLocators.LOGIN_BTN)
-        return SecureAreaPage(self.driver, self.logger)
+        return SecureAreaPage(self.driver)
 
     @allure.step("Click login - invalid")
     def click_login_invalid(self) -> None:

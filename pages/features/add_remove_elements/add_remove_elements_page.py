@@ -8,12 +8,12 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.add_remove_elements.locators import AddRemoveElementsPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class AddRemoveElementsPage(BasePage):
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(AddRemoveElementsPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Click Add Element button")

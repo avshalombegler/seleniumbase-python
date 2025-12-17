@@ -8,8 +8,6 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.broken_images.locators import BrokenImagesPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
-
     from selenium.webdriver.remote.webelement import WebElement
 
     from pages.base.base_page import Locator
@@ -18,8 +16,8 @@ if TYPE_CHECKING:
 class BrokenImagesPage(BasePage):
     """Page object for the Broken Images page containing methods to interact with and validate images."""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(BrokenImagesPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Get all image elements")
@@ -30,6 +28,8 @@ class BrokenImagesPage(BasePage):
     def _get_locator_from_element(self, image: WebElement) -> Locator:
         tag = image.tag_name
         src = image.get_attribute("src")
+        if src is None:
+            raise ValueError("Image element has no 'src' attribute")
         image_name = src.split("/")[-1]
         locator = self.format_locator(BrokenImagesPageLocators.IMAGE, tag=tag, image_name=image_name)
         return locator

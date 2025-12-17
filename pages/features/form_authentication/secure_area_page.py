@@ -8,16 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.form_authentication.locators import SecureAreaPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
-
     from pages.features.form_authentication.form_authentication_page import FormAuthenticationPage
 
 
 class SecureAreaPage(BasePage):
     """Page object for the Secure Area page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(SecureAreaPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Get flash message")
@@ -29,4 +27,4 @@ class SecureAreaPage(BasePage):
         self.click_element(SecureAreaPageLocators.LOGOUT_BTN)
         from pages.features.form_authentication.form_authentication_page import FormAuthenticationPage
 
-        return FormAuthenticationPage(self.driver, self.logger)
+        return FormAuthenticationPage(self.driver)

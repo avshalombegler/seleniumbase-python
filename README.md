@@ -260,15 +260,14 @@ selenium-python/
 ├── .github/
 │    └── workflows/ci.yml                       # GitHub Actions workflow
 ├── config/
-│    └── conftest_config.py                     # Configuration for pytest conftest
-│    └── project_config.py                      # 
+│    └── logging_config.py                      # 
 │    └── nginx.conf                             # Nginx configuration for reverse proxy
+│    └── project_config.py                      # 
 ├── pages/                                      # Page Object Model classes
 │    ├── base/                                  # BasePage, PageManager
 │    └── features/                              # Page objects per feature
 ├── reports/                                    # Allure results and artifacts
 ├── tests/                                      # Test cases
-├── utils/                                      # Helpers (logging, etc.)
 ├── .env                                        # Environment variables (gitignored)
 ├── conftest.py                                 # Main conftest - registers plugins
 ├── docker-compose.yml                          # Docker Compose configuration for CI/CD environment

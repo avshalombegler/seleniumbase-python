@@ -6,20 +6,21 @@ Sets up logging, cleans result/download directories, and defines pytest hooks an
 import logging
 import os
 import shutil
-from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from _pytest.nodes import Item
+import structlog
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
 from config import settings
-from utils.logging_helper import configure_root_logger, set_current_test
+from config.logging_config import configure_logging
 
-# Configure root logger once for the test session
-root_logger = configure_root_logger(log_file="test_logs.log", level=logging.INFO)
+# Configure root logging once for the test session
+configure_logging()
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
+logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
+logging.getLogger("undetected_chromedriver").setLevel(logging.WARNING)
 
 
 def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
@@ -32,7 +33,7 @@ def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
         if dir_path.exists():
             shutil.rmtree(dir_path, ignore_errors=True)
         dir_path.mkdir(parents=True, exist_ok=True)
-        root_logger.info(f"Directory cleaned and recreated at: {dir_path}.")
+        logging.info(f"Directory cleaned and recreated at: {dir_path}.")
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -73,17 +74,17 @@ def pytest_configure(config: pytest.Config) -> None:
 
     if not is_xdist_worker and not is_ci_environment:
         if allure_results_path.exists():
-            root_logger.info(f"Cleaning Allure results directory: {allure_results_path}")
+            logging.info(f"Cleaning Allure results directory: {allure_results_path}")
             shutil.rmtree(allure_results_path, ignore_errors=True)
 
         # Create fresh directory
         allure_results_path.mkdir(parents=True, exist_ok=True)
-        root_logger.info(f"Created fresh Allure results directory: {allure_results_path}")
+        logging.info(f"Created fresh Allure results directory: {allure_results_path}")
     else:
         # In CI or xdist, just ensure directory exists
         allure_results_path.mkdir(parents=True, exist_ok=True)
         if is_ci_environment:
-            root_logger.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
+            logging.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
 
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
@@ -98,40 +99,6 @@ def pytest_configure(config: pytest.Config) -> None:
             f.write(f"Jenkins_Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
 
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item: Item) -> Generator[None, None, None]:
-    """
-    Pytest hook to handle:
-        - Test duration logging.
-    """
-    outcome = yield
-    report = outcome.get_result()  # type: ignore[attr-defined]
-
-    if report.when == "setup":
-        # Set the test name for logging context
-        set_current_test(item.name)
-
-    if report.when == "call":
-        test_name = item.name
-        duration = report.duration if hasattr(report, "duration") else 0
-
-        # Log outcome explicitly
-        outcome_str = "PASSED" if report.passed else "FAILED" if report.failed else "SKIPPED"
-        root_logger.info(f"Test {outcome_str}: {test_name} (Duration: {duration:.2f}s).")
-
-    elif report.when == "teardown":
-        set_current_test(None)
-        # Log teardown failures explicitly
-        if report.failed:
-            root_logger.error(f"Test teardown failed for: {item.name}")
-            root_logger.info("Teardown failure logged - SeleniumBase handles screenshots")
-
-
-@pytest.fixture
-def logger(request) -> logging.Logger:
-    from utils.logging_helper import get_logger
-
-    # Use the test class name if available, else the test function name
-    test_class = getattr(request.instance, "__class__", None)
-    name = test_class.__name__ if test_class else request.node.name
-    return get_logger(name)
+@pytest.fixture(autouse=True)
+def bind_test_context(request: pytest.FixtureRequest) -> None:
+    structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)

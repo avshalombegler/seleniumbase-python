@@ -9,16 +9,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.drag_and_drop.locators import DragAndDropPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
-
     from selenium.webdriver.remote.webelement import WebElement
 
 
 class DragAndDropPage(BasePage):
     """Page object for the Drag and Drop page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(DragAndDropPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Perform drag and drop on box")

@@ -9,14 +9,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.inputs.locators import InputsPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class InputsPage(BasePage):
     """Page object for the Inputs page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(InputsPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Enter input number")

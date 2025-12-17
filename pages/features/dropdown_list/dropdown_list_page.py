@@ -9,14 +9,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.dropdown_list.locators import DropdownListPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class DropdownListPage(BasePage):
     """Page object for the Dropdown List page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(DropdownListPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Select option '{option}' from dropdown")

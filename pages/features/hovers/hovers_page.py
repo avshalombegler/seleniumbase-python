@@ -9,14 +9,14 @@ from pages.features.hovers.hovers_user_page import HoversUserPage
 from pages.features.hovers.locators import HoversPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class HoversPage(BasePage):
     """Page object for the Hovers page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         self.wait_for_page_to_load(HoversPageLocators.PAGE_LOADED_INDICATOR)
 
     @allure.step("Hover mouse over profile image")
@@ -33,4 +33,4 @@ class HoversPage(BasePage):
     def click_view_profile_link(self, index: int) -> HoversUserPage:
         locator = self.format_locator(HoversPageLocators.VIEW_PROFILE_BTN, index=index)
         self.click_element(locator)
-        return HoversUserPage(self.driver, self.logger)
+        return HoversUserPage(self.driver)

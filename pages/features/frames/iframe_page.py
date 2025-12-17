@@ -8,14 +8,14 @@ from pages.base.base_page import BaseCase, BasePage
 from pages.features.frames.locators import IframesPageLocators
 
 if TYPE_CHECKING:
-    from logging import Logger
+    pass
 
 
 class IframesPage(BasePage):
     """Page object for the iFrame page containing methods to interact with and validate page functionality"""
 
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
         if "read-only" not in self.driver.get_page_source().lower():
             self.wait_for_page_to_load(IframesPageLocators.PAGE_LOADED_INDICATOR)
 

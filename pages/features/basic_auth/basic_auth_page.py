@@ -10,13 +10,12 @@ from bs4 import BeautifulSoup
 from pages.base.base_page import BaseCase, BasePage
 
 if TYPE_CHECKING:
-    from logging import Logger
     from typing import Any
 
 
 class BasicAuthPage(BasePage):
-    def __init__(self, driver: BaseCase, logger: Logger | None = None) -> None:
-        super().__init__(driver, logger)
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
 
     def _extract_message_from_response(self, response_text: str) -> str:
         soup = BeautifulSoup(response_text, "html.parser")

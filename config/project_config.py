@@ -41,37 +41,37 @@ class Settings(BaseSettings):
     LONG_TIMEOUT: PositiveInt = Field(default=15, ge=5, le=60)
 
     # URLs
-    BASE_URL: AnyUrl = Field(
-        default="https://the-internet.herokuapp.com/", env="BASE_URL", description="Application Under Test base URL"
+    BASE_URL: str | AnyUrl = Field(
+        default="https://the-internet.herokuapp.com/",
+        description="Application Under Test base URL",
     )
     ALLURE_SERVER_URL: AnyUrl | None = Field(
-        default=None, env="ALLURE_SERVER_URL", description="Allure Server for report upload (optional in local/CI)"
+        default=None,
+        description="Allure Server for report upload (optional in local/CI)",
     )
 
     # Test data
-    TEST_USERNAME: str = Field(..., env="TEST_USERNAME", min_length=1)
-    TEST_PASSWORD: PydanticSecretStr = Field(..., env="TEST_PASSWORD")
+    TEST_USERNAME: str | None = Field(default=None, min_length=1)
+    TEST_PASSWORD: PydanticSecretStr | None = Field(default=None)
 
     # Geolocation for tests
     GEOLOCATION_LAT: float = Field(
         default=32.0853,
         ge=-90.0,
         le=90.0,
-        env="GEOLOCATION_LAT",
         description="Latitude for browser geolocation override (Tel Aviv default)",
     )
     GEOLOCATION_LON: float = Field(
         default=34.7818,
         ge=-180.0,
         le=180.0,
-        env="GEOLOCATION_LON",
         description="Longitude for browser geolocation override (Tel Aviv default)",
     )
 
     # Validators
     @field_validator("BASE_URL", mode="before")
     @classmethod
-    def _normalize_base_url(cls, v) -> str:
+    def _normalize_base_url(cls, v: str | AnyUrl) -> str:
         s = str(v)
         if not s.endswith("/"):
             s = s + "/"
@@ -91,10 +91,10 @@ class Settings(BaseSettings):
 try:
     settings = Settings()
 except Exception as exc:
-    import logging
+    import structlog
 
-    log = logging.getLogger(__name__)
-    log.error("Failed to initialize settings: %s", exc)
+    log = structlog.get_logger(__name__)
+    log.error("Failed to initialize settings:", error=str(exc))
     raise
 
 __all__ = ["settings"]

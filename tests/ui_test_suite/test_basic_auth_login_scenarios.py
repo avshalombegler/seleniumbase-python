@@ -30,9 +30,9 @@ class TestBasicAuth(BaseCase):
         expected_message: str,
     ) -> None:
         """Tests basic autorization login scenatios"""
-        import logging
+        import structlog
 
-        logger = logging.getLogger(__name__)
+        logger = structlog.get_logger(__name__)
 
         logger.info("Tests basic autorization login scenatios.")
         main_page = MainPage(self)
