@@ -1,4 +1,8 @@
-"""Main conftest - integrates directory fixtures and hooks."""
+
+"""Pytest configuration and shared fixtures for Selenium-based UI tests.
+
+Sets up logging, cleans result/download directories, and defines pytest hooks and fixtures.
+"""
 
 import logging
 import os
