@@ -25,8 +25,10 @@ class TestBrokenImages(UiBaseCase):
         self.logger.info("Getting broken images count.")
         broken_count = page.get_broken_images_count()
         self.logger.info(f"Found {broken_count} broken images.")
-        assert broken_count == self.EXPECTED_BROKEN_IMAGES, (
-            f"Expected {self.EXPECTED_BROKEN_IMAGES} broken images, found {broken_count}"
+        self.assert_equal(
+            broken_count,
+            self.EXPECTED_BROKEN_IMAGES,
+            f"Expected {self.EXPECTED_BROKEN_IMAGES} broken images, found {broken_count}",
         )
 
     @pytest.mark.regression
@@ -40,6 +42,8 @@ class TestBrokenImages(UiBaseCase):
         self.logger.info("Getting valid images count.")
         valid_count = page.get_valid_images_count()
         self.logger.info(f"Found {valid_count} valid images.")
-        assert valid_count == self.EXPECTED_VALID_IMAGES, (
-            f"Expected {self.EXPECTED_VALID_IMAGES} valid images, found {valid_count}"
+        self.assert_equal(
+            valid_count,
+            self.EXPECTED_VALID_IMAGES,
+            f"Expected {self.EXPECTED_VALID_IMAGES} valid images, found {valid_count}",
         )

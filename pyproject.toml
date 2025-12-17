@@ -33,8 +33,8 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
-    "-m smoke",
-    # "-m regression",
+    "-m regression or smoke",
+    # "-m smoke",
     # "-m ui",
     # "-m api",
     # "-m current",
@@ -49,14 +49,11 @@ addopts = [
 ]
 
 markers = [
-    "full: full test suite",
-    "current: current tests to run",
+    "regression: full regression test suite",
+    "smoke: critical tests",
     "ui: user interface interactions - auto-navigate to base url",
     "fix: test need to be fixed",
-    "smoke: critical path tests",
-    # "regression: full regression suite",
     # "flaky: tests that may fail intermittently",
-    # "video_skip: skip video recording for this test",
     # "slow: tests that take more than 10 seconds",
 ]
 

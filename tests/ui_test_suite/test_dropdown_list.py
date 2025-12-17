@@ -27,4 +27,4 @@ class TestDropdownList(UiBaseCase):
         page.select_dropdown_option(option)
 
         self.logger.info(f"Verifying option '{option}' selected.")
-        assert page.get_is_option_selected(option), f"Expected '{option}' to be selected, but it's not"
+        self.assert_true(page.get_is_option_selected(option), f"Expected '{option}' to be selected, but it's not")

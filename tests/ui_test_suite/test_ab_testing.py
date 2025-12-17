@@ -22,9 +22,9 @@ class TestABTesting(UiBaseCase):
         title = page.get_title_text()
         self.logger.info(f"Retrieved title: {title}.")
         expected_titles = ["A/B Test Control", "A/B Test Variation 1"]
-        assert title in expected_titles, f"Expected title in {expected_titles}, got '{title}'"
+        self.assert_in(title, expected_titles, f"Expected title in {expected_titles}, got '{title}'")
 
         paragraph = page.get_paragraph_text()
         self.logger.info(f"Retrieved paragraph: {paragraph}.")
         expected_text = "Also known as split testing"
-        assert expected_text in paragraph, f"Expected '{expected_text}' in paragraph, got '{paragraph}'"
+        self.assert_in(expected_text, paragraph, f"Expected '{expected_text}' in paragraph, got '{paragraph}'")

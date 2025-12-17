@@ -23,7 +23,7 @@ class TestContextMenu(UiBaseCase):
 
         self.logger.info("Testing right-click outside hot spot.")
         result = page.right_click_outside_hot_spot()
-        assert not result.alert_present, "Alert should not appear when clicking outside hot spot"
+        self.assert_false(result.alert_present, "Alert should not appear when clicking outside hot spot")
 
     @pytest.mark.regression
     @pytest.mark.ui
@@ -43,8 +43,10 @@ class TestContextMenu(UiBaseCase):
         page.close_context_menu_alert()
 
         if alert_text != "VIDEO_RECORDING_ACTIVE":
-            assert alert_text == self.EXPECTED_ALERT_TEXT, (
-                f"Expected alert text '{self.EXPECTED_ALERT_TEXT}', got '{alert_text}'"
+            self.assert_equal(
+                alert_text,
+                self.EXPECTED_ALERT_TEXT,
+                f"Expected alert text '{self.EXPECTED_ALERT_TEXT}', got '{alert_text}'",
             )
 
         else:

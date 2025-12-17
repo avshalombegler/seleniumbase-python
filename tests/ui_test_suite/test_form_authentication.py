@@ -49,7 +49,11 @@ class TestFormAuthentication(UiBaseCase):
             flash_message = secure_area_page.get_flash_message()
 
             self.logger.info("Verifying flash message after successfull login.")
-            assert expected_message in flash_message, f"Expected '{flash_message}'to contain '{expected_message}'"
+            self.assert_in(
+                expected_message,
+                flash_message,
+                f"Expected '{flash_message}'to contain '{expected_message}'",
+            )
 
             self.logger.info("Clicking logout button.")
             page = secure_area_page.click_logout()
@@ -58,8 +62,10 @@ class TestFormAuthentication(UiBaseCase):
             flash_message = page.get_flash_message()
 
             self.logger.info("Verifying flash message after successfull login.")
-            assert self.SUCCESSFULL_LOGOUT in flash_message, (
-                f"Expected '{flash_message}'to contain '{self.SUCCESSFULL_LOGOUT}'"
+            self.assert_in(
+                self.SUCCESSFULL_LOGOUT,
+                flash_message,
+                f"Expected '{flash_message}'to contain '{self.SUCCESSFULL_LOGOUT}'",
             )
 
         else:
@@ -70,4 +76,8 @@ class TestFormAuthentication(UiBaseCase):
             flash_message = page.get_flash_message()
 
             self.logger.info("Verifying flash message after unsuccessfull login.")
-            assert expected_message in flash_message, f"Expected '{flash_message}'to contain '{expected_message}'"
+            self.assert_in(
+                expected_message,
+                flash_message,
+                f"Expected '{flash_message}'to contain '{expected_message}'",
+            )

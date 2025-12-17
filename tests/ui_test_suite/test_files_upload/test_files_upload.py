@@ -44,4 +44,8 @@ class TestFilesUpload(UiBaseCase):
         uploaded_filename = file_uploaded_page.get_uploaded_file_name()
 
         self.logger.info("Verifying file uploaded sucessfully.")
-        assert filename == uploaded_filename, f"Expected filename '{filename}', but got '{uploaded_filename}'"
+        self.assert_equal(
+            filename,
+            uploaded_filename,
+            f"Expected filename '{filename}', but got '{uploaded_filename}'",
+        )

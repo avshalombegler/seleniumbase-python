@@ -30,9 +30,11 @@ class TestAddRemoveElements(UiBaseCase):
         count = page.count_delete_buttons()
 
         self.logger.info("Verifying delete buttons count.")
-        assert self.NUM_OF_ELEMENTS == count, f"Expected '{self.NUM_OF_ELEMENTS}' delete buttons, but got '{count}'"
+        self.assert_equal(
+            self.NUM_OF_ELEMENTS, count, f"Expected '{self.NUM_OF_ELEMENTS}' delete buttons, but got '{count}'"
+        )
 
-    # @pytest.mark.full
+    @pytest.mark.regression
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
@@ -51,4 +53,4 @@ class TestAddRemoveElements(UiBaseCase):
         count = page.count_delete_buttons()
 
         self.logger.info("Verifying delete buttons count.")
-        assert count == self.NO_ELEMENTS, f"Expected '{self.NO_ELEMENTS}' delete buttons, but got '{count}'"
+        self.assert_equal(count, self.NO_ELEMENTS, f"Expected '{self.NO_ELEMENTS}' delete buttons, but got '{count}'")

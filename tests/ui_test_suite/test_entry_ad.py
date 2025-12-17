@@ -21,26 +21,26 @@ class TestEntryAd(UiBaseCase):
         page = main_page.click_entry_ad_link()
 
         self.logger.info("Verifying ad window display.")
-        assert page.is_modal_displayed()
+        self.assert_true(page.is_modal_displayed())
 
         self.logger.info("Clicking close button.")
         page.click_close_modal()
 
         self.logger.info("Verifying ad window close.")
-        assert not page.is_modal_displayed()
+        self.assert_false(page.is_modal_displayed())
 
         page.refresh_page()
         self.logger.info("Verifying ad window close.")
-        assert not page.is_modal_displayed()
+        self.assert_false(page.is_modal_displayed())
 
         self.logger.info("Clicking re-enable button.")
         page.click_re_enable_link()
 
         self.logger.info("Verifying ad window display.")
-        assert page.is_modal_displayed()
+        self.assert_true(page.is_modal_displayed())
 
         self.logger.info("Clicking close button.")
         page.click_close_modal()
 
         self.logger.info("Verifying ad window close.")
-        assert not page.is_modal_displayed()
+        self.assert_false(page.is_modal_displayed())

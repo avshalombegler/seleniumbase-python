@@ -22,7 +22,7 @@ class TestJQueryUIMenus(UiBaseCase):
     @parameterized.expand(zip(LINK_MENU_ITEMS, FILES_EXTENSIONS))
     @pytest.mark.skip(reason="Test is not yet complete")
     @pytest.mark.regression
-    # @pytest.mark.smoke
+    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_jquery_ui_menus_functionality(self, link_menu_item: str, file_extension: str) -> None:
@@ -39,6 +39,8 @@ class TestJQueryUIMenus(UiBaseCase):
         actual_downloaded_files_count = len(page.driver.get_downloaded_files())
 
         self.logger.info("Verifying input number value.")
-        assert self.EXPECTED_DOWNLOADED_FILES_COUNT == actual_downloaded_files_count, (
-            f"Expected '{self.EXPECTED_DOWNLOADED_FILES_COUNT}', but got '{actual_downloaded_files_count}'"
+        self.assert_equal(
+            self.EXPECTED_DOWNLOADED_FILES_COUNT,
+            actual_downloaded_files_count,
+            f"Expected '{self.EXPECTED_DOWNLOADED_FILES_COUNT}', but got '{actual_downloaded_files_count}'",
         )

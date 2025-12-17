@@ -261,7 +261,7 @@ selenium-python/
 │    └── workflows/ci.yml                       # GitHub Actions workflow
 ├── config/
 │    └── conftest_config.py                     # Configuration for pytest conftest
-│    └── env_config.py                          # Loads .env variables
+│    └── project_config.py                      # 
 │    └── nginx.conf                             # Nginx configuration for reverse proxy
 ├── pages/                                      # Page Object Model classes
 │    ├── base/                                  # BasePage, PageManager

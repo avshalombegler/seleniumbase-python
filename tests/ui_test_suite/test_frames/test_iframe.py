@@ -41,7 +41,8 @@ class TestIframe(UiBaseCase):
         frame_text = iframe_page.get_iframe_text()
 
         self.logger.info("Verifying text in iframe's rich text area.")
-        assert self.TEXT == frame_text, (
-            f"Expected frame text '{self.TEXT}',\
-              got '{frame_text}'"
+        self.assert_equal(
+            self.TEXT,
+            frame_text,
+            f"Expected frame text '{self.TEXT}', got '{frame_text}'",
         )

@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import allure
 
+from config import settings
 from pages.base.base_page import BaseCase, BasePage
 from pages.features.geolocation.locators import GeolocationPageLocators
 
@@ -34,7 +35,6 @@ class GeolocationPage(BasePage):
 
     def _inject_chrome_geolocation_mock(self) -> None:
         """Inject geolocation mock for Chrome browser."""
-        import config.conftest_config as conftest_config
 
         self.driver.execute_cdp_cmd(
             "Browser.grantPermissions",
@@ -43,23 +43,22 @@ class GeolocationPage(BasePage):
         self.driver.execute_cdp_cmd(
             "Emulation.setGeolocationOverride",
             {
-                "latitude": conftest_config.geolocation_lat,
-                "longitude": conftest_config.geolocation_lon,
+                "latitude": settings.GEOLOCATION_LAT,
+                "longitude": settings.GEOLOCATION_LON,
                 "accuracy": 100,
             },
         )
 
     def _inject_firefox_geolocation_mock(self) -> None:
         """Inject geolocation mock for Firefox browser."""
-        import config.conftest_config as conftest_config
 
         script = f"""
         Object.defineProperty(navigator.geolocation, 'getCurrentPosition', {{
             value: function(success, error) {{
                 success({{
                     coords: {{
-                        latitude: {conftest_config.geolocation_lat},
-                        longitude: {conftest_config.geolocation_lon},
+                        latitude: {settings.GEOLOCATION_LAT},
+                        longitude: {settings.GEOLOCATION_LON},
                         accuracy: 100,
                         altitude: null,
                         altitudeAccuracy: null,

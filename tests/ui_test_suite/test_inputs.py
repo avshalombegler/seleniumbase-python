@@ -31,7 +31,11 @@ class TestInputs(UiBaseCase):
         input_number = page.get_input_number_value()
 
         self.logger.info("Verifying input number value.")
-        assert self.NUMBER == input_number, f"Expected '{self.NUMBER}', but got '{input_number}'"
+        self.assert_equal(
+            self.NUMBER,
+            input_number,
+            f"Expected '{self.NUMBER}', but got '{input_number}'",
+        )
 
         self.logger.info("Increasing number value using keyboard arrow.")
         page.increase_number_value(self.INCREASE_VALUE)
@@ -40,8 +44,10 @@ class TestInputs(UiBaseCase):
         increased_number = page.get_input_number_value()
 
         self.logger.info("Verifying input number value.")
-        assert self.NUMBER + self.INCREASE_VALUE == increased_number, (
-            f"Expected '{self.NUMBER + self.INCREASE_VALUE}', but got '{increased_number}'"
+        self.assert_equal(
+            self.NUMBER + self.INCREASE_VALUE,
+            increased_number,
+            f"Expected '{self.NUMBER + self.INCREASE_VALUE}', but got '{increased_number}'",
         )
 
         self.logger.info("Decreasing number value using keyboard arrow.")
@@ -51,6 +57,8 @@ class TestInputs(UiBaseCase):
         decreased_number = page.get_input_number_value()
 
         self.logger.info("Verifying input number value.")
-        assert self.EXPECTED_VALUE == decreased_number, (
-            f"Expected '{self.EXPECTED_VALUE}', but got '{decreased_number}'"
+        self.assert_equal(
+            self.EXPECTED_VALUE,
+            decreased_number,
+            f"Expected '{self.EXPECTED_VALUE}', but got '{decreased_number}'",
         )

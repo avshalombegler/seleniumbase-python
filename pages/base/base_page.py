@@ -8,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase import BaseCase
 
-from config.env_config import BASE_URL, LONG_TIMEOUT, SHORT_TIMEOUT
+from config import settings
 from utils.logging_helper import get_logger
 
 if TYPE_CHECKING:
@@ -23,14 +23,13 @@ class BasePage:
 
     Method Categories:
     1. Initialization
-    2. Core Helpers (Private)
-    3. Wait Methods
-    4. Navigation Methods
-    5. Frame/Window Methods
-    6. Element Interaction Methods
-    7. Element State Methods
-    8. Element Query Methods
-    9. Utility Methods
+    2. Wait Methods
+    3. Navigation Methods
+    4. Frame/Window Methods
+    5. Element Interaction Methods
+    6. Element State Methods
+    7. Element Query Methods
+    8. Utility Methods
     """
 
     # ============================================================================
@@ -41,9 +40,9 @@ class BasePage:
         self.driver = base_case
         self.actions = ActionChains(self.driver.driver)
         self.logger = logger if logger is not None else get_logger(self.__class__.__name__)
-        self.short_wait = SHORT_TIMEOUT
-        self.long_wait = LONG_TIMEOUT
-        self.base_url = BASE_URL
+        self.short_wait = settings.SHORT_TIMEOUT
+        self.long_wait = settings.LONG_TIMEOUT
+        self.base_url = settings.BASE_URL
 
     # ============================================================================
     # WAIT METHODS

@@ -38,4 +38,8 @@ class TestFloatingMenu(UiBaseCase):
         current_url = self.get_current_url()
 
         self.logger.info("Verifying url updated after click on menu item.")
-        assert item.lower() in current_url, f"Expected '{current_url}' to contain '{item.lower()}'"
+        self.assert_in(
+            item.lower(),
+            current_url,
+            f"Expected '{current_url}' to contain '{item.lower()}'",
+        )

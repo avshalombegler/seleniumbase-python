@@ -24,10 +24,10 @@ class TestExitIntent(UiBaseCase):
         page.trigger_exit_intent_js()
 
         self.logger.info("Verifying modal display.")
-        assert page.is_modal_displayed()
+        self.assert_true(page.is_modal_displayed())
 
         self.logger.info("Clicking close button.")
         page.click_close_modal()
 
         self.logger.info("Verifying modal close.")
-        assert not page.is_modal_displayed()
+        self.assert_false(page.is_modal_displayed())

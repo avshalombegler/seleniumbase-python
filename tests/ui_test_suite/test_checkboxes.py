@@ -23,11 +23,13 @@ class TestCheckboxes(UiBaseCase):
         page = main_page.click_checkboxes_link()
 
         self.logger.info("Check checkboxes initial state.")
-        assert not page.is_checkbox_checked(self.CHECKBOX_INDEX_0), (
-            f"Expected checkbox {self.CHECKBOX_INDEX_0} to be unchecked"
+        self.assert_false(
+            page.is_checkbox_checked(self.CHECKBOX_INDEX_0),
+            f"Expected checkbox {self.CHECKBOX_INDEX_0} to be unchecked",
         )
-        assert page.is_checkbox_checked(self.CHECKBOX_INDEX_1), (
-            f"Expected checkbox {self.CHECKBOX_INDEX_1} to be checked"
+        self.assert_true(
+            page.is_checkbox_checked(self.CHECKBOX_INDEX_1),
+            f"Expected checkbox {self.CHECKBOX_INDEX_1} to be checked",
         )
 
         self.logger.info("Set checkboxes new state.")
@@ -35,9 +37,11 @@ class TestCheckboxes(UiBaseCase):
         page.set_checkbox(self.CHECKBOX_INDEX_1, False)
 
         self.logger.info("Check checkboxes new state.")
-        assert page.is_checkbox_checked(self.CHECKBOX_INDEX_0), (
-            f"Expected checkbox {self.CHECKBOX_INDEX_0} to be checked"
+        self.assert_true(
+            page.is_checkbox_checked(self.CHECKBOX_INDEX_0),
+            f"Expected checkbox {self.CHECKBOX_INDEX_0} to be checked",
         )
-        assert not page.is_checkbox_checked(self.CHECKBOX_INDEX_1), (
-            f"Expected checkbox {self.CHECKBOX_INDEX_1} to be unchecked"
+        self.assert_false(
+            page.is_checkbox_checked(self.CHECKBOX_INDEX_1),
+            f"Expected checkbox {self.CHECKBOX_INDEX_1} to be unchecked",
         )

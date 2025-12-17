@@ -41,7 +41,9 @@ class TestFilesDownload(UiBaseCase):
         self.logger.info(f"Expected count: {files_links_count}")
         self.logger.info(f"Downloaded count: {downloaded_files_count}")
 
-        assert files_links_count == downloaded_files_count, (
+        self.assert_equal(
+            files_links_count,
+            downloaded_files_count,
             f"Expected files count '{files_links_count}', but got '{downloaded_files_count}' files. "
-            f"Missing files: {[set(f.split('/')[-1] for f in files_links) - set(downloaded_files)]}"
+            f"Missing files: {[set(f.split('/')[-1] for f in files_links) - set(downloaded_files)]}",
         )

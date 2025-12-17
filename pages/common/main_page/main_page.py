@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 import allure
 
-from config.env_config import BASE_URL
+from config import settings
 from pages.base.base_page import BaseCase, BasePage
 from pages.common.main_page.locators import MainPageLocators
 from pages.features.ab_testing.ab_testing_page import ABTestingPage
@@ -38,6 +38,7 @@ from pages.features.javascript_onload_event_error.javascript_onload_event_error_
     JavaScriptOnloadRventErrorPage,
 )
 from pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenusPage
+from pages.features.key_presses.key_presses_page import KeyPressesPage
 
 if TYPE_CHECKING:
     from logging import Logger
@@ -48,7 +49,7 @@ class MainPage(BasePage):
         super().__init__(driver, logger)
         if hasattr(self.driver, "request") and self.driver.request.node.get_closest_marker("ui"):
             self.wait_for_page_to_load(MainPageLocators.PAGE_LOADED_INDICATOR)
-            self.base_url = BASE_URL
+            self.base_url = settings.BASE_URL
 
     @allure.step("Navigate to {page_name} page")
     def click_ab_testing_link(self, page_name: str = "A/B Testing") -> ABTestingPage:
@@ -105,7 +106,7 @@ class MainPage(BasePage):
         self.logger.info(f"Navigating to {page_name} page.")
         if not username or not password:
             raise ValueError(f"Invalid credentials: username='{username}', password='{password or ''}'")
-        base_path = urljoin(self.base_url, "digest_auth")
+        base_path = urljoin(str(self.base_url), "digest_auth")
         url = base_path.replace("https://", f"https://{username}:{password}@")
         self.navigate_to(url)
 
@@ -258,3 +259,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.JAVASCRIPT_ONLOAD_EVENT_ERROR_LINK)
 
         return JavaScriptOnloadRventErrorPage(self.driver, self.logger)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_key_presses_link(self, page_name: str = "Key Presses") -> KeyPressesPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.KEY_PRESSES_LINK)
+
+        return KeyPressesPage(self.driver, self.logger)

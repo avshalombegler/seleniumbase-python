@@ -20,7 +20,7 @@ class TestJavaScriptAlerts(UiBaseCase):
     @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_js_alert(self) -> None:
+    def test_js_alert_functionality(self) -> None:
         self.logger.info("Tests JS Alert.")
         main_page = MainPage(self)
         page = main_page.click_javascript_alerts_link()
@@ -35,7 +35,11 @@ class TestJavaScriptAlerts(UiBaseCase):
         result = page.get_result_text()
 
         self.logger.info("Verifying result text.")
-        assert self.ALERT_SUCCESS_MSG in result.lower(), f"Expected '{result}', to contain '{self.ALERT_SUCCESS_MSG}'"
+        self.assert_in(
+            self.ALERT_SUCCESS_MSG,
+            result.lower(),
+            f"Expected '{result}', to contain '{self.ALERT_SUCCESS_MSG}'",
+        )
 
     @pytest.mark.regression
     @pytest.mark.smoke
@@ -56,7 +60,11 @@ class TestJavaScriptAlerts(UiBaseCase):
         result = page.get_result_text()
 
         self.logger.info("Verifying result text.")
-        assert self.CONFIRM_OK_MSG in result.lower(), f"Expected '{result}', to contain '{self.CONFIRM_OK_MSG}'"
+        self.assert_in(
+            self.CONFIRM_OK_MSG,
+            result.lower(),
+            f"Expected '{result}', to contain '{self.CONFIRM_OK_MSG}'",
+        )
 
         self.logger.info("Clicking JS Confirm button.")
         page.click_js_confirm_button()
@@ -68,7 +76,11 @@ class TestJavaScriptAlerts(UiBaseCase):
         result = page.get_result_text()
 
         self.logger.info("Verifying result text.")
-        assert self.CONFIRM_CANCEL_MSG in result.lower(), f"Expected '{result}', to contain '{self.CONFIRM_CANCEL_MSG}'"
+        self.assert_in(
+            self.CONFIRM_CANCEL_MSG,
+            result.lower(),
+            f"Expected '{result}', to contain '{self.CONFIRM_CANCEL_MSG}'",
+        )
 
     @pytest.mark.regression
     @pytest.mark.smoke
@@ -89,7 +101,11 @@ class TestJavaScriptAlerts(UiBaseCase):
         result = page.get_result_text()
 
         self.logger.info("Verifying result text.")
-        assert self.PROMPT_ENTERED_MSG in result.lower(), f"Expected '{result}', to contain '{self.PROMPT_ENTERED_MSG}'"
+        self.assert_in(
+            self.PROMPT_ENTERED_MSG,
+            result.lower(),
+            f"Expected '{result}', to contain '{self.PROMPT_ENTERED_MSG}'",
+        )
 
         self.logger.info("Clicking JS Prompt button.")
         page.click_js_prompt_button()
@@ -101,4 +117,8 @@ class TestJavaScriptAlerts(UiBaseCase):
         result = page.get_result_text()
 
         self.logger.info("Verifying result text.")
-        assert self.PROMPT_NULL_MSG in result.lower(), f"Expected '{result}', to contain '{self.PROMPT_NULL_MSG}'"
+        self.assert_in(
+            self.PROMPT_NULL_MSG,
+            result.lower(),
+            f"Expected '{result}', to contain '{self.PROMPT_NULL_MSG}'",
+        )

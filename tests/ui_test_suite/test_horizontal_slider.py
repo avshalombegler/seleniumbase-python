@@ -31,9 +31,10 @@ class TestHorizontalSlider(UiBaseCase):
 
         self.logger.info("Verifying horizontal slider new value.")
         slider_value = page.get_horizontal_slider_value()
-        assert self.EXPECTED_MAX_RANGE == slider_value, (
-            f"Expected slider value '{self.EXPECTED_MAX_RANGE}',\
-              got '{slider_value}'"
+        self.assert_equal(
+            self.EXPECTED_MAX_RANGE,
+            slider_value,
+            f"Expected slider value '{self.EXPECTED_MAX_RANGE}', got '{slider_value}'",
         )
 
         self.logger.info("Setting horizontal slider value using drag and drop.")
@@ -41,9 +42,10 @@ class TestHorizontalSlider(UiBaseCase):
 
         self.logger.info("Verifying horizontal slider new value.")
         slider_value = page.get_horizontal_slider_value()
-        assert self.EXPECTED_MIN_RANGE == slider_value, (
-            f"Expected slider value '{self.EXPECTED_MIN_RANGE}',\
-              got '{slider_value}'"
+        self.assert_equal(
+            self.EXPECTED_MIN_RANGE,
+            slider_value,
+            f"Expected slider value '{self.EXPECTED_MIN_RANGE}', got '{slider_value}'",
         )
 
     @pytest.mark.regression
@@ -59,7 +61,8 @@ class TestHorizontalSlider(UiBaseCase):
 
         self.logger.info("Verifying horizontal slider new value.")
         slider_value = page.get_horizontal_slider_value()
-        assert self.EXPECTED_KEYS_RANGE == slider_value, (
-            f"Expected slider value '{self.EXPECTED_KEYS_RANGE}',\
-              got '{slider_value}'"
+        self.assert_equal(
+            self.EXPECTED_KEYS_RANGE,
+            slider_value,
+            f"Expected slider value '{self.EXPECTED_KEYS_RANGE}', got '{slider_value}'",
         )

@@ -12,7 +12,7 @@ from _pytest.nodes import Item
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
-import config.env_config as env_config
+from config import settings
 from utils.logging_helper import configure_root_logger, set_current_test
 
 # Configure root logger once for the test session
@@ -46,13 +46,13 @@ def clean_directories_at_start() -> None:
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """Add browser info to Allure environment and ensure clean results directory."""
-    browser = os.environ.get("BROWSER", env_config.BROWSER).lower()
+    browser = os.environ.get("BROWSER", settings.BROWSER).lower()
 
     # Store for use in fixtures
     config.browser = browser  # type: ignore[attr-defined]
 
     config.option.browser = browser
-    config.option.headless = env_config.HEADLESS
+    config.option.headless = settings.HEADLESS
 
     # Get the allure results directory from pytest options
     allure_results_dir = getattr(config.option, "allure_report_dir", None)
@@ -86,9 +86,8 @@ def pytest_configure(config: pytest.Config) -> None:
     env_properties_path = allure_results_path / "environment.properties"
     with open(env_properties_path, "w") as f:
         f.write(f"Browser={browser.capitalize()}\n")
-        f.write(f"Headless={env_config.HEADLESS}\n")
-        f.write(f"Maximized={env_config.MAXIMIZED}\n")
-        f.write(f"Base_URL={env_config.BASE_URL}\n")
+        f.write(f"Headless={settings.HEADLESS}\n")
+        f.write(f"Base_URL={settings.BASE_URL}\n")
         if os.environ.get("GITHUB_ACTIONS"):
             f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
             f.write(f"GitHub_Actions_Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")

@@ -34,17 +34,17 @@ class TestDynamicContent(UiBaseCase):
 
         self.logger.info("Comparing content changes after refresh.")
         changed_count = self._count_changed_blocks(initial_blocks, refreshed_blocks)
-        assert 0 < changed_count <= 3, f"Expected 1-3 blocks to change, got {changed_count}"
+        self.assert_true(0 < changed_count <= 3, f"Expected 1-3 blocks to change, got {changed_count}")
 
     def _validate_blocks_count(self, blocks: list) -> None:
         """Validate that we have exactly 3 content blocks"""
-        assert len(blocks) == 3, f"Expected 3 content blocks, got {len(blocks)}"
+        self.assert_equal(len(blocks), 3, f"Expected 3 content blocks, got {len(blocks)}")
 
     def _validate_blocks_structure(self, blocks: list) -> None:
         """Validate structure of each content block"""
         for block in blocks:
-            assert block["image"].startswith("http"), "Invalid image URL"
-            assert block["text"].strip(), "Empty text in block"
+            self.assert_true(block["image"].startswith("http"), "Invalid image URL")
+            self.assert_true(block["text"].strip(), "Empty text in block")
 
     def _count_changed_blocks(self, initial_blocks: list, refreshed_blocks: list) -> int:
         """Count how many blocks changed between refreshes"""

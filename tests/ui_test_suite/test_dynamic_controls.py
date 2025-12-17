@@ -21,31 +21,31 @@ class TestDynamicControls(UiBaseCase):
         page = main_page.click_dynamic_controls_link()
 
         self.logger.info("Checking if checkbox is present.")
-        assert page.is_checkbox_visible(), "Expected checkbox to be present"
+        self.assert_true(page.is_checkbox_visible(), "Expected checkbox to be present")
 
         self.logger.info("Clicking remove button.")
         page.click_remove_button()
 
         self.logger.info("Checking if checkbox absent.")
-        assert not page.is_checkbox_visible(), "Expected checkbox to be absent"
+        self.assert_false(page.is_checkbox_visible(), "Expected checkbox to be absent")
 
         self.logger.info("Getting remove message text.")
         message = page.get_remove_add_message()
 
         self.logger.info("Verifying remove message text.")
-        assert "It's gone!" in message, f"Expected '{message}' to contain 'It's gone!'"
+        self.assert_in("It's gone!", message, f"Expected '{message}' to contain 'It's gone!'")
 
         self.logger.info("Clicking add button.")
         page.click_add_button()
 
         self.logger.info("Checking if checkbox is present.")
-        assert page.is_checkbox_visible(), "Expected checkbox to be present"
+        self.assert_true(page.is_checkbox_visible(), "Expected checkbox to be present")
 
         self.logger.info("Getting add message text.")
         message = page.get_remove_add_message()
 
         self.logger.info("Verifying add message text.")
-        assert "It's back!" in message, f"Expected '{message}' to contain 'It's back!'"
+        self.assert_in("It's back!", message, f"Expected '{message}' to contain 'It's back!'")
 
     @pytest.mark.regression
     @pytest.mark.ui
@@ -57,28 +57,28 @@ class TestDynamicControls(UiBaseCase):
         page = main_page.click_dynamic_controls_link()
 
         self.logger.info("Checking if textbox is disabled.")
-        assert not page.is_textbox_enabled(), "Expected textbox to be disabled"
+        self.assert_false(page.is_textbox_enabled(), "Expected textbox to be disabled")
 
         self.logger.info("Clicking enable button.")
         page.click_enable_button()
 
         self.logger.info("Checking if textbox is enabled.")
-        assert page.is_textbox_enabled(), "Expected textbox to be enabled"
+        self.assert_true(page.is_textbox_enabled(), "Expected textbox to be enabled")
 
         self.logger.info("Getting enable message text.")
         message = page.get_enable_disable_message()
 
         self.logger.info("Verifying enable message text.")
-        assert "It's enabled!" in message, f"Expected '{message}' to contain 'It's enabled!'"
+        self.assert_in("It's enabled!", message, f"Expected '{message}' to contain 'It's enabled!'")
 
         self.logger.info("Clicking disable button.")
         page.click_disable_button()
 
         self.logger.info("Checking if textbox is disabled.")
-        assert not page.is_textbox_enabled(), "Expected textbox to be disabled"
+        self.assert_false(page.is_textbox_enabled(), "Expected textbox to be disabled")
 
         self.logger.info("Getting disable message text.")
         message = page.get_enable_disable_message()
 
         self.logger.info("Verifying disable message text.")
-        assert "It's disabled!" in message, f"Expected '{message}' to contain 'It's disabled!'"
+        self.assert_in("It's disabled!", message, f"Expected '{message}' to contain 'It's disabled!'")

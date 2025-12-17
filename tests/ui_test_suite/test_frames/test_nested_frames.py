@@ -38,9 +38,10 @@ class TestNestedFrames(UiBaseCase):
         frame_text = nested_frames_page.get_frame_text()
 
         self.logger.info("Verifying frame text.")
-        assert frame.upper() == frame_text, (
-            f"Expected frame text '{frame.upper()}',\
-              got '{frame_text}'"
+        self.assert_equal(
+            frame.upper(),
+            frame_text,
+            f"Expected frame text '{frame.upper()}', got '{frame_text}'",
         )
 
     @pytest.mark.regression
@@ -61,7 +62,8 @@ class TestNestedFrames(UiBaseCase):
         frame_text = nested_frames_page.get_frame_text()
 
         self.logger.info("Verifying frame text.")
-        assert self.BOTTOM_FRAME.upper() == frame_text, (
-            f"Expected frame text '{self.BOTTOM_FRAME.upper()}',\
-              got '{frame_text}'"
+        self.assert_equal(
+            self.BOTTOM_FRAME.upper(),
+            frame_text,
+            f"Expected frame text '{self.BOTTOM_FRAME.upper()}', got '{frame_text}'",
         )

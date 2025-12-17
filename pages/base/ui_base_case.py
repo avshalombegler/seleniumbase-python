@@ -7,7 +7,7 @@ import pytest
 from seleniumbase import BaseCase
 from seleniumbase.fixtures import constants
 
-import config.env_config as env_config
+from config import settings
 
 
 class UiBaseCase(BaseCase):
@@ -49,8 +49,8 @@ class UiBaseCase(BaseCase):
 
         # Navigate to base URL if @pytest.mark.ui
         if hasattr(self, "request") and self.request.node.get_closest_marker("ui"):
-            with allure.step(f"Navigate to base URL: {env_config.BASE_URL}"):
-                self.open(env_config.BASE_URL)
+            with allure.step(f"Navigate to base URL: {settings.BASE_URL}"):
+                self.open(settings.BASE_URL)
 
     def tearDown(self) -> None:
         super().tearDown()

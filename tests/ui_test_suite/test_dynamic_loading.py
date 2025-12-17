@@ -23,7 +23,7 @@ class TestDynamicLoading(UiBaseCase):
         page.click_start_button()
 
         self.logger.info("Verifying success message.")
-        assert "Hello World!" in page.get_success_message()
+        self.assert_in("Hello World!", page.get_success_message())
 
     @pytest.mark.regression
     @pytest.mark.ui
@@ -37,4 +37,4 @@ class TestDynamicLoading(UiBaseCase):
         page.click_start_button()
 
         self.logger.info("Verifying success message.")
-        assert "Hello World!" in page.get_success_message()
+        self.assert_in("Hello World!", page.get_success_message())

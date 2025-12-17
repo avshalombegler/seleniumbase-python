@@ -27,8 +27,16 @@ class TestGeolocation(UiBaseCase):
 
         self.logger.info("Verifying geolocation latitude value.")
         lat = page.get_latitude_value()
-        assert LAT_VAL == lat, f"expected '{LAT_VAL}', but got '{lat}'"
+        self.assert_equal(
+            LAT_VAL,
+            lat,
+            f"expected '{LAT_VAL}', but got '{lat}'",
+        )
 
         self.logger.info("Verifying geolocation longitude value.")
         long = page.get_longitude_value()
-        assert LONG_VAL == long, f"expected '{LONG_VAL}', but got '{long}'"
+        self.assert_equal(
+            LONG_VAL,
+            long,
+            f"expected '{LONG_VAL}', but got '{long}'",
+        )

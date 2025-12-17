@@ -41,7 +41,7 @@ class TestChallengingDom(UiBaseCase):
 
         self.logger.info(f"Getting table head text of column '{col}'.")
         header = page.get_table_head_text(col)
-        assert header == col, f"Table head value '{col}' not found (got '{header}')"
+        self.assert_equal(header, col, f"Table head value '{col}' not found (got '{header}')")
 
     @parameterized.expand(zip(COLUMNS, CELL_VALUES))
     @pytest.mark.regression
@@ -56,7 +56,7 @@ class TestChallengingDom(UiBaseCase):
             expected = f"{cell}{i}"
             self.logger.info(f"Getting table cell '{cell}' text under column '{col}'.")
             val = page.get_table_cell_text(col, expected)
-            assert val == expected, f"Cell value '{expected}' under '{col}' not found (got '{val}')"
+            self.assert_equal(val, expected, f"Cell value '{expected}' under '{col}' not found (got '{val}')")
 
     @pytest.mark.regression
     @pytest.mark.ui
@@ -71,12 +71,18 @@ class TestChallengingDom(UiBaseCase):
             page.click_edit_button(i)
 
             current_url = self.get_current_url()
-            assert self.EDIT_SUFFIX in current_url, (
-                f"Expected URL '{self.EDIT_SUFFIX} in URL', got URL: '{current_url}'"
+            self.assert_in(
+                self.EDIT_SUFFIX,
+                current_url,
+                f"Expected URL '{self.EDIT_SUFFIX} in URL', got URL: '{current_url}'",
             )
 
             self.logger.info(f"Click delete button in row {i}.")
             page.click_delete_button(i)
 
             current_url = self.get_current_url()
-            assert self.DEL_SUFFIX in current_url, f"Expected URL '{self.DEL_SUFFIX} in URL', got URL: '{current_url}'"
+            self.assert_in(
+                self.DEL_SUFFIX,
+                current_url,
+                f"Expected URL '{self.DEL_SUFFIX} in URL', got URL: '{current_url}'",
+            )

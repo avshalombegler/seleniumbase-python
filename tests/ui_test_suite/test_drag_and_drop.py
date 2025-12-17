@@ -26,5 +26,5 @@ class TestDragAndDrop(UiBaseCase):
         page.drag_and_drop_box()
 
         self.logger.info("Verifying drag and drop action succeeded.")
-        assert page.get_box_header(self.BOX_A.lower()) == self.BOX_B
-        assert page.get_box_header(self.BOX_B.lower()) == self.BOX_A
+        self.assert_equal(page.get_box_header(self.BOX_A.lower()), self.BOX_B)
+        self.assert_equal(page.get_box_header(self.BOX_B.lower()), self.BOX_A)

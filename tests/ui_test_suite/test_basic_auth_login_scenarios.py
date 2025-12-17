@@ -45,5 +45,7 @@ class TestBasicAuth(BaseCase):
         status_code, message = page.get_status_code_and_auth_message(url)
 
         logger.info("Validate status code and authorization message.")
-        assert expected_status_code == status_code, f"Expected '{expected_status_code}', but got '{status_code}'"
-        assert expected_message in message, f"Expected '{message}' to contain '{expected_message}'"
+        self.assert_equal(
+            expected_status_code, status_code, f"Expected '{expected_status_code}', but got '{status_code}'"
+        )
+        self.assert_in(expected_message, message, f"Expected '{message}' to contain '{expected_message}'")

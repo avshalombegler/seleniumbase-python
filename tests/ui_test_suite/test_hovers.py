@@ -32,8 +32,10 @@ class TestHovers(UiBaseCase):
             username_text = page.get_user_name_text(user_index)
 
             self.logger.info("Verifying user name text.")
-            assert self.USER + str(user_index) in username_text, (
-                f"Expected '{username_text}' to contain '{self.USER + str(user_index)}'"
+            self.assert_in(
+                self.USER + str(user_index),
+                username_text,
+                f"Expected '{username_text}' to contain '{self.USER + str(user_index)}'",
             )
 
             self.logger.info("Clicking view profile link.")
@@ -43,8 +45,10 @@ class TestHovers(UiBaseCase):
             current_url = self.get_current_url()
 
             self.logger.info("Verifying user name in current url.")
-            assert self.USERS + str(user_index) in current_url, (
-                f"Expected '{current_url}' to contain '{self.USERS + str(user_index)}'"
+            self.assert_in(
+                self.USERS + str(user_index),
+                current_url,
+                f"Expected '{current_url}' to contain '{self.USERS + str(user_index)}'",
             )
 
             self.logger.info("Navigating back page.")

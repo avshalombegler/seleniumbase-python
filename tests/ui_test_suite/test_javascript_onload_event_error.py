@@ -17,8 +17,8 @@ class TestJavaScriptOnloadRventError(UiBaseCase):
     @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
-    def test_javascript_onload_event_error(self) -> None:
-        self.logger.info("JavaScript onload event error.")
+    def test_javascript_onload_event_error_functionality(self) -> None:
+        self.logger.info("Tests JavaScript onload event error.")
         main_page = MainPage(self)
         main_page.click_javascript_onload_event_error_link()
 
@@ -31,9 +31,13 @@ class TestJavaScriptOnloadRventError(UiBaseCase):
         filtered_messages = [m for m in messages if "optimizely" not in m.lower() and "favicon" not in m.lower()]
 
         self.logger.info("Verify exactly one relevant error, then assert its text")
-        assert len(filtered_messages) == 1, (
-            f"Expected exactly 1 relevant SEVERE error, found {len(filtered_messages)}. Logs: {filtered_messages}"
+        self.assert_equal(
+            len(filtered_messages),
+            1,
+            f"Expected exactly 1 relevant SEVERE error, found {len(filtered_messages)}. Logs: {filtered_messages}",
         )
-        assert self.EXPECTE_ERROR_MSG in filtered_messages[0], (
-            f"Expected error message not found in browser logs. Logs: {filtered_messages}"
+        self.assert_in(
+            self.EXPECTE_ERROR_MSG,
+            filtered_messages[0],
+            f"Expected error message not found in browser logs. Logs: {filtered_messages}",
         )
