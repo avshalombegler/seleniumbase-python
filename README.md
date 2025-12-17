@@ -296,3 +296,4 @@ We welcome contributions! Please follow these steps:
 - Submit a pull request with a clear description.
 
 For issues or questions, open a GitHub issue.
+
