@@ -73,8 +73,8 @@ pipeline {
         success {
             echo "✓ Tests passed and report uploaded to Allure Docker Service!"
             echo "View reports:"
-            echo "Chrome: http://localhost:8080/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
-            echo "Firefox: http://localhost:8080/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
+            echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
+            echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
         }
         failure {
             echo "✗ Tests failed. Check reports for details."
