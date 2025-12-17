@@ -29,8 +29,8 @@ pipeline {
                     parallel browsers.collectEntries { browser -> 
                         [(browser): {
                             withCredentials([
-                                string(credentialsId: 'selenium_test_username', variable: 'TEST_USERNAME'),
-                                string(credentialsId: 'selenium_test_password', variable: 'TEST_PASSWORD')
+                                string(credentialsId: 'TEST_USERNAME', variable: 'TEST_USERNAME'),
+                                string(credentialsId: 'TEST_PASSWORD', variable: 'TEST_PASSWORD')
                             ]) {
                                 sh """
                                     export BROWSER=${browser}
