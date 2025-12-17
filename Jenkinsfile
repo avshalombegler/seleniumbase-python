@@ -28,20 +28,25 @@ pipeline {
                     
                     parallel browsers.collectEntries { browser -> 
                         [(browser): {
-                            sh """
-                                export BROWSER=${browser}
-                                . /opt/venv/bin/activate
-                                xvfb-run -a -s "-screen 0 1920x1080x24" \
-                                    pytest \
-                                    -n ${params.WORKERS} --dist=loadfile \
-                                    --headless \
-                                    --alluredir=allure-results-${browser} \
-                                    --html=report-${browser}.html \
-                                    --self-contained-html \
-                                    --junitxml=reports/junit.xml \
-                                    -m ${params.MARKER} || true
-                            """
-                        }]
+                            withCredentials([
+                                string(credentialsId: 'selenium_test_username', variable: 'TEST_USERNAME'),
+                                string(credentialsId: 'selenium_test_password', variable: 'TEST_PASSWORD')
+                            ]) {
+                                sh """
+                                    export BROWSER=${browser}
+                                    . /opt/venv/bin/activate
+                                    xvfb-run -a -s "-screen 0 1920x1080x24" \
+                                        pytest \
+                                        -n ${params.WORKERS} --dist=loadfile \
+                                        --headless \
+                                        --alluredir=allure-results-${browser} \
+                                        --html=report-${browser}.html \
+                                        --self-contained-html \
+                                        --junitxml=reports/junit.xml \
+                                        -m ${params.MARKER} || true
+                                """
+                            }
+                        } ]
                     }
                 }
             }
