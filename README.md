@@ -204,7 +204,7 @@ PASSWORD=SuperSecretPassword!
 The Jenkinsfile supports the following parameters:
 
 - `BROWSER`: Browser choice (both/chrome/firefox)
-- `MARKER`: Test marker to run (full/smoke/regression)
+- `MARKER`: Test marker to run (regression/smoke/ui)
 - `WORKERS`: Number of parallel workers (default: auto)
 
 ## Docker Support
@@ -240,8 +240,8 @@ Latest reports are published automatically to GitHub Pages:
 
 |  | Latest Run | With History |
 |-----------|-----------|-----------|
-| **Chrome** | [View Report](https://avshalombegler.github.io/selenium-python/chrome/latest-only/build-chrome-19849391347/) | [View Report](https://avshalombegler.github.io/selenium-python/chrome/latest-with-history/build-chrome-19849391347/) |
-| **Firefox** | [View Report](https://avshalombegler.github.io/selenium-python/firefox/latest-only/build-firefox-19849391347/) | [View Report](https://avshalombegler.github.io/selenium-python/firefox/latest-with-history/build-firefox-19849391347/) |
+| **Chrome** | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-only/build-chrome-19849391347/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-with-history/build-chrome-19849391347/) |
+| **Firefox** | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-only/build-firefox-19849391347/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-with-history/build-firefox-19849391347/) |
 
 ### 📊 Jenkins Allure Reports
 
@@ -296,4 +296,3 @@ We welcome contributions! Please follow these steps:
 - Submit a pull request with a clear description.
 
 For issues or questions, open a GitHub issue.
-
