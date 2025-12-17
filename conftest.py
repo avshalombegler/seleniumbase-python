@@ -7,7 +7,6 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from _pytest.main import Session
 from _pytest.nodes import Item
 from filelock import FileLock
 from seleniumbase.fixtures import constants
@@ -123,19 +122,6 @@ def pytest_runtest_makereport(item: Item) -> Generator[None, None, None]:
         if report.failed:
             root_logger.error(f"Test teardown failed for: {item.name}")
             root_logger.info("Teardown failure logged - SeleniumBase handles screenshots")
-
-
-# @pytest.hookimpl(tryfirst=True)
-# def pytest_sessionfinish(session: Session, exitstatus: int) -> None:
-#     """
-#     Log final test session results.
-#     """
-#     passed = session.testscollected - session.testsfailed
-#     root_logger.info(
-#         f"Test session finished. Total: {session.testscollected}, "
-#         f"Passed: {passed}, Failed: {session.testsfailed}, "
-#         f"Exit status: {exitstatus}"
-#     )
 
 
 @pytest.fixture
