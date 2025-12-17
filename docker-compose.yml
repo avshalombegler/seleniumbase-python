@@ -36,7 +36,7 @@ services:
     container_name: allure-server
     restart: unless-stopped
     environment:
-      - CHECK_RESULTS_EVERY_SECONDS=1
+      - CHECK_RESULTS_EVERY_SECONDS=30
       - KEEP_HISTORY=1
       - KEEP_HISTORY_LATEST=25
     ports:
