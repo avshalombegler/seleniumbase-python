@@ -22,7 +22,10 @@ class TestJavaScriptOnloadRventError(UiBaseCase):
         main_page.click_javascript_onload_event_error_link()
 
         self.logger.info("Getting driver log errors.")
-        logs = self.driver.get_log("browser")
+        if self.driver.capabilities.get('browserName', '').lower() == 'chrome':
+            logs = self.driver.get_log("browser")
+        else:
+            pytest.skip("Browser log retrieval not supported for this browser")
         errors = [e for e in logs if e.get("level") == "SEVERE"]
 
         self.logger.info("Filter out known noisy messages (optimizely / favicon)")
