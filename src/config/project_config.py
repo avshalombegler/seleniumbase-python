@@ -79,7 +79,9 @@ class Settings(BaseSettings):
 
     @field_validator("TEST_PASSWORD", mode="after")
     @classmethod
-    def _validate_password_length(cls, v: PydanticSecretStr) -> PydanticSecretStr:
+    def _validate_password_length(cls, v: PydanticSecretStr | None) -> PydanticSecretStr | None:
+        if v is None:
+            return v  # Skip validation if the field is not set (optional)
         # Ensure SecretStr meets minimum length (Field(min_length) may not validate SecretStr length)
         raw = v.get_secret_value() if hasattr(v, "get_secret_value") else str(v)
         if len(raw) < 8:
