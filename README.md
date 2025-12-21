@@ -247,9 +247,9 @@ Latest reports are published automatically to GitHub Pages:
 
 Reports generated from Jenkins pipeline runs are hosted locally and can be accessed publicly via ngrok tunneling. These reports are populated through the Allure server backend, served via the Allure UI, and exposed externally using ngrok for secure remote access.
 
-📊**Local Access:** [View Report](http://localhost:8080) (via Nginx reverse proxy to Allure UI)
+📊 **Local Access:** [View Report](http://localhost:8080) (via Nginx reverse proxy to Allure UI)
 
-📊**Public Access:** [View Report](https://url-place-holder.ngrok-free.dev) (dynamic tunnel URL provided by ngrok)
+📊 **Public Access:** [View Report](https://url-place-holder.ngrok-free.dev) (dynamic tunnel URL provided by ngrok)
 
 > Reports update automatically after each CI run.
 
