@@ -95,19 +95,19 @@ jobs:
       - name: Cache Allure
         uses: actions/cache@v4
         with:
-          path: /usr/local/allure
+          path: tools/allure-2.35.1
           key: ${{ runner.os }}-allure-2.35.1
 
       - name: Install Java and Allure Commandline
         run: |
           sudo apt-get install -y unzip curl openjdk-11-jre-headless
-          if [ ! -d "/usr/local/allure" ]; then  # Only install if not cached
+          mkdir -p tools
+          if [ ! -d "tools/allure-2.35.1" ]; then
             curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
-            sudo unzip -q /tmp/allure.zip -d /tmp
-            sudo mv /tmp/allure-2.35.1 /usr/local/allure
-            sudo chmod -R +x /usr/local/allure/bin
-            sudo ln -sf /usr/local/allure/bin/allure /usr/local/bin/allure
+            unzip -q /tmp/allure.zip -d tools
           fi
+          chmod -R +x tools/allure-2.35.1/bin
+          echo "$PWD/tools/allure-2.35.1/bin" >> $GITHUB_PATH
           allure --version
 
       - name: Create .env file
