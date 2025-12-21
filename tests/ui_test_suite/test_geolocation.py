@@ -1,8 +1,8 @@
 import allure
 import pytest
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 LAT_VAL = 32.0853
 LONG_VAL = 34.7818

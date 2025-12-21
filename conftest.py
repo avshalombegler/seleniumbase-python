@@ -13,8 +13,8 @@ import structlog
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
-from config import settings
-from config.logging_config import configure_logging
+from src.config import settings
+from src.config.logging_config import configure_logging
 
 # Configure root logging once for the test session
 configure_logging()

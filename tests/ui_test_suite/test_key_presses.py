@@ -6,8 +6,8 @@ import allure
 import pytest
 from selenium.webdriver.common.keys import Keys
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 if TYPE_CHECKING:
     pass
@@ -20,7 +20,6 @@ class TestKeyPresses(UiBaseCase):
     """Tests Key Presses functionality"""
 
     @pytest.mark.regression
-    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_key_presses_functionality(self) -> None:

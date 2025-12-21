@@ -4,8 +4,8 @@ import allure
 import pytest
 from parameterized import parameterized
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 
 @allure.parent_suite("UI Test Suite")

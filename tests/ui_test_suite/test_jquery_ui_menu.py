@@ -2,8 +2,8 @@ import allure
 import pytest
 from parameterized import parameterized
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 
 @allure.parent_suite("UI Test Suite")
@@ -22,7 +22,6 @@ class TestJQueryUIMenus(UiBaseCase):
     @parameterized.expand(zip(LINK_MENU_ITEMS, FILES_EXTENSIONS))
     @pytest.mark.skip(reason="Test is not yet complete")
     @pytest.mark.regression
-    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_jquery_ui_menus_functionality(self, link_menu_item: str, file_extension: str) -> None:
