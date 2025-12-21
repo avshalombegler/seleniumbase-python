@@ -258,28 +258,28 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 ```text
 seleniumbase-python/
 ├── .github/
-│    └── workflows/ci.yml                   # GitHub Actions workflow
-├── reports/                                # Allure results and artifacts
-├── src/                                    # 
-│   ├── config/                             #
-│   │    └── logging_config.py              # 
+│    └── workflows/ci.yml                   # GitHub Actions workflow for CI/CD
+├── reports/                                # Allure test results and artifacts
+├── src/                                    # Automation framework source code
+│   ├── config/                             # Configuration files
+│   │    └── logging_config.py              # Logging configuration settings
 │   │    └── nginx.conf                     # Nginx configuration for reverse proxy
-│   │    └── project_config.py              # 
+│   │    └── project_config.py              # Project-specific configuration
 │   └── pages/                              # Page Object Model classes
-│        ├── base/                          # BasePage, UiBaseCase
-│        ├── common/                        # MainPage
-│        └── features/                      # Page objects per feature
-├── tests/                                  # Test cases
-├── .env                                    # Environment variables (gitignored)
-├── conftest.py                             # Main conftest - registers plugins
-├── docker-compose.yml                      # Docker Compose configuration for CI/CD environment
-├── Dockerfile.jenkins                      # Custom Jenkins agent Docker image
-├── environment.yml                         # 
+│        ├── base/                          # Base classes like BasePage and UiBaseCase
+│        ├── common/                        # Common page objects, e.g., MainPage
+│        └── features/                      # Feature-specific page objects
+├── tests/                                  # Test case files
+├── .env                                    # Environment variables file (gitignored)
+├── conftest.py                             # Pytest configuration and plugin registration
+├── docker-compose.yml                      # Docker Compose setup for CI/CD environment
+├── Dockerfile.jenkins                      # Dockerfile for custom Jenkins agent image
+├── environment.yml                         # Conda environment specification
 ├── Jenkinsfile                             # Jenkins pipeline definition
-├── pyproject.toml                          # Project configuration
-├── requirements.txt                        #
+├── pyproject.toml                          # Project configuration and dependencies
+├── requirements.txt                        # Legacy requirements file (replaced by pyproject.toml)
 ├── start-ngrok.ps1                         # PowerShell script to start ngrok tunnel
-└── README.md
+└── README.md                               # Project documentation
 ```
 
 ## How to Add New Tests
