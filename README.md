@@ -279,7 +279,7 @@ seleniumbase-python/
 ├── pyproject.toml                          # Project configuration and dependencies
 ├── requirements.txt                        # Legacy requirements file (replaced by pyproject.toml)
 ├── start-ngrok.ps1                         # PowerShell script to start ngrok tunnel
-└── README.md                               # Project documentation
+└── README.md                               
 ```
 
 ## How to Add New Tests
