@@ -87,7 +87,7 @@ jobs:
 
       - name: Install Java and Allure Commandline
         run: |
-          sudo apt-get install -y unzip curl openjdk-11-jre-headless
+          sudo apt-get install -y unzip curl openjdk-11-jre-headless pandoc
           if [ ! -d "/usr/local/allure" ]; then  # Only install if not cached
             curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
             sudo unzip -q /tmp/allure.zip -d /tmp
@@ -232,6 +232,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     timeout-minutes: 10
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Create reports directory structure
         run: |
           mkdir -p reports/chrome/latest-only
@@ -323,24 +325,12 @@ jobs:
           path: reports/history/firefox
         continue-on-error: true
       
-      - name: Create landing page
+      - name: Convert landing page markdown to HTML
         run: |
-          cat > reports/index.md << 'EOF'
-          # SeleniumBase Python
-
-          SeleniumBase test automation framework with Pytest and Allure.
-
-          ---
-
-          ## GitHub Actions Allure Reports
-
-          Latest reports are published automatically to GitHub Pages:
-
-          |📊|Latest Run|With History|
-          |-----------|-----------|-----------|
-          |**Chrome**|[View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-only/)|[View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-with-history/)|
-          |**Firefox**|[View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-only/)|[View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-with-history/)|
-          EOF
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          mkdir -p reports
+          pandoc .github/pages/index.md -f markdown -t html -s -o reports/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
