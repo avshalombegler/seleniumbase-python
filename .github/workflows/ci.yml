@@ -343,6 +343,11 @@ jobs:
           echo "=== Full tree ==="
           tree -L 4 reports/ || find reports -type d
 
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: reports
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
