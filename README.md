@@ -240,8 +240,8 @@ Latest reports are published automatically to GitHub Pages:
 
 |  | Latest Run | With History |
 |-----------|-----------|-----------|
-| **Chrome** | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-only/build-chrome-20309336448/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-with-history/build-chrome-20309336448/) |
-| **Firefox** | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-only/build-firefox-20309336448/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-with-history/build-firefox-20309336448/) |
+| **Chrome** | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-only/build-chrome-20405530698/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/chrome/latest-with-history/build-chrome-20405530698/) |
+| **Firefox** | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-only/build-firefox-20405530698/) | [View Report](https://avshalombegler.github.io/seleniumbase-python/firefox/latest-with-history/build-firefox-20405530698/) |
 
 ### 📊 Jenkins Allure Reports
 
