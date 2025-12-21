@@ -259,12 +259,12 @@ jobs:
       
       - name: Flatten Chrome Latest-Only Structure
         run: |
-          if [ -d "./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}" ]; then
-            cp -r ./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}/* reports/chrome/latest-only/
+          if [ -d "./temp-chrome-latest-only/build-chrome-${{ github.run_id }}" ]; then
+            cp -r ./temp-chrome-latest-only/build-chrome-${{ github.run_id }}/* reports/chrome/latest-only/
             echo "✅ Chrome latest-only report deployed"
           else
             echo "❌ Chrome latest-only structure not found"
-            ls -la ./temp-chrome-latest-only/ || echo "Directory doesn't exist"
+            ls -R ./temp-chrome-latest-only/ || echo "Directory doesn't exist"
           fi
       
       - name: Download Allure Report (Chrome) - (Latest-with-History)
@@ -272,16 +272,16 @@ jobs:
         with: 
           name: allure-report-chrome-latest-with-history
           path: ./temp-chrome-latest-history
-        continue-on-error:  true
+        continue-on-error: true
       
-      - name:  Flatten Chrome Latest-with-History Structure
+      - name: Flatten Chrome Latest-with-History Structure
         run: |
-          if [ -d "./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}" ]; then
-            cp -r ./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}/* reports/chrome/latest-with-history/
+          if [ -d "./temp-chrome-latest-history/build-chrome-${{ github.run_id }}" ]; then
+            cp -r ./temp-chrome-latest-history/build-chrome-${{ github.run_id }}/* reports/chrome/latest-with-history/
             echo "✅ Chrome latest-with-history report deployed"
           else
             echo "❌ Chrome latest-with-history structure not found"
-            ls -la ./temp-chrome-latest-history/ || echo "Directory doesn't exist"
+            ls -R ./temp-chrome-latest-history/ || echo "Directory doesn't exist"
           fi
       
       - name: Download Allure Report (Firefox) - (Latest-Only)
@@ -293,12 +293,12 @@ jobs:
       
       - name: Flatten Firefox Latest-Only Structure
         run: |
-          if [ -d "./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}" ]; then
-            cp -r ./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}/* reports/firefox/latest-only/
+          if [ -d "./temp-firefox-latest-only/build-firefox-${{ github.run_id }}" ]; then
+            cp -r ./temp-firefox-latest-only/build-firefox-${{ github.run_id }}/* reports/firefox/latest-only/
             echo "✅ Firefox latest-only report deployed"
           else
             echo "❌ Firefox latest-only structure not found"
-            ls -la ./temp-firefox-latest-only/ || echo "Directory doesn't exist"
+            ls -R ./temp-firefox-latest-only/ || echo "Directory doesn't exist"
           fi
 
       - name: Download Allure Report (Firefox) - (Latest-with-History)
@@ -310,12 +310,12 @@ jobs:
       
       - name: Flatten Firefox Latest-with-History Structure
         run: |
-          if [ -d "./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}" ]; then
-            cp -r ./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}/* reports/firefox/latest-with-history/
+          if [ -d "./temp-firefox-latest-history/build-firefox-${{ github.run_id }}" ]; then
+            cp -r ./temp-firefox-latest-history/build-firefox-${{ github.run_id }}/* reports/firefox/latest-with-history/
             echo "✅ Firefox latest-with-history report deployed"
           else
             echo "❌ Firefox latest-with-history structure not found"
-            ls -la ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
+            ls -R ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
           fi
 
       - name: Download Allure Results History (Chrome)
