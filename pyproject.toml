@@ -1,7 +1,50 @@
 [project]
-name = "selenium-python"
+name = "seleniumbase-python"
 version = "0.1.0"
+description = "Modern E2E testing framework for the-internet.herokuapp.com using SeleniumBase"
+readme = "README.md"
 requires-python = ">=3.10"
+authors = [
+    {name = "Avshalom Begler", email = "avshalom210@gmail.com"}
+]
+
+
+dependencies = [
+    "allure-pytest>=2.15.0",
+    "allure-python-commons>=2.15.0",
+    "beautifulsoup4>=4.14.2",
+    "filelock>=3.20.0",
+    "parameterized>=0.9.0",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "pytest>=8.4.2",
+    "pytest-html>=4.0.2",
+    "pytest-rerunfailures>=16.1",
+    "pytest-sugar>=1.1.1",
+    "pytest-xdist>=3.8.0",
+    "python-dotenv>=1.1.1",
+    "python-json-logger>=4.0.0",
+    "requests>=2.32.5",
+    "seleniumbase>=4.44.20",
+    "structlog>=25.5.0",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.10.0",
+    "ngrok>=1.7.0",
+    "ruff>=0.5.0",
+    "taskipy>=1.12.0",
+]
+
+
+[project.scripts]
+test = "pytest:main"
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 
 [tool.pytest.ini_options]
@@ -33,8 +76,8 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
-    "-m regression or smoke",
-    # "-m smoke",
+    # "-m regression or smoke",
+    "-m smoke",
     # "-m ui",
     # "-m api",
     # "-m current",
@@ -48,6 +91,7 @@ addopts = [
     # "--uc",
 ]
 
+
 markers = [
     "regression: full regression test suite",
     "smoke: critical tests",
@@ -57,11 +101,13 @@ markers = [
     # "slow: tests that take more than 10 seconds",
 ]
 
+
 filterwarnings = [
     "ignore::urllib3.exceptions.NotOpenSSLWarning",
     "ignore:Connection pool is full:Warning",
     "ignore::UserWarning:pytest_html",
 ]
+
 
 # Main tests folder path:
 testpaths = ["tests"]

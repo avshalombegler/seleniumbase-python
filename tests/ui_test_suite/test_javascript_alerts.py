@@ -1,8 +1,8 @@
 import allure
 import pytest
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 
 @allure.parent_suite("UI Test Suite")
@@ -82,7 +82,6 @@ class TestJavaScriptAlerts(UiBaseCase):
         )
 
     @pytest.mark.regression
-    @pytest.mark.smoke
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
     def test_js_prompt(self) -> None:

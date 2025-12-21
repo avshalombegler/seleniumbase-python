@@ -1,16 +1,9 @@
-# Python
+# Python packaging artifacts
+*.egg-info/
 __pycache__/
-*.py[cod]
-*$py.class
-*.lock
-
-# Pytest
+*.pyc
 .pytest_cache/
-
-# MyPy
 .mypy_cache/
-
-# ruff
 .ruff_cache/
 
 # Reports

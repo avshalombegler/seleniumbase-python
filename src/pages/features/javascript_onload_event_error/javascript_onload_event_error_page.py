@@ -1,0 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from src.pages.base.base_page import BaseCase, BasePage
+from src.pages.features.javascript_onload_event_error.locators import JavaScriptOnloadRventErrorPageLocators
+
+if TYPE_CHECKING:
+    pass
+
+
+class JavaScriptOnloadRventErrorPage(BasePage):
+    """Page object for the JavaScript onload event error page containing methods to interact with and validate
+    page functionality"""
+
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
+        self.wait_for_page_to_load(JavaScriptOnloadRventErrorPageLocators.PAGE_LOADED_INDICATOR)

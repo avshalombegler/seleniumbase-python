@@ -3,7 +3,7 @@ import pytest
 from parameterized import parameterized
 from seleniumbase import BaseCase
 
-from pages.common.main_page.main_page import MainPage
+from src.pages.common.main_page.main_page import MainPage
 
 
 @allure.parent_suite("UI Test Suite")

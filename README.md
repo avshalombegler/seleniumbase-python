@@ -54,7 +54,7 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 
 ### Python Dependencies
 
-Key packages (see `requirements.txt` for full list):
+Key packages (see `pyproject.toml` for full list):
 
 - `seleniumbase==4.44.20`
 - `pytest==8.4.2`
@@ -80,8 +80,8 @@ Key packages (see `requirements.txt` for full list):
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/avshalombegler/selenium-python.git
-    cd selenium-python
+    git clone https://github.com/avshalombegler/seleniumbase-python.git
+    cd seleniumbase-python
     ```
 
 2. Create a virtual environment:
@@ -94,7 +94,7 @@ Key packages (see `requirements.txt` for full list):
 3. Install dependencies:
 
     ```bash
-    pip install -r requirements.txt
+    python -m pip install -e .
     ```
 
 **Note:** Allure CLI requires separate installation (not available via pip).  
@@ -256,35 +256,37 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 ## Project structure
 
 ```text
-selenium-python/
+seleniumbase-python/
 ├── .github/
-│    └── workflows/ci.yml                       # GitHub Actions workflow
-├── config/
-│    └── logging_config.py                      # 
-│    └── nginx.conf                             # Nginx configuration for reverse proxy
-│    └── project_config.py                      # 
-├── pages/                                      # Page Object Model classes
-│    ├── base/                                  # BasePage, PageManager
-│    └── features/                              # Page objects per feature
-├── reports/                                    # Allure results and artifacts
-├── tests/                                      # Test cases
-├── .env                                        # Environment variables (gitignored)
-├── conftest.py                                 # Main conftest - registers plugins
-├── docker-compose.yml                          # Docker Compose configuration for CI/CD environment
-├── Dockerfile.jenkins                          # Custom Jenkins agent Docker image
-├── Jenkinsfile                                 # Jenkins pipeline definition
-├── pyproject.toml                              # Project configuration
-├── requirements.txt
-├── start-ngrok.ps1                             # PowerShell script to start ngrok tunnel
+│    └── workflows/ci.yml                           # GitHub Actions workflow
+├── reports/                                        # Allure results and artifacts
+├── src/                                            # 
+│   ├── config/ 
+│   │    └── logging_config.py                      # 
+│   │    └── nginx.conf                             # Nginx configuration for reverse proxy
+│   │    └── project_config.py                      # 
+│   └── pages/                                      # Page Object Model classes
+│        ├── base/                                  # BasePage, UiBaseCase
+│        ├── common/                                # MainPage
+│        └── features/                              # Page objects per feature
+├── tests/                                          # Test cases
+├── .env                                            # Environment variables (gitignored)
+├── conftest.py                                     # Main conftest - registers plugins
+├── docker-compose.yml                              # Docker Compose configuration for CI/CD environment
+├── Dockerfile.jenkins                              # Custom Jenkins agent Docker image
+├── environment.yml                                 # 
+├── Jenkinsfile                                     # Jenkins pipeline definition
+├── pyproject.toml                                  # Project configuration
+├── requirements.txt    
+├── start-ngrok.ps1                                 # PowerShell script to start ngrok tunnel
 └── README.md
 ```
 
 ## How to Add New Tests
 
-1. Create page object in `pages/features/your_feature/your_page.py`
-2. Register it in `pages/base/page_manager.py`
-3. Add test in `tests/test_your_feature.py`
-4. (Optional) Add `@pytest.mark.smoke` or other markers
+1. Create page object in `src/pages/features/your_feature/your_page.py`
+2. Add test in `tests/x_test_suite/test_your_feature.py`
+3. (Optional) Add `@pytest.mark.regression` or other markers
 
 ## Contributing
 

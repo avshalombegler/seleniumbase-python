@@ -1,8 +1,8 @@
 import allure
 import pytest
 
-from pages.base.ui_base_case import UiBaseCase
-from pages.common.main_page.main_page import MainPage
+from src.pages.base.ui_base_case import UiBaseCase
+from src.pages.common.main_page.main_page import MainPage
 
 
 @allure.parent_suite("UI Test Suite")
@@ -22,7 +22,7 @@ class TestJavaScriptOnloadRventError(UiBaseCase):
         main_page.click_javascript_onload_event_error_link()
 
         self.logger.info("Getting driver log errors.")
-        if self.driver.capabilities.get('browserName', '').lower() == 'chrome':
+        if self.driver.capabilities.get("browserName", "").lower() == "chrome":
             logs = self.driver.get_log("browser")
         else:
             pytest.skip("Browser log retrieval not supported for this browser")

@@ -1,0 +1,29 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+import allure
+
+from src.pages.base.base_page import BaseCase, BasePage
+from src.pages.features.files_download.locators import FilesDownloadPageLocators
+
+if TYPE_CHECKING:
+    pass
+
+
+class FilesDownloadPage(BasePage):
+    """Page object for the Files Download page containing methods to interact with and validate page functionality"""
+
+    def __init__(self, driver: BaseCase) -> None:
+        super().__init__(driver)
+        self.wait_for_page_to_load(FilesDownloadPageLocators.PAGE_LOADED_INDICATOR)
+
+    @allure.step("Get list of files links")
+    def get_list_of_files_links(self) -> list[str]:
+        elements = self.get_all_elements(FilesDownloadPageLocators.FILE_LINK)
+        return [elem.get_attribute("href") for elem in elements]
+
+    @allure.step("Get list of files links")
+    def download_files(self, files_links: list[str], dest_folder: str) -> None:
+        for link in files_links:
+            self.driver.download_file(link, dest_folder)
