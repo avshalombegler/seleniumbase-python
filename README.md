@@ -258,27 +258,27 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 ```text
 seleniumbase-python/
 ├── .github/
-│    └── workflows/ci.yml                           # GitHub Actions workflow
-├── reports/                                        # Allure results and artifacts
-├── src/                                            # 
-│   ├── config/ 
-│   │    └── logging_config.py                      # 
-│   │    └── nginx.conf                             # Nginx configuration for reverse proxy
-│   │    └── project_config.py                      # 
-│   └── pages/                                      # Page Object Model classes
-│        ├── base/                                  # BasePage, UiBaseCase
-│        ├── common/                                # MainPage
-│        └── features/                              # Page objects per feature
-├── tests/                                          # Test cases
-├── .env                                            # Environment variables (gitignored)
-├── conftest.py                                     # Main conftest - registers plugins
-├── docker-compose.yml                              # Docker Compose configuration for CI/CD environment
-├── Dockerfile.jenkins                              # Custom Jenkins agent Docker image
-├── environment.yml                                 # 
-├── Jenkinsfile                                     # Jenkins pipeline definition
-├── pyproject.toml                                  # Project configuration
-├── requirements.txt    
-├── start-ngrok.ps1                                 # PowerShell script to start ngrok tunnel
+│    └── workflows/ci.yml                   # GitHub Actions workflow
+├── reports/                                # Allure results and artifacts
+├── src/                                    # 
+│   ├── config/                             #
+│   │    └── logging_config.py              # 
+│   │    └── nginx.conf                     # Nginx configuration for reverse proxy
+│   │    └── project_config.py              # 
+│   └── pages/                              # Page Object Model classes
+│        ├── base/                          # BasePage, UiBaseCase
+│        ├── common/                        # MainPage
+│        └── features/                      # Page objects per feature
+├── tests/                                  # Test cases
+├── .env                                    # Environment variables (gitignored)
+├── conftest.py                             # Main conftest - registers plugins
+├── docker-compose.yml                      # Docker Compose configuration for CI/CD environment
+├── Dockerfile.jenkins                      # Custom Jenkins agent Docker image
+├── environment.yml                         # 
+├── Jenkinsfile                             # Jenkins pipeline definition
+├── pyproject.toml                          # Project configuration
+├── requirements.txt                        #
+├── start-ngrok.ps1                         # PowerShell script to start ngrok tunnel
 └── README.md
 ```
 
