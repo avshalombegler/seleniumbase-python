@@ -234,47 +234,73 @@ jobs:
   
   deploy:
     needs: [test, check-skip]
-    if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
-    runs-on: ubuntu-latest
-    environment:
+    if: github.ref == 'refs/heads/main' && needs.check-skip. outputs.should_skip != 'true'
+    runs-on:  ubuntu-latest
+    environment: 
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment. outputs.page_url }}
     timeout-minutes: 10
     steps:
-      - name: Create reports directory
-        run: mkdir -p reports
+      - name: Create reports directory structure
+        run: |
+          mkdir -p reports/chrome/latest-only
+          mkdir -p reports/chrome/latest-with-history
+          mkdir -p reports/firefox/latest-only
+          mkdir -p reports/firefox/latest-with-history
+          mkdir -p reports/history/chrome
+          mkdir -p reports/history/firefox
       
       - name: Download Allure Report (Chrome) - (Latest-Only)
-        if: always()
         uses: actions/download-artifact@v4
         with:
           name: allure-report-chrome-latest-only
-          path: reports/chrome/latest-only
+          path: ./temp-chrome-latest-only
         continue-on-error: true
       
-      - name: Download Allure Report (Chrome) - (Latest-with-History)
-        if: always()
+      - name: Flatten Chrome Latest-Only Structure
+        run:  |
+          if [ -d "./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}" ]; then
+            cp -r ./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}/* reports/chrome/latest-only/
+          fi
+      
+      - name:  Download Allure Report (Chrome) - (Latest-with-History)
         uses: actions/download-artifact@v4
-        with:
+        with: 
           name: allure-report-chrome-latest-with-history
-          path: reports/chrome/latest-with-history
+          path: ./temp-chrome-latest-history
         continue-on-error: true
+      
+      - name: Flatten Chrome Latest-with-History Structure
+        run: |
+          if [ -d "./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}" ]; then
+            cp -r ./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}/* reports/chrome/latest-with-history/
+          fi
       
       - name: Download Allure Report (Firefox) - (Latest-Only)
-        if: always()
         uses: actions/download-artifact@v4
-        with:
+        with: 
           name: allure-report-firefox-latest-only
-          path: reports/firefox/latest-only
+          path: ./temp-firefox-latest-only
         continue-on-error: true
+      
+      - name: Flatten Firefox Latest-Only Structure
+        run: |
+          if [ -d "./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}" ]; then
+            cp -r ./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}/* reports/firefox/latest-only/
+          fi
 
-      - name: Download Allure Report (Firefox) - (Latest-with-History)
-        if: always()
+      - name:  Download Allure Report (Firefox) - (Latest-with-History)
         uses: actions/download-artifact@v4
-        with:
+        with: 
           name: allure-report-firefox-latest-with-history
-          path: reports/firefox/latest-with-history
+          path: ./temp-firefox-latest-history
         continue-on-error: true
+      
+      - name: Flatten Firefox Latest-with-History Structure
+        run: |
+          if [ -d "./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}" ]; then
+            cp -r ./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}/* reports/firefox/latest-with-history/
+          fi
 
       - name: Download Allure Results History (Chrome)
         uses: actions/download-artifact@v4
@@ -286,7 +312,7 @@ jobs:
       - name: Download Allure Results History (Firefox)
         uses: actions/download-artifact@v4
         with:
-          name: allure-results-firefox-history
+          name:  allure-results-firefox-history
           path: reports/history/firefox
         continue-on-error: true
 
@@ -296,46 +322,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: reports
-
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-
-      - name: Store History in gh-pages
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # Store history for both browsers
-          for browser in chrome firefox; do
-            mkdir -p history/${browser}
-            if [ -d "reports/history/${browser}" ]; then
-              cp -r reports/history/${browser}/* history/${browser}/ || true
-              echo "Stored history for ${browser}"
-            else
-              echo "No history to store for ${browser}"
-            fi
-          done
-          
-          git add history/
-          git commit -m "Update Allure history for run ${{ github.run_id }}" || echo "No changes to history"
-          git push origin gh-pages
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Update README with Latest Run ID
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git checkout main
-          git pull origin main --rebase
-          sed -i "s/build-chrome-[0-9]*/build-chrome-${{ github.run_id }}/g" README.md
-          sed -i "s/build-firefox-[0-9]*/build-firefox-${{ github.run_id }}/g" README.md
-          git add README.md
-          git commit -m "Update README with latest run ID ${{ github.run_id }}" || echo "No changes to commit"
-          git push || (git pull --rebase && git push)
+          keep_files:  false
 
   clean:
     needs: [deploy, check-skip]
