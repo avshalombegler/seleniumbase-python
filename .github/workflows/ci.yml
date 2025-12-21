@@ -234,11 +234,11 @@ jobs:
   
   deploy:
     needs: [test, check-skip]
-    if: github.ref == 'refs/heads/main' && needs.check-skip. outputs.should_skip != 'true'
-    runs-on:  ubuntu-latest
-    environment: 
+    if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
+    runs-on: ubuntu-latest
+    environment:
       name: github-pages
-      url: ${{ steps.deployment. outputs.page_url }}
+      url: ${{ steps. deployment.outputs.page_url }}
     timeout-minutes: 10
     steps:
       - name: Create reports directory structure
@@ -258,22 +258,30 @@ jobs:
         continue-on-error: true
       
       - name: Flatten Chrome Latest-Only Structure
-        run:  |
+        run: |
           if [ -d "./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}" ]; then
             cp -r ./temp-chrome-latest-only/latest-only/build-chrome-${{ github.run_id }}/* reports/chrome/latest-only/
+            echo "✅ Chrome latest-only report deployed"
+          else
+            echo "❌ Chrome latest-only structure not found"
+            ls -la ./temp-chrome-latest-only/ || echo "Directory doesn't exist"
           fi
       
-      - name:  Download Allure Report (Chrome) - (Latest-with-History)
+      - name: Download Allure Report (Chrome) - (Latest-with-History)
         uses: actions/download-artifact@v4
         with: 
           name: allure-report-chrome-latest-with-history
           path: ./temp-chrome-latest-history
-        continue-on-error: true
+        continue-on-error:  true
       
-      - name: Flatten Chrome Latest-with-History Structure
+      - name:  Flatten Chrome Latest-with-History Structure
         run: |
           if [ -d "./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}" ]; then
             cp -r ./temp-chrome-latest-history/latest-with-history/build-chrome-${{ github.run_id }}/* reports/chrome/latest-with-history/
+            echo "✅ Chrome latest-with-history report deployed"
+          else
+            echo "❌ Chrome latest-with-history structure not found"
+            ls -la ./temp-chrome-latest-history/ || echo "Directory doesn't exist"
           fi
       
       - name: Download Allure Report (Firefox) - (Latest-Only)
@@ -287,11 +295,15 @@ jobs:
         run: |
           if [ -d "./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}" ]; then
             cp -r ./temp-firefox-latest-only/latest-only/build-firefox-${{ github.run_id }}/* reports/firefox/latest-only/
+            echo "✅ Firefox latest-only report deployed"
+          else
+            echo "❌ Firefox latest-only structure not found"
+            ls -la ./temp-firefox-latest-only/ || echo "Directory doesn't exist"
           fi
 
-      - name:  Download Allure Report (Firefox) - (Latest-with-History)
+      - name: Download Allure Report (Firefox) - (Latest-with-History)
         uses: actions/download-artifact@v4
-        with: 
+        with:
           name: allure-report-firefox-latest-with-history
           path: ./temp-firefox-latest-history
         continue-on-error: true
@@ -300,6 +312,10 @@ jobs:
         run: |
           if [ -d "./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}" ]; then
             cp -r ./temp-firefox-latest-history/latest-with-history/build-firefox-${{ github.run_id }}/* reports/firefox/latest-with-history/
+            echo "✅ Firefox latest-with-history report deployed"
+          else
+            echo "❌ Firefox latest-with-history structure not found"
+            ls -la ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
           fi
 
       - name: Download Allure Results History (Chrome)
@@ -312,17 +328,24 @@ jobs:
       - name: Download Allure Results History (Firefox)
         uses: actions/download-artifact@v4
         with:
-          name:  allure-results-firefox-history
+          name: allure-results-firefox-history
           path: reports/history/firefox
         continue-on-error: true
+
+      - name: Debug - Show reports structure
+        run: |
+          echo "=== Reports directory structure ==="
+          find reports -type f -name "index.html" || echo "No index.html files found!"
+          echo "=== Full tree ==="
+          tree -L 4 reports/ || find reports -type d
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: peaceiris/actions-gh-pages@v3
-        with:
+        with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: reports
-          keep_files:  false
+          keep_files: false
 
   clean:
     needs: [deploy, check-skip]
