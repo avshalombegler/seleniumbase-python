@@ -26,12 +26,13 @@ RUN ALLURE_VERSION=2.35.1 && \
     fi
 
 # Create virtual environment and install Python packages
-COPY requirements.txt /tmp/
+COPY . /tmp/project/
+WORKDIR /tmp/project
 RUN python3 -m venv /opt/venv && \
     . /opt/venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt && \
-    rm /tmp/requirements.txt
+    python -m pip install --upgrade pip && \
+    python -m pip install -e . --no-cache-dir && \
+    rm -rf /tmp/project
 
 # Make virtualenv writable for the jenkins user so runtime downloads succeed
 RUN chown -R jenkins:jenkins /opt/venv
