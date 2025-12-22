@@ -152,6 +152,11 @@ jobs:
           name: allure-results-${{ matrix.browser }}
           path: reports/allure-results
 
+      - name: Generate Latest-Only Allure Report
+        run: |
+          mkdir -p reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
+          allure generate --clean reports/allure-results -o reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
+
       - name: Download Previous Allure Results
         run: |
           git fetch origin gh-pages --depth=1 || true
@@ -168,15 +173,9 @@ jobs:
             cp -r reports/allure-results-history/* reports/allure-results/history/ || true
           fi
 
-      - name: Generate Allure Reports
+      - name: Generate Allure Report with History
         run: |
-          mkdir -p reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
           mkdir -p reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
-          
-          # Generate latest-only (without history)
-          allure generate --clean reports/allure-results -o reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
-          
-          # Generate with history
           allure generate --clean reports/allure-results -o reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
 
       - name: Upload Allure Report (Latest-Only)
