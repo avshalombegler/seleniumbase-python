@@ -272,6 +272,13 @@ jobs:
           path: ./temp-chrome-latest-history
         continue-on-error: true
     
+      - name: Persist Allure History for Chrome
+        run: |
+          mkdir -p reports/history/chrome
+          if [ -d "temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history" ]; then
+            cp -r temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history/* reports/history/chrome/ || true
+          fi
+    
       - name: Flatten Chrome Latest-with-History Structure
         run: ./.github/scripts/flatten_report.sh chrome latest-with-history ./temp-chrome-latest-history reports/chrome/latest-with-history ${{ github.run_id }}
     
@@ -292,22 +299,15 @@ jobs:
           path: ./temp-firefox-latest-history
         continue-on-error: true
     
-      - name: Flatten Firefox Latest-with-History Structure
-        run: ./.github/scripts/flatten_report.sh firefox latest-with-history ./temp-firefox-latest-history reports/firefox/latest-with-history ${{ github.run_id }}
-    
-      - name: Persist Allure History for Chrome
-        run: |
-          mkdir -p reports/history/chrome
-          if [ -d "reports/chrome/latest-with-history/history" ]; then
-            cp -r reports/chrome/latest-with-history/history/* reports/history/chrome/ || true
-          fi
-    
       - name: Persist Allure History for Firefox
         run: |
           mkdir -p reports/history/firefox
-          if [ -d "reports/firefox/latest-with-history/history" ]; then
-            cp -r reports/firefox/latest-with-history/history/* reports/history/firefox/ || true
+          if [ -d "temp-firefox-latest-history/build-firefox-${{ github.run_id }}/history" ]; then
+            cp -r temp-firefox-latest-history/build-firefox-${{ github.run_id }}/history/* reports/history/firefox/ || true
           fi
+    
+      - name: Flatten Firefox Latest-with-History Structure
+        run: ./.github/scripts/flatten_report.sh firefox latest-with-history ./temp-firefox-latest-history reports/firefox/latest-with-history ${{ github.run_id }}
     
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
