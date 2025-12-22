@@ -275,8 +275,16 @@ jobs:
       - name: Persist Allure History for Chrome
         run: |
           mkdir -p reports/history/chrome
+          echo "Contents of temp-chrome-latest-history:"
+          ls -la temp-chrome-latest-history/ || echo "temp directory not found or empty"
+          if [ -d "temp-chrome-latest-history" ]; then
+            find temp-chrome-latest-history -type f -name "*.json" | head -10 || echo "No JSON files found in temp"
+          fi
           if [ -d "temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history" ]; then
+            echo "History directory found, copying..."
             cp -r temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history/* reports/history/chrome/ || true
+          else
+            echo "History directory not found in temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history"
           fi
     
       - name: Flatten Chrome Latest-with-History Structure
