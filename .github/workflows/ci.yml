@@ -161,9 +161,9 @@ jobs:
         run: |
           git fetch origin gh-pages --depth=1 || true
           mkdir -p reports/allure-results-history
-          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "reports/history/${{ matrix.browser }}"; then
-            git checkout origin/gh-pages -- reports/history/${{ matrix.browser }} || true
-            cp -r reports/history/${{ matrix.browser }}/* reports/allure-results-history/ || true
+          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "history/${{ matrix.browser }}"; then
+            git checkout origin/gh-pages -- history/${{ matrix.browser }} || true
+            cp -r history/${{ matrix.browser }}/* reports/allure-results-history/ || true
           fi
 
       - name: Merge Allure History
@@ -171,12 +171,25 @@ jobs:
           mkdir -p reports/allure-results/history
           if [ -d "reports/allure-results-history" ] && [ "$(ls -A reports/allure-results-history 2>/dev/null)" ]; then
             cp -r reports/allure-results-history/* reports/allure-results/history/ || true
+          else
+            echo "No previous allure-results history to merge."
           fi
 
       - name: Generate Allure Report with History
         run: |
           mkdir -p reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
           allure generate --clean reports/allure-results -o reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
+          sleep 2
+
+      - name: Copy history from generated report
+        run: |
+          if [ -d "reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history" ]; then
+            mkdir -p reports/allure-results/history
+            cp -r reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history/* reports/allure-results/history/ || true
+            echo "History copied from generated report"
+          else
+            echo "No history in generated report"
+          fi
 
       - name: Upload Allure Report (Latest-Only)
         uses: actions/upload-artifact@v4
@@ -192,11 +205,11 @@ jobs:
           path: reports/allure-report/latest-with-history/
           retention-days: 7
 
-      - name: Upload History for Future Runs
+      - name: Upload Allure Results History
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.browser }}-history
-          path: reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history
+          path: reports/allure-results/history
           retention-days: 30
           if-no-files-found: ignore
 
@@ -222,8 +235,8 @@ jobs:
           mkdir -p reports/chrome/latest-with-history
           mkdir -p reports/firefox/latest-only
           mkdir -p reports/firefox/latest-with-history
-          mkdir -p reports/history/chrome
-          mkdir -p reports/history/firefox
+          mkdir -p history/chrome
+          mkdir -p history/firefox
       
       - name: Download Allure Report (Chrome) - (Latest-Only)
         uses: actions/download-artifact@v4
@@ -297,14 +310,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results-chrome-history
-          path: reports/history/chrome
+          path: history/chrome
         continue-on-error: true
       
       - name: Download Allure Results History (Firefox)
         uses: actions/download-artifact@v4
         with:
           name: allure-results-firefox-history
-          path: reports/history/firefox
+          path: history/firefox
         continue-on-error: true
         
       - name: Copy landing page
