@@ -341,26 +341,26 @@ jobs:
           path: ./temp-firefox-latest-history
         continue-on-error: true
       
-        - name: Flatten Firefox Latest-with-History Structure
-          run: |
-            echo "Contents of ./temp-firefox-latest-history:"
-            ls -R ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
+      - name: Flatten Firefox Latest-with-History Structure
+        run: |
+          echo "Contents of ./temp-firefox-latest-history:"
+          ls -R ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
 
-            TARGET_DIR="reports/firefox/latest-with-history"
+          TARGET_DIR="reports/firefox/latest-with-history"
 
-            if [ -d "./temp-firefox-latest-history/build-firefox-${{ github.run_id }}" ]; then
-              cp -r ./temp-firefox-latest-history/build-firefox-${{ github.run_id }}/* "$TARGET_DIR/"
-              echo "✅ Firefox latest-with-history report deployed from build-firefox-${{ github.run_id }}"
+          if [ -d "./temp-firefox-latest-history/build-firefox-${{ github.run_id }}" ]; then
+            cp -r ./temp-firefox-latest-history/build-firefox-${{ github.run_id }}/* "$TARGET_DIR/"
+            echo "✅ Firefox latest-with-history report deployed from build-firefox-${{ github.run_id }}"
+          else
+            subdir=$(find ./temp-firefox-latest-history -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
+            if [ -n "$subdir" ]; then
+              echo "Using fallback subdir: $subdir"
+              cp -r "$subdir"/* "$TARGET_DIR/"
+              echo "✅ Firefox latest-with-history report deployed from fallback directory"
             else
-              subdir=$(find ./temp-firefox-latest-history -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
-              if [ -n "$subdir" ]; then
-                echo "Using fallback subdir: $subdir"
-                cp -r "$subdir"/* "$TARGET_DIR/"
-                echo "✅ Firefox latest-with-history report deployed from fallback directory"
-              else
-                echo "❌ Firefox latest-with-history structure not found; no suitable directory to deploy"
-              fi
+              echo "❌ Firefox latest-with-history structure not found; no suitable directory to deploy"
             fi
+          fi
 
       - name: Download Allure Results History (Chrome)
         uses: actions/download-artifact@v4
