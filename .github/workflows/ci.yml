@@ -319,17 +319,50 @@ jobs:
           name: allure-results-firefox-history
           path: history/firefox
         continue-on-error: true
+      
+      - name: Commit history to gh-pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Save current history location
+          CURRENT_DIR=$(pwd)
+          
+          # Fetch gh-pages or create orphan branch
+          git fetch origin gh-pages 2>/dev/null || true
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf . 2>/dev/null || true
+          fi
+          
+          # Keep only history directory
+          mkdir -p history/chrome history/firefox
+          
+          # Copy history files from workspace
+          if [ -d "$CURRENT_DIR/history/chrome" ] && [ "$(ls -A $CURRENT_DIR/history/chrome 2>/dev/null)" ]; then
+            cp -r $CURRENT_DIR/history/chrome/* history/chrome/ || true
+            echo "✅ Copied Chrome history"
+          fi
+          if [ -d "$CURRENT_DIR/history/firefox" ] && [ "$(ls -A $CURRENT_DIR/history/firefox 2>/dev/null)" ]; then
+            cp -r $CURRENT_DIR/history/firefox/* history/firefox/ || true
+            echo "✅ Copied Firefox history"
+          fi
+          
+          # Commit and push
+          git add history/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Allure history [skip ci]"
+            git push origin gh-pages
+          fi
+          
+          # Go back to main branch
+          git checkout ${{ github.ref_name }}
         
       - name: Copy landing page
         run: |
           mkdir -p reports
           cp .github/pages/index.html reports/index.html
-          
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: reports
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
