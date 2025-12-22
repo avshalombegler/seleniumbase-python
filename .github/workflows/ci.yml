@@ -33,18 +33,13 @@ jobs:
   test:
     needs: check-skip
     if: needs.check-skip.outputs.should_skip != 'true'
-    timeout-minutes: 30
+    timeout-minutes: 20
     runs-on: ubuntu-latest
-    outputs:
-      browser: ${{ steps.set_browser.outputs.browser }}
     strategy:
-      fail-fast: false # Continue running other jobs if one fails
+      fail-fast: false
       matrix:
         browser: [chrome, firefox]
-        workers: [auto]
         include:
-          # - suite: regression
-          #   marker: regression
           - suite: smoke
             marker: smoke
     
@@ -52,10 +47,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set browser output
-        id: set_browser
-        run: echo "browser=${{ matrix.browser }}" >> $GITHUB_OUTPUT
 
       - name: Update APT package lists
         run: sudo apt-get update
@@ -85,18 +76,6 @@ jobs:
         if: matrix.browser == 'firefox'
         uses: browser-actions/setup-firefox@v1
 
-      - name: Install Java and Allure Commandline
-        run: |
-          sudo apt-get install -y unzip curl openjdk-11-jre-headless
-          if [ ! -d "/usr/local/allure" ]; then  # Only install if not cached
-            curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
-            sudo unzip -q /tmp/allure.zip -d /tmp
-            sudo mv /tmp/allure-2.35.1 /usr/local/allure
-            sudo chmod -R +x /usr/local/allure/bin
-            sudo ln -sf /usr/local/allure/bin/allure /usr/local/bin/allure
-          fi
-          allure --version
-
       - name: Create .env file
         run: |
           echo "BROWSER=${{ matrix.browser }}" >> .env
@@ -112,79 +91,21 @@ jobs:
         run: curl -s -f ${{ secrets.BASE_URL }} > /dev/null || exit 1
 
       - name: Create reports directories
-        run: mkdir -p reports/allure-results reports/allure-report
+        run: mkdir -p reports/allure-results
 
       - name: Run Pytest with Allure
-        continue-on-error: true
         id: pytest
         run: |
           PYTHONUNBUFFERED=1 xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
             pytest \
-              -n ${{ matrix.workers }} --dist=loadfile \
+              -n auto --dist=loadfile \
               --browser=${{ matrix.browser }} \
               --headless \
               --alluredir=reports/allure-results \
-              --html=reports/report-${browser}.html \
+              --html=reports/report-${{ matrix.browser }}.html \
               --self-contained-html \
               --reruns 1 --reruns-delay 2 \
               -m ${{ matrix.marker }}
-
-      - name: Clean Allure Report Directory
-        if: steps.pytest.outcome == 'failure'
-        run: rm -rf reports/allure-report/build-*
-
-      - name: Generate Allure Report (Latest-Only)
-        if: always()
-        run: |
-          mkdir -p reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
-          allure generate --clean reports/allure-results -o reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
-          sleep 2
-
-      - name: Upload Allure Report (Latest-Only)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ matrix.browser }}-latest-only
-          path: reports/allure-report/latest-only/
-          retention-days: 7 
-
-      - name: Download Previous Allure Results
-        if: always()
-        run: |
-          git fetch origin gh-pages --depth=1 || true
-          mkdir -p reports/allure-results-history
-          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "history/${{ matrix.browser }}"; then
-            git checkout origin/gh-pages -- history/${{ matrix.browser }} || true
-            cp -r history/${{ matrix.browser }}/* reports/allure-results-history/ || true
-          fi
-
-      - name: Merge Allure History
-        if: always()
-        run: |
-          mkdir -p reports/allure-results/history
-          if [ -d "reports/allure-results-history" ] && [ "$(ls -A reports/allure-results-history 2>/dev/null)" ]; then
-            cp -r reports/allure-results-history/* reports/allure-results/history/ || true
-          else
-            echo "No previous allure-results history to merge."
-          fi
-
-      - name: Generate Allure Report (Latest-with-History)
-        if: always()
-        run: |
-          mkdir -p reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
-          allure generate --clean reports/allure-results -o reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
-          sleep 2
-
-      - name: Copy history from generated report
-        if: always()
-        run: |
-          if [ -d "reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history" ]; then
-            mkdir -p reports/allure-results/history
-            cp -r reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history/* reports/allure-results/history/ || true
-            echo "History copied from generated report"
-          else
-            echo "No history in generated report"
-          fi
 
       - name: Upload Allure Results
         if: always()
@@ -194,23 +115,6 @@ jobs:
           path: reports/allure-results/
           retention-days: 7
 
-      - name: Upload Allure Results History
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-${{ matrix.browser }}-history
-          path: reports/allure-results/history
-          retention-days: 30
-          if-no-files-found: ignore
-
-      - name: Upload Allure Report (Latest-with-History)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ matrix.browser }}-latest-with-history
-          path: reports/allure-report/latest-with-history/
-          retention-days: 7
-
       - name: Upload Screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -218,9 +122,87 @@ jobs:
           name: test-screenshots-${{ matrix.browser }}-${{ github.run_id }}
           path: latest_logs/
           retention-days: 7
-  
-  deploy:
+
+  generate-reports:
     needs: [test, check-skip]
+    if: always() && needs.check-skip.outputs.should_skip != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        browser: [chrome, firefox]
+    name: Generate ${{ matrix.browser }} Allure Report
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Allure Commandline
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip curl openjdk-11-jre-headless
+          curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
+          sudo unzip -q /tmp/allure.zip -d /tmp
+          sudo mv /tmp/allure-2.35.1 /usr/local/allure
+          sudo chmod -R +x /usr/local/allure/bin
+          sudo ln -sf /usr/local/allure/bin/allure /usr/local/bin/allure
+
+      - name: Download Allure Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: reports/allure-results
+
+      - name: Download Previous Allure Results
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          mkdir -p reports/allure-results-history
+          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "history/${{ matrix.browser }}"; then
+            git checkout origin/gh-pages -- history/${{ matrix.browser }} || true
+            cp -r history/${{ matrix.browser }}/* reports/allure-results-history/ || true
+          fi
+
+      - name: Merge Allure History
+        run: |
+          mkdir -p reports/allure-results/history
+          if [ -d "reports/allure-results-history" ] && [ "$(ls -A reports/allure-results-history 2>/dev/null)" ]; then
+            cp -r reports/allure-results-history/* reports/allure-results/history/ || true
+          fi
+
+      - name: Generate Allure Reports
+        run: |
+          mkdir -p reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
+          mkdir -p reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
+          
+          # Generate latest-only (without history)
+          allure generate --clean reports/allure-results -o reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
+          
+          # Generate with history
+          allure generate --clean reports/allure-results -o reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
+
+      - name: Upload Allure Report (Latest-Only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.browser }}-latest-only
+          path: reports/allure-report/latest-only/
+          retention-days: 7
+
+      - name: Upload Allure Report (Latest-with-History)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.browser }}-latest-with-history
+          path: reports/allure-report/latest-with-history/
+          retention-days: 7
+
+      - name: Upload History for Future Runs
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}-history
+          path: reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history
+          retention-days: 30
+          if-no-files-found: ignore
+
+  deploy:
+    needs: [generate-reports, check-skip]
     if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     permissions:
