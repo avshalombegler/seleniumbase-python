@@ -325,7 +325,42 @@ jobs:
           name: allure-results-firefox-history
           path: reports/history/firefox
         continue-on-error: true
-        
+
+      - name: Configure Git for gh-pages push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Checkout or create gh-pages branch
+        run: |
+          if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
+            git checkout gh-pages
+            git pull origin gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf .
+          fi
+      
+      - name: Copy history to gh-pages
+        run: |
+          mkdir -p history/chrome history/firefox
+          if [ -d "reports/history/chrome" ]; then
+            cp -r reports/history/chrome/* history/chrome/ || true
+          fi
+          if [ -d "reports/history/firefox" ]; then
+            cp -r reports/history/firefox/* history/firefox/ || true
+          fi
+      
+      - name: Commit and push history to gh-pages
+        run: |
+          git add history/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Allure history from run ${{ github.run_id }}"
+            git push origin gh-pages
+          fi
+
       - name: Copy landing page
         run: |
           mkdir -p reports
