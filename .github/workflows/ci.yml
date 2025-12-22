@@ -243,6 +243,10 @@ jobs:
           mkdir -p reports/firefox/latest-with-history
           mkdir -p reports/history/chrome
           mkdir -p reports/history/firefox
+
+      - name: Copy landing page
+        run: |
+          cp .github/pages/index. html reports/index.html
       
       - name: Download Allure Report (Chrome) - (Latest-Only)
         uses: actions/download-artifact@v4
@@ -360,11 +364,6 @@ jobs:
             git commit -m "Update Allure history from run ${{ github.run_id }}"
             git push origin gh-pages
           fi
-
-      - name: Copy landing page
-        run: |
-          mkdir -p reports
-          cp .github/pages/index.html reports/index.html
           
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
