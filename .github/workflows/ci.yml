@@ -87,7 +87,7 @@ jobs:
 
       - name: Install Java and Allure Commandline
         run: |
-          sudo apt-get install -y unzip curl openjdk-11-jre-headless pandoc
+          sudo apt-get install -y unzip curl openjdk-11-jre-headless
           if [ ! -d "/usr/local/allure" ]; then  # Only install if not cached
             curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
             sudo unzip -q /tmp/allure.zip -d /tmp
@@ -234,6 +234,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Create reports directory structure
         run: |
           mkdir -p reports/chrome/latest-only
@@ -324,14 +325,12 @@ jobs:
           name: allure-results-firefox-history
           path: reports/history/firefox
         continue-on-error: true
-      
-      # - name: Convert landing page markdown to HTML
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y pandoc
-      #     mkdir -p reports
-      #     pandoc .github/pages/index.md -f markdown -t html -s -o reports/index.html
-
+        
+      - name: Copy landing page
+        run: |
+          mkdir -p reports
+          cp .github/pages/index.html reports/index.html
+          
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
