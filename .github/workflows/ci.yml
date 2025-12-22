@@ -43,10 +43,10 @@ jobs:
         browser: [chrome, firefox]
         workers: [auto]
         include:
-          - suite: regression
-            marker: regression
-          # - suite: smoke
-            # marker: smoke
+          # - suite: regression
+            # marker: regression
+          - suite: smoke
+            marker: smoke
     
     name: ${{ matrix.browser }} ${{ matrix.suite }} tests
     steps:
@@ -108,11 +108,11 @@ jobs:
           echo "PASSWORD=${{ secrets.TEST_PASSWORD }}" >> .env
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
 
-      - name: Check website availability
-        run: curl -s -f ${{ secrets.BASE_URL }} > /dev/null || exit 1
-
       - name: Create reports directories
         run: mkdir -p reports/allure-results reports/allure-report
+
+      - name: Check website availability
+        run: curl -s -f ${{ secrets.BASE_URL }} > /dev/null || exit 1
 
       - name: Run Pytest with Allure
         continue-on-error: true
@@ -247,170 +247,47 @@ jobs:
       - name: Copy landing page
         run: |
           cp .github/pages/index.html reports/index.html
-      
+    
       - name: Download Allure Report (Chrome) - (Latest-Only)
         uses: actions/download-artifact@v4
         with:
           name: allure-report-chrome-latest-only
           path: ./temp-chrome-latest-only
         continue-on-error: true
-      
+    
       - name: Flatten Chrome Latest-Only Structure
-        run: |
-          echo "Contents of ./temp-chrome-latest-only:"
-          ls -R ./temp-chrome-latest-only/ || echo "Directory doesn't exist"
-
-          TARGET_DIR="reports/chrome/latest-only"
-
-          # Prefer the known build folder structure
-          if [ -d "./temp-chrome-latest-only/build-chrome-${{ github.run_id }}" ]; then
-            cp -r ./temp-chrome-latest-only/build-chrome-${{ github.run_id }}/* "$TARGET_DIR/"
-            echo "✅ Chrome latest-only report deployed from build-chrome-${{ github.run_id }}"
-          else
-            # Fallback: copy from the first subdirectory in the artifact path
-            subdir=$(find ./temp-chrome-latest-only -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
-            if [ -n "$subdir" ]; then
-              echo "Using fallback subdir: $subdir"
-              cp -r "$subdir"/* "$TARGET_DIR/"
-              echo "✅ Chrome latest-only report deployed from fallback directory"
-            else
-              echo "❌ Chrome latest-only structure not found; no suitable directory to deploy"
-            fi
-          fi
-      
+        run: ./.github/scripts/flatten_report.sh chrome latest-only ./temp-chrome-latest-only reports/chrome/latest-only ${{ github.run_id }}
+    
       - name: Download Allure Report (Chrome) - (Latest-with-History)
         uses: actions/download-artifact@v4
         with: 
           name: allure-report-chrome-latest-with-history
           path: ./temp-chrome-latest-history
         continue-on-error: true
-      
+    
       - name: Flatten Chrome Latest-with-History Structure
-        run: |
-          echo "Contents of ./temp-chrome-latest-history:"
-          ls -R ./temp-chrome-latest-history/ || echo "Directory doesn't exist"
-
-          TARGET_DIR="reports/chrome/latest-with-history"
-
-          if [ -d "./temp-chrome-latest-history/build-chrome-${{ github.run_id }}" ]; then
-            cp -r ./temp-chrome-latest-history/build-chrome-${{ github.run_id }}/* "$TARGET_DIR/"
-            echo "✅ Chrome latest-with-history report deployed from build-chrome-${{ github.run_id }}"
-          else
-            subdir=$(find ./temp-chrome-latest-history -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
-            if [ -n "$subdir" ]; then
-              echo "Using fallback subdir: $subdir"
-              cp -r "$subdir"/* "$TARGET_DIR/"
-              echo "✅ Chrome latest-with-history report deployed from fallback directory"
-            else
-              echo "❌ Chrome latest-with-history structure not found; no suitable directory to deploy"
-            fi
-          fi
-      
+        run: ./.github/scripts/flatten_report.sh chrome latest-with-history ./temp-chrome-latest-history reports/chrome/latest-with-history ${{ github.run_id }}
+    
       - name: Download Allure Report (Firefox) - (Latest-Only)
         uses: actions/download-artifact@v4
         with: 
           name: allure-report-firefox-latest-only
           path: ./temp-firefox-latest-only
         continue-on-error: true
-      
+    
       - name: Flatten Firefox Latest-Only Structure
-        run: |
-          echo "Contents of ./temp-firefox-latest-only:"
-          ls -R ./temp-firefox-latest-only/ || echo "Directory doesn't exist"
-
-          TARGET_DIR="reports/firefox/latest-only"
-
-          if [ -d "./temp-firefox-latest-only/build-firefox-${{ github.run_id }}" ]; then
-            cp -r ./temp-firefox-latest-only/build-firefox-${{ github.run_id }}/* "$TARGET_DIR/"
-            echo "✅ Firefox latest-only report deployed from build-firefox-${{ github.run_id }}"
-          else
-            subdir=$(find ./temp-firefox-latest-only -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
-            if [ -n "$subdir" ]; then
-              echo "Using fallback subdir: $subdir"
-              cp -r "$subdir"/* "$TARGET_DIR/"
-              echo "✅ Firefox latest-only report deployed from fallback directory"
-            else
-              echo "❌ Firefox latest-only structure not found; no suitable directory to deploy"
-            fi
-          fi
-
+        run: ./.github/scripts/flatten_report.sh firefox latest-only ./temp-firefox-latest-only reports/firefox/latest-only ${{ github.run_id }}
+    
       - name: Download Allure Report (Firefox) - (Latest-with-History)
         uses: actions/download-artifact@v4
         with:
           name: allure-report-firefox-latest-with-history
           path: ./temp-firefox-latest-history
         continue-on-error: true
-      
+    
       - name: Flatten Firefox Latest-with-History Structure
-        run: |
-          echo "Contents of ./temp-firefox-latest-history:"
-          ls -R ./temp-firefox-latest-history/ || echo "Directory doesn't exist"
-
-          TARGET_DIR="reports/firefox/latest-with-history"
-
-          if [ -d "./temp-firefox-latest-history/build-firefox-${{ github.run_id }}" ]; then
-            cp -r ./temp-firefox-latest-history/build-firefox-${{ github.run_id }}/* "$TARGET_DIR/"
-            echo "✅ Firefox latest-with-history report deployed from build-firefox-${{ github.run_id }}"
-          else
-            subdir=$(find ./temp-firefox-latest-history -mindepth 1 -maxdepth 1 -type d | head -n 1 || true)
-            if [ -n "$subdir" ]; then
-              echo "Using fallback subdir: $subdir"
-              cp -r "$subdir"/* "$TARGET_DIR/"
-              echo "✅ Firefox latest-with-history report deployed from fallback directory"
-            else
-              echo "❌ Firefox latest-with-history structure not found; no suitable directory to deploy"
-            fi
-          fi
-
-      - name: Download Allure Results History (Chrome)
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results-chrome-history
-          path: reports/history/chrome
-        continue-on-error: true
-      
-      - name: Download Allure Results History (Firefox)
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results-firefox-history
-          path: reports/history/firefox
-        continue-on-error: true
-
-      - name: Configure Git for gh-pages push
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      
-      - name: Checkout or create gh-pages branch
-        run: |
-          git fetch origin gh-pages --depth=1 || true
-          if git ls-remote --heads origin gh-pages | grep -q gh-pages; then
-            git checkout -b gh-pages origin/gh-pages || (git checkout gh-pages && git pull origin gh-pages)
-          else
-            git checkout --orphan gh-pages
-            git rm -rf .
-          fi
-      
-      - name: Copy history to gh-pages
-        run: |
-          mkdir -p history/chrome history/firefox
-          if [ -d "reports/history/chrome" ]; then
-            cp -r reports/history/chrome/* history/chrome/ || true
-          fi
-          if [ -d "reports/history/firefox" ]; then
-            cp -r reports/history/firefox/* history/firefox/ || true
-          fi
-      
-      - name: Commit and push history to gh-pages
-        run: |
-          git add history/
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update Allure history from run ${{ github.run_id }}"
-            git push origin gh-pages
-          fi
-          
+        run: ./.github/scripts/flatten_report.sh firefox latest-with-history ./temp-firefox-latest-history reports/firefox/latest-with-history ${{ github.run_id }}
+    
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
