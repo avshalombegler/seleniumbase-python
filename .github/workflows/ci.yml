@@ -246,7 +246,7 @@ jobs:
 
       - name: Copy landing page
         run: |
-          cp .github/pages/index. html reports/index.html
+          cp .github/pages/index.html reports/index.html
       
       - name: Download Allure Report (Chrome) - (Latest-Only)
         uses: actions/download-artifact@v4
