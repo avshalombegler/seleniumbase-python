@@ -1,0 +1,64 @@
+      - name: Create landing page
+        run: |
+          cat > reports/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>SeleniumBase Python – GitHub Actions Allure Reports</title>
+            <style>
+              body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                max-width: 800px;
+                margin: 40px auto;
+                padding: 0 16px;
+                line-height: 1.5;
+              }
+              h1, h2 {
+                font-weight: 600;
+              }
+              table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-top: 1rem;
+              }
+              th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+              }
+              th {
+                background-color: #f6f8fa;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>SeleniumBase Python</h1>
+            <p>SeleniumBase test automation framework with Pytest and Allure.</p>
+            <hr />
+            <h2>GitHub Actions Allure Reports</h2>
+            <p>Latest reports are published automatically to GitHub Pages:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>📊</th>
+                  <th>Latest Run</th>
+                  <th>With History</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Chrome</strong></td>
+                  <td><a href="chrome/latest-only/">View Report</a></td>
+                  <td><a href="chrome/latest-with-history/">View Report</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Firefox</strong></td>
+                  <td><a href="firefox/latest-only/">View Report</a></td>
+                  <td><a href="firefox/latest-with-history/">View Report</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </body>
+          </html>
+          EOF

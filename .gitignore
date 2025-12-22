@@ -40,7 +40,6 @@ downloaded_files/
 # SeleniumBase
 report.html
 dashboard.html
-*.html
 latest_screenshots/
 latest_videos/
 latest_logs/

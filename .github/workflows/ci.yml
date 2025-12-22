@@ -325,12 +325,12 @@ jobs:
           path: reports/history/firefox
         continue-on-error: true
       
-      - name: Convert landing page markdown to HTML
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
-          mkdir -p reports
-          pandoc .github/pages/index.md -f markdown -t html -s -o reports/index.html
+      # - name: Convert landing page markdown to HTML
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y pandoc
+      #     mkdir -p reports
+      #     pandoc .github/pages/index.md -f markdown -t html -s -o reports/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
