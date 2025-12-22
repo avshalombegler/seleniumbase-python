@@ -247,7 +247,10 @@ jobs:
       - name: Copy landing page
         run: |
           cp .github/pages/index.html reports/index.html
-    
+
+      - name: Make flatten script executable
+        run: chmod +x ./.github/scripts/flatten_report.sh
+
       - name: Download Allure Report (Chrome) - (Latest-Only)
         uses: actions/download-artifact@v4
         with:
