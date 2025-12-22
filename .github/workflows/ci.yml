@@ -117,6 +117,9 @@ jobs:
       - name: Run Pytest with Allure
         continue-on-error: true
         id: pytest
+        env:
+          ALLURE_BUILD_NUMBER: ${{ github.run_number }}
+          ALLURE_BUILD_NAME: Build ${{ github.run_number }}
         run: |
           PYTHONUNBUFFERED=1 xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
             pytest \
