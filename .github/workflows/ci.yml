@@ -317,6 +317,20 @@ jobs:
       - name: Flatten Firefox Latest-with-History Structure
         run: ./.github/scripts/flatten_report.sh firefox latest-with-history ./temp-firefox-latest-history reports/firefox/latest-with-history ${{ github.run_id }}
     
+      - name: Backup reports for gh-pages update
+        run: cp -r reports /tmp/reports-backup
+    
+      - name: Update gh-pages branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git fetch origin gh-pages
+          git checkout gh-pages
+          cp -r /tmp/reports-backup/* .
+          git add .
+          git commit -m "Update reports and history from CI run ${{ github.run_id }}" || echo "No changes to commit"
+          git push origin gh-pages
+    
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
