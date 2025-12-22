@@ -224,7 +224,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pages: write
       id-token: write
     environment:
