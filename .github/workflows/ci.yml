@@ -161,9 +161,9 @@ jobs:
         run: |
           git fetch origin gh-pages --depth=1 || true
           mkdir -p reports/allure-results-history
-          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "history/${{ matrix.browser }}"; then
-            git checkout origin/gh-pages -- history/${{ matrix.browser }} || true
-            cp -r history/${{ matrix.browser }}/* reports/allure-results-history/ || true
+          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "reports/history/${{ matrix.browser }}"; then
+            git checkout origin/gh-pages -- reports/history/${{ matrix.browser }} || true
+            cp -r reports/history/${{ matrix.browser }}/* reports/allure-results-history/ || true
           fi
 
       - name: Merge Allure History
