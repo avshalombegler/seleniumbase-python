@@ -47,8 +47,8 @@ jobs:
         browser: [chrome, firefox]
         workers: [auto]
         include:
-          - suite: smoke
-            marker: smoke
+          - suite: regression
+            marker: regression
     
     name: ${{ matrix.browser }} ${{ matrix.suite }} tests
     steps:
@@ -160,7 +160,7 @@ jobs:
           # Always show what we have for debugging
           echo "🔍 Final state of history directory:"
           ls -lh reports/allure-results/history/ 2>/dev/null || echo "  (empty or doesn't exist)"
-          
+
       - name: Skip History Download (Clean Mode)
         if: always() && github.event.inputs.clean_history == 'true'
         run: |
