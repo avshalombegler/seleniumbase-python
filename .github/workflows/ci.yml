@@ -41,8 +41,8 @@ jobs:
         browser: [chrome, firefox]
         workers: [auto]
         include:
-          - suite: smoke
-            marker: smoke
+          - suite: regression
+            marker: regression
     
     name: ${{ matrix.browser }} ${{ matrix.suite }} tests
     steps:
