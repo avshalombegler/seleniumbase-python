@@ -262,20 +262,21 @@ jobs:
           fi
 
       - name: Copy Landing Page and Assets
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
           # Switch back to main branch to access .github/pages/
           git checkout main -- .github/pages/
           
-          # Copy index.html and inject build number
+          # Copy index.html and inject values
           if [ -f ".github/pages/index.html" ]; then
             # Generate timestamp
-            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S')
+            export TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S')
             
-            # Replace GitHub Actions variables with actual values
-            sed -e "s/\${{ github.run_number }}/${{ github.run_number }}/g" \
-                -e "s/\${{ github.sha }}/${{ github.sha }}/g" \
-                -e "s/TIMESTAMP_PLACEHOLDER/${TIMESTAMP}/g" \
-                .github/pages/index.html > reports/index.html
+            # Replace environment variables
+            envsubst < .github/pages/index.html > reports/index.html
+            
             echo "✅ Copied and processed index.html from .github/pages/"
           else
             echo "❌ Error: .github/pages/index.html not found"

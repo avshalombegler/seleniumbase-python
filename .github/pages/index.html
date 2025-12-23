@@ -82,10 +82,10 @@
 </head>
 <body>
   <h1>📊 SeleniumBase Python – Test Reports</h1>
-  <h2>🧪 Build #${{ github.run_number }}</h2>
+  <h2>🧪 Build #${BUILD_NUMBER}</h2>
   <p class="metadata">
-    Generated: TIMESTAMP_PLACEHOLDER UTC<br>
-    Commit: <code>${{ github.sha }}</code>
+    Generated: ${TIMESTAMP} UTC<br>
+    Commit: <code>${COMMIT_SHA}</code>
   </p>
   
   <div class="browser-section">
