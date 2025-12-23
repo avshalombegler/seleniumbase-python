@@ -234,7 +234,33 @@ jobs:
           ref: main
           fetch-depth: 1
 
+      - name: Clean gh-pages Branch (if requested)
+        if: github.event.inputs.clean_history == 'true'
+        run: |
+          echo "🧹 CLEANING gh-pages branch - starting fresh!"
+          echo "⚠️  All existing test history will be deleted"
+          
+          # Check if gh-pages exists
+          if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            echo "📥 Fetching current gh-pages for deletion..."
+            git fetch origin gh-pages
+            
+            # Delete the remote branch
+            git push origin --delete gh-pages
+            echo "✅ Deleted remote gh-pages branch"
+          else
+            echo "ℹ️  gh-pages branch doesn't exist (nothing to clean)"
+          fi
+          
+          # Create fresh orphan branch locally
+          git checkout --orphan gh-pages
+          git rm -rf . 2>/dev/null || true
+          
+          echo "✅ Created fresh orphan gh-pages branch"
+          echo "📊 Next deployment will have zero history"
+
       - name: Checkout gh-pages branch for history
+        if: github.event.inputs.clean_history != 'true'  # Skip if we just cleaned
         run: |
           # Fetch gh-pages branch separately for history data
           if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
