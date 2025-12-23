@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SeleniumBase Python – Test Reports</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { 
+      color-scheme: light dark;
+      --bg-color: #ffffff;
+      --text-color: #24292e;
+      --link-color: #0366d6;
+      --border-color: #e1e4e8;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #0d1117;
+        --text-color: #c9d1d9;
+        --link-color: #58a6ff;
+        --border-color: #30363d;
+      }
+    }
+    
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      margin: 40px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    h1 { margin-bottom: 10px; }
+    h2 { margin-top: 5px; color: var(--text-color); }
+    
+    .metadata {
+      color: #6a737d;
+      font-size: 0.9em;
+      margin-bottom: 30px;
+    }
+    
+    .browser-section { 
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    
+    a { 
+      color: var(--link-color);
+      text-decoration: none;
+      padding: 10px 20px; 
+      border: 1px solid var(--link-color);
+      border-radius: 6px; 
+      display: inline-block;
+      margin: 5px;
+      transition: all 0.2s;
+    }
+    
+    a:hover { 
+      background: var(--link-color);
+      color: var(--bg-color);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 40px 0;
+    }
+    
+    code {
+      background-color: var(--border-color);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 SeleniumBase Python – Test Reports</h1>
+  <h2>🧪 Build #${BUILD_NUMBER}</h2>
+  <p class="metadata">
+    Generated: ${TIMESTAMP} UTC<br>
+    Commit: <code>${COMMIT_SHA}</code>
+  </p>
+  
+  <div class="browser-section">
+    <h3>🌐 Chrome</h3>
+    <a href="chrome/index.html">View Allure Report</a>
+  </div>
+  
+  <div class="browser-section">
+    <h3>🦊 Firefox</h3>
+    <a href="firefox/index.html">View Allure Report</a>
+  </div>
+  
+  <hr>
+  <p class="metadata">
+    <small>Powered by <a href="https://github.com/allure-framework/allure2" target="_blank">Allure Framework</a></small>
+  </p>
+</body>
+</html>
