@@ -33,29 +33,21 @@ jobs:
   test:
     needs: check-skip
     if: needs.check-skip.outputs.should_skip != 'true'
-    timeout-minutes: 30
+    timeout-minutes: 20
     runs-on: ubuntu-latest
-    outputs:
-      browser: ${{ steps.set_browser.outputs.browser }}
     strategy:
-      fail-fast: false # Continue running other jobs if one fails
+      fail-fast: false
       matrix:
         browser: [chrome, firefox]
         workers: [auto]
         include:
-          # - suite: regression
-            # marker: regression
           - suite: smoke
             marker: smoke
     
     name: ${{ matrix.browser }} ${{ matrix.suite }} tests
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set browser output
-        id: set_browser
-        run: echo "browser=${{ matrix.browser }}" >> $GITHUB_OUTPUT
 
       - name: Update APT package lists
         run: sudo apt-get update
@@ -88,7 +80,7 @@ jobs:
       - name: Install Java and Allure Commandline
         run: |
           sudo apt-get install -y unzip curl openjdk-11-jre-headless
-          if [ ! -d "/usr/local/allure" ]; then  # Only install if not cached
+          if [ ! -d "/usr/local/allure" ]; then
             curl -L -o /tmp/allure.zip https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.zip
             sudo unzip -q /tmp/allure.zip -d /tmp
             sudo mv /tmp/allure-2.35.1 /usr/local/allure
@@ -101,7 +93,7 @@ jobs:
         run: |
           echo "BROWSER=${{ matrix.browser }}" >> .env
           echo "MAXIMIZED=False" >> .env
-          echo "BASE_URL=${{ secrets.BASE_URL }}" > .env
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
           echo "SHORT_TIMEOUT=3" >> .env
           echo "LONG_TIMEOUT=10" >> .env
           echo "USERNAME=${{ secrets.TEST_USERNAME }}" >> .env
@@ -109,10 +101,38 @@ jobs:
           echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
 
       - name: Create reports directories
-        run: mkdir -p reports/allure-results reports/allure-report
+        run: mkdir -p reports/allure-results reports/allure-results/history
 
       - name: Check website availability
         run: curl -s -f ${{ secrets.BASE_URL }} > /dev/null || exit 1
+
+      - name: Download Previous Allure History from gh-pages
+        if: always()
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            echo "📥 Fetching history from gh-pages branch..."
+            
+            # Clone with sparse checkout for efficiency
+            git clone --depth=1 --filter=blob:none --sparse \
+              https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
+              temp-gh-pages
+            
+            cd temp-gh-pages
+            git sparse-checkout set "history/${{ matrix.browser }}"
+            
+            if [ -d "history/${{ matrix.browser }}" ] && [ -n "$(ls -A history/${{ matrix.browser }} 2>/dev/null)" ]; then
+              cp -r "history/${{ matrix.browser }}"/* ../reports/allure-results/history/
+              HISTORY_COUNT=$(ls -1 ../reports/allure-results/history | wc -l)
+              echo "✅ Found $HISTORY_COUNT history files"
+            else
+              echo "ℹ️  No previous history found for ${{ matrix.browser }}"
+            fi
+            
+            cd ..
+            rm -rf temp-gh-pages
+          else
+            echo "ℹ️  gh-pages branch doesn't exist yet (first run)"
+          fi
 
       - name: Run Pytest with Allure
         continue-on-error: true
@@ -127,102 +147,47 @@ jobs:
               --browser=${{ matrix.browser }} \
               --headless \
               --alluredir=reports/allure-results \
-              --html=reports/report-${browser}.html \
-              --self-contained-html \
               --reruns 1 --reruns-delay 2 \
               -m ${{ matrix.marker }}
 
-      - name: Clean Allure Report Directory
-        if: steps.pytest.outcome == 'failure'
-        run: rm -rf reports/allure-report/build-*
-
-      - name: Generate Allure Report (Latest-Only)
+      - name: Generate Allure Report with Accumulated History
         if: always()
         run: |
-          mkdir -p reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
-          allure generate --clean reports/allure-results -o reports/allure-report/latest-only/build-${{ matrix.browser }}-${{ github.run_id }}
-          sleep 2
+          mkdir -p reports/allure-report/${{ matrix.browser }}
+          
+          # Generate single report with history trends
+          allure generate --clean reports/allure-results \
+            -o reports/allure-report/${{ matrix.browser }}
+          
+          echo "✅ Report generated for ${{ matrix.browser }}"
 
-      - name: Upload Allure Report (Latest-Only)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ matrix.browser }}-latest-only
-          path: reports/allure-report/latest-only/
-          retention-days: 7 
-
-      - name: Download Previous Allure Results
+      - name: Extract Updated History for Persistence
         if: always()
         run: |
-          git fetch origin gh-pages --depth=1 || true
-          mkdir -p reports/allure-results-history
-          if git ls-tree -r origin/gh-pages --name-only 2>/dev/null | grep -q "history/${{ matrix.browser }}"; then
-            git checkout origin/gh-pages -- history/${{ matrix.browser }} || true
-            cp -r history/${{ matrix.browser }}/* reports/allure-results-history/ || true
-          fi
-
-      - name: Merge Allure History
-        if: always()
-        run: |
-          mkdir -p reports/allure-results/history
-          if [ -d "reports/allure-results-history" ] && [ "$(ls -A reports/allure-results-history 2>/dev/null)" ]; then
-            cp -r reports/allure-results-history/* reports/allure-results/history/ || true
+          REPORT_DIR="reports/allure-report/${{ matrix.browser }}"
+          
+          if [ -d "$REPORT_DIR/history" ]; then
+            mkdir -p reports/history/${{ matrix.browser }}
+            cp -r "$REPORT_DIR/history"/* reports/history/${{ matrix.browser }}/
+            
+            HISTORY_COUNT=$(ls -1 reports/history/${{ matrix.browser }} | wc -l)
+            echo "✅ Extracted $HISTORY_COUNT updated history files"
           else
-            echo "No previous allure-results history to merge."
+            echo "⚠️  No history directory in generated report"
           fi
 
-      - name: Generate Allure Report (Latest-with-History)
-        if: always()
-        run: |
-          mkdir -p reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
-          allure generate --clean reports/allure-results -o reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}
-          sleep 2
-
-      - name: Copy history from generated report
-        if: always()
-        run: |
-          if [ -d "reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history" ]; then
-            mkdir -p reports/allure-results/history
-            cp -r reports/allure-report/latest-with-history/build-${{ matrix.browser }}-${{ github.run_id }}/history/* reports/allure-results/history/ || true
-            echo "History copied from generated report"
-          else
-            echo "No history in generated report"
-          fi
-
-      - name: Upload Allure Results
+      - name: Upload Allure Report for Pages Deployment
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-${{ matrix.browser }}
-          path: reports/allure-results/
-          retention-days: 7
-
-      - name: Upload Allure Results History
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results-${{ matrix.browser }}-history
-          path: reports/allure-results/history
-          retention-days: 30
-          if-no-files-found: ignore
-
-      - name: Upload Allure Report (Latest-with-History)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ matrix.browser }}-latest-with-history
-          path: reports/allure-report/latest-with-history/
-          retention-days: 7
-
-      - name: Upload Screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-screenshots-${{ matrix.browser }}-${{ github.run_id }}
-          path: latest_logs/
+          name: allure-report-${{ matrix.browser }}
+          path: reports/allure-report/${{ matrix.browser }}/
           retention-days: 7
   
   deploy:
+    concurrency:
+      group: gh-pages-deploy
+      cancel-in-progress: false
     needs: [test, check-skip]
     if: github.ref == 'refs/heads/main' && needs.check-skip.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
@@ -234,104 +199,132 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     timeout-minutes: 10
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+        continue-on-error: true
 
-      - name: Create reports directory structure
+      - name: Initialize gh-pages if needed
         run: |
-          mkdir -p reports/chrome/latest-only
-          mkdir -p reports/chrome/latest-with-history
-          mkdir -p reports/firefox/latest-only
-          mkdir -p reports/firefox/latest-with-history
-          mkdir -p reports/history/chrome
-          mkdir -p reports/history/firefox
+          if ! git rev-parse --verify gh-pages > /dev/null 2>&1; then
+            echo "📝 Creating gh-pages branch (first run)"
+            git checkout --orphan gh-pages
+            git rm -rf . 2>/dev/null || true
+          fi
 
-      - name: Copy landing page
+      - name: Create directory structure
         run: |
-          cp .github/pages/index.html reports/index.html
-          cp .github/pages/favicon.png reports/favicon.png
+          mkdir -p reports/chrome
+          mkdir -p reports/firefox
+          mkdir -p history/chrome
+          mkdir -p history/firefox
 
-      - name: Make flatten script executable
-        run: chmod +x ./.github/scripts/flatten_report.sh
-
-      - name: Download Allure Report (Chrome) - (Latest-Only)
+      - name: Download Chrome Report
         uses: actions/download-artifact@v4
         with:
-          name: allure-report-chrome-latest-only
-          path: ./temp-chrome-latest-only
+          name: allure-report-chrome
+          path: reports/chrome
         continue-on-error: true
-    
-      - name: Flatten Chrome Latest-Only Structure
-        run: ./.github/scripts/flatten_report.sh chrome latest-only ./temp-chrome-latest-only reports/chrome/latest-only ${{ github.run_id }}
-    
-      - name: Download Allure Report (Chrome) - (Latest-with-History)
+
+      - name: Download Firefox Report
         uses: actions/download-artifact@v4
-        with: 
-          name: allure-report-chrome-latest-with-history
-          path: ./temp-chrome-latest-history
+        with:
+          name: allure-report-firefox
+          path: reports/firefox
         continue-on-error: true
-    
-      - name: Persist Allure History for Chrome
+
+      - name: Extract and Persist History
         run: |
-          mkdir -p reports/history/chrome
-          echo "Contents of temp-chrome-latest-history:"
-          ls -la temp-chrome-latest-history/ || echo "temp directory not found or empty"
-          if [ -d "temp-chrome-latest-history" ]; then
-            find temp-chrome-latest-history -type f -name "*.json" | head -10 || echo "No JSON files found in temp"
-          fi
-          if [ -d "temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history" ]; then
-            echo "History directory found, copying..."
-            cp -r temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history/* reports/history/chrome/ || true
+          echo "📊 Persisting history for trend analysis..."
+          
+          # Chrome history
+          if [ -d "reports/chrome/history" ] && [ -n "$(ls -A reports/chrome/history 2>/dev/null)" ]; then
+            cp -r reports/chrome/history/* history/chrome/
+            echo "✅ Chrome: $(ls -1 history/chrome | wc -l) history files"
           else
-            echo "History directory not found in temp-chrome-latest-history/build-chrome-${{ github.run_id }}/history"
+            echo "⚠️  No Chrome history found"
           fi
-    
-      - name: Flatten Chrome Latest-with-History Structure
-        run: ./.github/scripts/flatten_report.sh chrome latest-with-history ./temp-chrome-latest-history reports/chrome/latest-with-history ${{ github.run_id }}
-    
-      - name: Download Allure Report (Firefox) - (Latest-Only)
-        uses: actions/download-artifact@v4
-        with: 
-          name: allure-report-firefox-latest-only
-          path: ./temp-firefox-latest-only
-        continue-on-error: true
-    
-      - name: Flatten Firefox Latest-Only Structure
-        run: ./.github/scripts/flatten_report.sh firefox latest-only ./temp-firefox-latest-only reports/firefox/latest-only ${{ github.run_id }}
-    
-      - name: Download Allure Report (Firefox) - (Latest-with-History)
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report-firefox-latest-with-history
-          path: ./temp-firefox-latest-history
-        continue-on-error: true
-    
-      - name: Persist Allure History for Firefox
+          
+          # Firefox history
+          if [ -d "reports/firefox/history" ] && [ -n "$(ls -A reports/firefox/history 2>/dev/null)" ]; then
+            cp -r reports/firefox/history/* history/firefox/
+            echo "✅ Firefox: $(ls -1 history/firefox | wc -l) history files"
+          else
+            echo "⚠️  No Firefox history found"
+          fi
+
+      - name: Create Landing Page
         run: |
-          mkdir -p reports/history/firefox
-          if [ -d "temp-firefox-latest-history/build-firefox-${{ github.run_id }}/history" ]; then
-            cp -r temp-firefox-latest-history/build-firefox-${{ github.run_id }}/history/* reports/history/firefox/ || true
-          fi
-    
-      - name: Flatten Firefox Latest-with-History Structure
-        run: ./.github/scripts/flatten_report.sh firefox latest-with-history ./temp-firefox-latest-history reports/firefox/latest-with-history ${{ github.run_id }}
-    
-      - name: Backup reports for gh-pages update
-        run: cp -r reports /tmp/reports-backup
-    
-      - name: Update gh-pages branch
+          CURRENT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          cat > reports/index.html << EOF
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Test Reports</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 40px; }
+              .browser-section { margin: 30px 0; }
+              a { color: #0366d6; text-decoration: none; padding: 10px 20px; 
+                  border: 1px solid #0366d6; border-radius: 4px; 
+                  display: inline-block; margin: 5px; }
+              a:hover { background: #0366d6; color: white; }
+            </style>
+          </head>
+          <body>
+            <h1>🧪 Test Reports - Build #${{ github.run_number }}</h1>
+            <p>Generated: ${CURRENT_DATE}</p>
+            
+            <div class="browser-section">
+              <h2>🦊 Firefox</h2>
+              <a href="firefox/index.html">View Report</a>
+            </div>
+            
+            <div class="browser-section">
+              <h2>🌐 Chrome</h2>
+              <a href="chrome/index.html">View Report</a>
+            </div>
+            
+            <hr>
+            <p><small>Commit: ${{ github.sha }}</small></p>
+          </body>
+          </html>
+          EOF
+
+      - name: Commit and Push to gh-pages
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin gh-pages
-          git checkout gh-pages
-          cp -r /tmp/reports-backup/* .
-          git add .
-          git commit -m "Update reports and history from CI run ${{ github.run_id }}" || echo "No changes to commit"
-          git push origin gh-pages
-    
-      - name: Upload Pages artifact
+          
+          git add reports/ history/
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️  No changes to commit"
+            exit 0
+          fi
+          
+          git commit -m "📊 Update reports from build #${{ github.run_number }}" \
+                     -m "Commit: ${{ github.sha }}" \
+                     -m "Workflow: ${{ github.run_id }}"
+          
+          # Retry push up to 3 times in case of conflicts
+          for i in {1..3}; do
+            if git push origin gh-pages; then
+              echo "✅ Successfully updated gh-pages"
+              exit 0
+            else
+              echo "⚠️  Push failed, attempting pull and retry (attempt $i/3)"
+              git pull --rebase origin gh-pages || true
+            fi
+          done
+          
+          echo "❌ Failed to push after 3 attempts"
+          exit 1
+
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: reports
