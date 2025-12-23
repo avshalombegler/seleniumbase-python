@@ -1,0 +1,34 @@
+{"asctime": "2025-12-23 13:41:03", "levelname": "INFO", "name": "root", "module": "conftest", "funcName": "clean_directory", "lineno": 36, "message": "Directory cleaned and recreated at: downloaded_files/gw1."}
+
+Warning: chromedriver update needed. Getting it now:
+
+*** chromedriver to download = 143.0.7499.169 (Latest Stable) 
+
+Downloading chromedriver-linux64.zip from:
+https://storage.googleapis.com/chrome-for-testing-public/143.0.7499.169/linux64/chromedriver-linux64.zip ...
+Download Complete!
+
+Extracting ['chromedriver'] from chromedriver-linux64.zip ...
+Unzip Complete!
+
+The file [chromedriver] was saved to:
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/seleniumbase/drivers/
+chromedriver
+
+Making [chromedriver 143.0.7499.169] executable ...
+[chromedriver 143.0.7499.169] is now ready for use!
+
+{"asctime": "2025-12-23 13:41:05", "levelname": "INFO", "name": "TestAddRemoveElements", "module": "ui_base_case", "funcName": "get_new_driver", "lineno": 37, "message": "{\"browser\": \"chrome\", \"download_path\": \"/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1\", \"event\": \"Chrome download directory set to\", \"level\": \"info\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:05\"}"}
+{"asctime": "2025-12-23 13:41:05", "levelname": "INFO", "name": "TestAddRemoveElements", "module": "test_add_remove_elements", "funcName": "test_add_elements", "lineno": 22, "message": "{\"browser\": \"chrome\", \"event\": \"Tests for add elements.\", \"level\": \"info\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:05\"}"}
+{"asctime": "2025-12-23 13:41:05", "levelname": "INFO", "name": "MainPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 82, "message": "{\"browser\": \"chrome\", \"event\": \"Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:05\"}"}
+{"asctime": "2025-12-23 13:41:05", "levelname": "INFO", "name": "MainPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 84, "message": "{\"browser\": \"chrome\", \"event\": \"Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:05\"}"}
+{"asctime": "2025-12-23 13:41:05", "levelname": "INFO", "name": "MainPage", "module": "main_page", "funcName": "click_add_remove_elements_link", "lineno": 59, "message": "{\"browser\": \"chrome\", \"event\": \"Navigating to Add/Remove Elements page.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:05\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 82, "message": "{\"browser\": \"chrome\", \"event\": \"Waiting for page to load with indicator '{'selector': 'div#content h3', 'by': 'css selector'}' for 10s.\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 84, "message": "{\"browser\": \"chrome\", \"event\": \"Page loaded successfully with indicator '{'selector': 'div#content h3', 'by': 'css selector'}'.\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "TestAddRemoveElements", "module": "test_add_remove_elements", "funcName": "test_add_elements", "lineno": 26, "message": "{\"browser\": \"chrome\", \"event\": \"Add two elements.\", \"level\": \"info\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "add_remove_elements_page", "funcName": "click_add_element", "lineno": 21, "message": "{\"browser\": \"chrome\", \"event\": \"Clicking Add Element button.\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "add_remove_elements_page", "funcName": "click_add_element", "lineno": 21, "message": "{\"browser\": \"chrome\", \"event\": \"Clicking Add Element button.\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "TestAddRemoveElements", "module": "test_add_remove_elements", "funcName": "test_add_elements", "lineno": 29, "message": "{\"browser\": \"chrome\", \"event\": \"Getting delete buttons count.\", \"level\": \"info\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "add_remove_elements_page", "funcName": "count_delete_buttons", "lineno": 30, "message": "{\"browser\": \"chrome\", \"event\": \"Counting Delete Element button(s).\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "AddRemoveElementsPage", "module": "base_page", "funcName": "get_number_of_elements", "lineno": 447, "message": "{\"browser\": \"chrome\", \"event\": \"Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.\", \"level\": \"info\", \"page\": \"AddRemoveElementsPage\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
+{"asctime": "2025-12-23 13:41:06", "levelname": "INFO", "name": "TestAddRemoveElements", "module": "test_add_remove_elements", "funcName": "test_add_elements", "lineno": 32, "message": "{\"browser\": \"chrome\", \"event\": \"Verifying delete buttons count.\", \"level\": \"info\", \"test_name\": \"test_add_elements\", \"timestamp\": \"2025-12-23 13:41:06\"}"}
