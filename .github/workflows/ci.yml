@@ -112,7 +112,7 @@ jobs:
         run: curl -s -f ${{ secrets.BASE_URL }} > /dev/null || exit 1
 
       - name: Download Previous Allure History from gh-pages
-        if: always()
+        if: always() && github.event.inputs.clean_history != 'true'
         run: |
           mkdir -p reports/allure-results/history
           
@@ -160,6 +160,14 @@ jobs:
           # Always show what we have for debugging
           echo "🔍 Final state of history directory:"
           ls -lh reports/allure-results/history/ 2>/dev/null || echo "  (empty or doesn't exist)"
+          
+      - name: Skip History Download (Clean Mode)
+        if: always() && github.event.inputs.clean_history == 'true'
+        run: |
+          echo "🧹 CLEAN MODE: Skipping history download"
+          echo "📊 This run will start fresh with no historical data"
+          echo "🔍 History directory status:"
+          ls -lh reports/allure-results/history/ 2>/dev/null || echo "  (empty - as expected)"
 
       - name: Run Pytest with Allure
         continue-on-error: true
