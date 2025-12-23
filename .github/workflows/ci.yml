@@ -295,6 +295,7 @@ jobs:
         continue-on-error: true
 
       - name: Extract and Persist History (Merge with Existing)
+        if: github.event.inputs.clean_history != 'true'
         run: |
           echo "📊 Persisting history for trend analysis..."
           
@@ -335,6 +336,23 @@ jobs:
           echo "🔍 Final history state:"
           echo "  Chrome: $(ls -1 history/chrome 2>/dev/null | wc -l) files"
           echo "  Firefox: $(ls -1 history/firefox 2>/dev/null | wc -l) files"
+
+      - name: Remove History from Reports (Clean Mode)
+        if: github.event.inputs.clean_history == 'true'
+        run: |
+          echo "🧹 Removing history from reports (clean mode)"
+          
+          # Delete history directories from downloaded reports
+          rm -rf reports/chrome/history
+          rm -rf reports/firefox/history
+          
+          echo "✅ History removed from reports"
+          echo "📊 Trends will start from scratch with this run"
+          
+          # Verify history directories are empty
+          echo "🔍 Verifying history directories:"
+          echo "  history/chrome: $(ls -1 history/chrome 2>/dev/null | wc -l) files"
+          echo "  history/firefox: $(ls -1 history/firefox 2>/dev/null | wc -l) files"
 
       - name: Copy Landing Page and Assets
         env:
