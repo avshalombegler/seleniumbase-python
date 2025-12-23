@@ -262,10 +262,14 @@ jobs:
           CURRENT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
           cat > reports/index.html << EOF
           <!DOCTYPE html>
-          <html>
+          <html lang="en">
           <head>
-            <title>Test Reports</title>
+            <meta charset="UTF-8" />
+            <title>SeleniumBase Python – GitHub Actions Allure Reports</title>
+            <link rel="icon" type="image/png" href="favicon.png" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
             <style>
+              :root { color-scheme: light dark; }
               body { font-family: Arial, sans-serif; margin: 40px; }
               .browser-section { margin: 30px 0; }
               a { color: #0366d6; text-decoration: none; padding: 10px 20px; 
@@ -279,13 +283,13 @@ jobs:
             <p>Generated: ${CURRENT_DATE}</p>
             
             <div class="browser-section">
-              <h2>🦊 Firefox</h2>
-              <a href="firefox/index.html">View Report</a>
+              <h2>🌐 Chrome</h2>
+              <a href="chrome/index.html">View Report</a>
             </div>
             
             <div class="browser-section">
-              <h2>🌐 Chrome</h2>
-              <a href="chrome/index.html">View Report</a>
+              <h2>🦊 Firefox</h2>
+              <a href="firefox/index.html">View Report</a>
             </div>
             
             <hr>
