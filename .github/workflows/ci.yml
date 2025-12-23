@@ -87,7 +87,6 @@ jobs:
             sudo chmod -R +x /usr/local/allure/bin
             sudo ln -sf /usr/local/allure/bin/allure /usr/local/bin/allure
           fi
-          allure --version
 
       - name: Create .env file
         run: |
@@ -109,30 +108,52 @@ jobs:
       - name: Download Previous Allure History from gh-pages
         if: always()
         run: |
+          mkdir -p reports/allure-results/history
+          
           if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
             echo "📥 Fetching history from gh-pages branch..."
             
-            # Clone with sparse checkout for efficiency
-            git clone --depth=1 --filter=blob:none --sparse \
-              https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
-              temp-gh-pages
+            # Fetch the gh-pages branch
+            git fetch origin gh-pages --depth=1
             
-            cd temp-gh-pages
-            git sparse-checkout set "history/${{ matrix.browser }}"
-            
-            if [ -d "history/${{ matrix.browser }}" ] && [ -n "$(ls -A history/${{ matrix.browser }} 2>/dev/null)" ]; then
-              cp -r "history/${{ matrix.browser }}"/* ../reports/allure-results/history/
-              HISTORY_COUNT=$(ls -1 ../reports/allure-results/history | wc -l)
-              echo "✅ Found $HISTORY_COUNT history files"
+            # Use git archive to extract just the history directory
+            if git show origin/gh-pages:history/${{ matrix.browser }} > /dev/null 2>&1; then
+              echo "✅ History directory exists, extracting files..."
+              
+              # Create temporary directory for extraction
+              TEMP_DIR=$(mktemp -d)
+              
+              # Extract the entire history directory for this browser
+              git archive origin/gh-pages history/${{ matrix.browser }} | tar -x -C "$TEMP_DIR"
+              
+              # Copy files to allure results
+              if [ -d "$TEMP_DIR/history/${{ matrix.browser }}" ]; then
+                cp -v "$TEMP_DIR/history/${{ matrix.browser }}"/* reports/allure-results/history/ 2>/dev/null || true
+                
+                HISTORY_COUNT=$(ls -1 reports/allure-results/history 2>/dev/null | wc -l)
+                if [ "$HISTORY_COUNT" -gt 0 ]; then
+                  echo "✅ Successfully extracted $HISTORY_COUNT history files"
+                  echo "📋 Sample files:"
+                  ls -lh reports/allure-results/history/ | head -5
+                else
+                  echo "⚠️  No files were copied (directory might be empty)"
+                fi
+              else
+                echo "⚠️  Directory structure unexpected after extraction"
+              fi
+              
+              # Cleanup
+              rm -rf "$TEMP_DIR"
             else
-              echo "ℹ️  No previous history found for ${{ matrix.browser }}"
+              echo "ℹ️  No previous history found for ${{ matrix.browser }} (first run or new browser)"
             fi
-            
-            cd ..
-            rm -rf temp-gh-pages
           else
             echo "ℹ️  gh-pages branch doesn't exist yet (first run)"
           fi
+          
+          # Always show what we have for debugging
+          echo "🔍 Final state of history directory:"
+          ls -lh reports/allure-results/history/ 2>/dev/null || echo "  (empty or doesn't exist)"
 
       - name: Run Pytest with Allure
         continue-on-error: true
