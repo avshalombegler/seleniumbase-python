@@ -201,16 +201,20 @@ jobs:
     timeout-minutes: 10
     
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (main branch for assets)
         uses: actions/checkout@v4
         with:
-          ref: gh-pages
+          ref: main
           fetch-depth: 1
-        continue-on-error: true
 
-      - name: Initialize gh-pages if needed
+      - name: Checkout gh-pages branch for history
         run: |
-          if ! git rev-parse --verify gh-pages > /dev/null 2>&1; then
+          # Fetch gh-pages branch separately for history data
+          if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            git fetch origin gh-pages:gh-pages
+            git checkout gh-pages
+            echo "✅ Checked out gh-pages branch"
+          else
             echo "📝 Creating gh-pages branch (first run)"
             git checkout --orphan gh-pages
             git rm -rf . 2>/dev/null || true
@@ -257,46 +261,43 @@ jobs:
             echo "⚠️  No Firefox history found"
           fi
 
-      - name: Create Landing Page
+      - name: Copy Landing Page and Assets
         run: |
-          CURRENT_DATE=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-          cat > reports/index.html << EOF
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8" />
-            <title>SeleniumBase Python – GitHub Actions Allure Reports</title>
-            <link rel="icon" type="image/png" href="favicon.png" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <style>
-              :root { color-scheme: light dark; }
-              body { font-family: Arial, sans-serif; margin: 40px; }
-              .browser-section { margin: 30px 0; }
-              a { color: #0366d6; text-decoration: none; padding: 10px 20px; 
-                  border: 1px solid #0366d6; border-radius: 4px; 
-                  display: inline-block; margin: 5px; }
-              a:hover { background: #0366d6; color: white; }
-            </style>
-          </head>
-          <body>
-            <h1>🧪 Test Reports - Build #${{ github.run_number }}</h1>
-            <p>Generated: ${CURRENT_DATE}</p>
+          # Switch back to main branch to access .github/pages/
+          git checkout main -- .github/pages/
+          
+          # Copy index.html and inject build number
+          if [ -f ".github/pages/index.html" ]; then
+            # Generate timestamp
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S')
             
-            <div class="browser-section">
-              <h2>🌐 Chrome</h2>
-              <a href="chrome/index.html">View Report</a>
-            </div>
-            
-            <div class="browser-section">
-              <h2>🦊 Firefox</h2>
-              <a href="firefox/index.html">View Report</a>
-            </div>
-            
-            <hr>
-            <p><small>Commit: ${{ github.sha }}</small></p>
-          </body>
-          </html>
-          EOF
+            # Replace GitHub Actions variables with actual values
+            sed -e "s/\${{ github.run_number }}/${{ github.run_number }}/g" \
+                -e "s/\${{ github.sha }}/${{ github.sha }}/g" \
+                -e "s/TIMESTAMP_PLACEHOLDER/${TIMESTAMP}/g" \
+                .github/pages/index.html > reports/index.html
+            echo "✅ Copied and processed index.html from .github/pages/"
+          else
+            echo "❌ Error: .github/pages/index.html not found"
+            exit 1
+          fi
+          
+          # Copy favicon if it exists
+          if [ -f ".github/pages/favicon.png" ]; then
+            cp .github/pages/favicon.png reports/favicon.png
+            echo "✅ Copied favicon.png from .github/pages/"
+          else
+            echo "⚠️  Warning: .github/pages/favicon.png not found (optional)"
+          fi
+          
+          # Copy any other assets from .github/pages/ (optional)
+          for file in .github/pages/*; do
+            filename=$(basename "$file")
+            if [ "$filename" != "index.html" ] && [ "$filename" != "favicon.png" ]; then
+              cp "$file" "reports/$filename" 2>/dev/null || true
+              echo "✅ Copied additional asset: $filename"
+            fi
+          done
 
       - name: Commit and Push to gh-pages
         run: |
