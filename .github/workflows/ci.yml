@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      clean_history:
+        description: 'Clean all history and start fresh'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -262,25 +268,47 @@ jobs:
           path: reports/firefox
         continue-on-error: true
 
-      - name: Extract and Persist History
+      - name: Extract and Persist History (Merge with Existing)
         run: |
           echo "📊 Persisting history for trend analysis..."
           
-          # Chrome history
+          # Chrome history - merge new with existing
           if [ -d "reports/chrome/history" ] && [ -n "$(ls -A reports/chrome/history 2>/dev/null)" ]; then
-            cp -r reports/chrome/history/* history/chrome/
-            echo "✅ Chrome: $(ls -1 history/chrome | wc -l) history files"
+            echo "🔍 Chrome - New history files from this run:"
+            ls -lh reports/chrome/history/
+            
+            # Preserve existing history files (don't overwrite)
+            cp -n reports/chrome/history/* history/chrome/ 2>/dev/null || true
+            
+            # Update/overwrite with new files (in case of updates to existing files)
+            cp -rf reports/chrome/history/* history/chrome/
+            
+            CHROME_COUNT=$(ls -1 history/chrome | wc -l)
+            echo "✅ Chrome: $CHROME_COUNT total history files (merged)"
           else
-            echo "⚠️  No Chrome history found"
+            echo "⚠️  No Chrome history found in downloaded report"
           fi
           
-          # Firefox history
+          # Firefox history - merge new with existing
           if [ -d "reports/firefox/history" ] && [ -n "$(ls -A reports/firefox/history 2>/dev/null)" ]; then
-            cp -r reports/firefox/history/* history/firefox/
-            echo "✅ Firefox: $(ls -1 history/firefox | wc -l) history files"
+            echo "🔍 Firefox - New history files from this run:"
+            ls -lh reports/firefox/history/
+            
+            # Preserve existing history files (don't overwrite)
+            cp -n reports/firefox/history/* history/firefox/ 2>/dev/null || true
+            
+            # Update/overwrite with new files (in case of updates to existing files)
+            cp -rf reports/firefox/history/* history/firefox/
+            
+            FIREFOX_COUNT=$(ls -1 history/firefox | wc -l)
+            echo "✅ Firefox: $FIREFOX_COUNT total history files (merged)"
           else
-            echo "⚠️  No Firefox history found"
+            echo "⚠️  No Firefox history found in downloaded report"
           fi
+          
+          echo "🔍 Final history state:"
+          echo "  Chrome: $(ls -1 history/chrome 2>/dev/null | wc -l) files"
+          echo "  Firefox: $(ls -1 history/firefox 2>/dev/null | wc -l) files"
 
       - name: Copy Landing Page and Assets
         env:
@@ -311,44 +339,60 @@ jobs:
           else
             echo "⚠️  Warning: .github/pages/favicon.png not found (optional)"
           fi
-          
-          # Copy any other assets from .github/pages/ (optional)
-          for file in .github/pages/*; do
-            filename=$(basename "$file")
-            if [ "$filename" != "index.html" ] && [ "$filename" != "favicon.png" ]; then
-              cp "$file" "reports/$filename" 2>/dev/null || true
-              echo "✅ Copied additional asset: $filename"
-            fi
-          done
 
       - name: Commit and Push to gh-pages
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
+          # Add all changes
           git add reports/ history/
+          
+          # Show what we're about to commit
+          echo "🔍 Files to be committed:"
+          git diff --staged --stat
           
           if git diff --staged --quiet; then
             echo "ℹ️  No changes to commit"
             exit 0
           fi
           
+          # Commit with detailed message
           git commit -m "📊 Update reports from build #${{ github.run_number }}" \
+                     -m "Chrome history: $(ls -1 history/chrome 2>/dev/null | wc -l) files" \
+                     -m "Firefox history: $(ls -1 history/firefox 2>/dev/null | wc -l) files" \
                      -m "Commit: ${{ github.sha }}" \
                      -m "Workflow: ${{ github.run_id }}"
           
-          # Retry push up to 3 times in case of conflicts
-          for i in {1..3}; do
+          # Push with retry and proper conflict resolution
+          for i in {1..5}; do
             if git push origin gh-pages; then
-              echo "✅ Successfully updated gh-pages"
+              echo "✅ Successfully updated gh-pages on attempt $i"
+              
+              # Verify what was pushed
+              echo "🔍 Verifying committed history:"
+              git ls-tree -r HEAD history/ --name-only | head -20
+              
               exit 0
             else
-              echo "⚠️  Push failed, attempting pull and retry (attempt $i/3)"
-              git pull --rebase origin gh-pages || true
+              echo "⚠️  Push failed, attempting to resolve conflicts (attempt $i/5)"
+              
+              # Pull with strategy to keep our history files
+              git pull --rebase origin gh-pages -X ours || {
+                echo "❌ Rebase failed, trying merge strategy"
+                git rebase --abort 2>/dev/null || true
+                git pull origin gh-pages --no-rebase -X ours || true
+              }
+              
+              # Re-add our changes
+              git add reports/ history/
+              git commit --amend --no-edit 2>/dev/null || true
+              
+              sleep 2  # Brief delay before retry
             fi
           done
           
-          echo "❌ Failed to push after 3 attempts"
+          echo "❌ Failed to push after 5 attempts"
           exit 1
 
       - name: Upload Pages Artifact
