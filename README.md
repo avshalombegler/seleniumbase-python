@@ -189,7 +189,11 @@ PASSWORD=SuperSecretPassword!
 ### Running in GitHub Actions
 
 - GitHub Actions automatically runs tests on every push or pull request to the main branch.
-- For manual runs, go to the Actions tab, select the CI workflow, and click "Run workflow" (if configured with workflow_dispatch).
+- For manual runs, go to the Actions tab, select the CI workflow, and click "Run workflow".
+  - **Browser**: Choose browser to run tests on (`both`, `chrome`, `firefox`) - default: `both`
+  - **Marker**: Select test marker (`smoke`, `regression`, `ui`, `api`) - default: `smoke`
+  - **Workers**: Number of parallel workers (e.g., `auto`, `2`, `4`) - default: `auto`
+  - **Clean History**: Clean all history and start fresh (boolean) - default: `false`
 
 ### Running in Jenkins
 
