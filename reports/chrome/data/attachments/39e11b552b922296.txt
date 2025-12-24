@@ -1,0 +1,30 @@
+{"asctime": "2025-12-24 07:07:29", "levelname": "INFO", "name": "root", "module": "conftest", "funcName": "clean_directory", "lineno": 36, "message": "Directory cleaned and recreated at: downloaded_files/gw0."}
+
+Warning: chromedriver update needed. Getting it now:
+
+*** chromedriver to download = 143.0.7499.169 (Latest Stable) 
+
+Downloading chromedriver-linux64.zip from:
+https://storage.googleapis.com/chrome-for-testing-public/143.0.7499.169/linux64/chromedriver-linux64.zip ...
+Download Complete!
+
+Extracting ['chromedriver'] from chromedriver-linux64.zip ...
+Unzip Complete!
+
+The file [chromedriver] was saved to:
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/seleniumbase/drivers/
+chromedriver
+
+Making [chromedriver 143.0.7499.169] executable ...
+[chromedriver 143.0.7499.169] is now ready for use!
+
+{"asctime": "2025-12-24 07:07:35", "levelname": "INFO", "name": "TestChallengingDom", "module": "ui_base_case", "funcName": "get_new_driver", "lineno": 37, "message": "{\"browser\": \"chrome\", \"download_path\": \"/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0\", \"event\": \"Chrome download directory set to\", \"level\": \"info\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:35\"}"}
+{"asctime": "2025-12-24 07:07:36", "levelname": "INFO", "name": "TestChallengingDom", "module": "test_challenging_dom", "funcName": "test_cells_content_per_column", "lineno": 54, "message": "{\"browser\": \"chrome\", \"event\": \"Verify cell content per column.\", \"level\": \"info\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:36\"}"}
+{"asctime": "2025-12-24 07:07:36", "levelname": "INFO", "name": "MainPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 82, "message": "{\"browser\": \"chrome\", \"event\": \"Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:36\"}"}
+{"asctime": "2025-12-24 07:07:36", "levelname": "INFO", "name": "MainPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 84, "message": "{\"browser\": \"chrome\", \"event\": \"Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:36\"}"}
+{"asctime": "2025-12-24 07:07:36", "levelname": "INFO", "name": "MainPage", "module": "main_page", "funcName": "click_challenging_dom_link", "lineno": 79, "message": "{\"browser\": \"chrome\", \"event\": \"Navigating to Challenging DOM page.\", \"level\": \"info\", \"page\": \"MainPage\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:36\"}"}
+{"asctime": "2025-12-24 07:07:37", "levelname": "INFO", "name": "ChallengingDomPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 82, "message": "{\"browser\": \"chrome\", \"event\": \"Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.\", \"level\": \"info\", \"page\": \"ChallengingDomPage\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:37\"}"}
+{"asctime": "2025-12-24 07:07:37", "levelname": "INFO", "name": "ChallengingDomPage", "module": "base_page", "funcName": "wait_for_page_to_load", "lineno": 84, "message": "{\"browser\": \"chrome\", \"event\": \"Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.\", \"level\": \"info\", \"page\": \"ChallengingDomPage\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:37\"}"}
+{"asctime": "2025-12-24 07:07:37", "levelname": "INFO", "name": "TestChallengingDom", "module": "test_challenging_dom", "funcName": "test_cells_content_per_column", "lineno": 60, "message": "{\"browser\": \"chrome\", \"event\": \"Getting table cell 'Iuvaret' text under column 'Lorem'.\", \"level\": \"info\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:37\"}"}
+{"asctime": "2025-12-24 07:07:37", "levelname": "INFO", "name": "TestChallengingDom", "module": "test_challenging_dom", "funcName": "test_cells_content_per_column", "lineno": 60, "message": "{\"browser\": \"chrome\", \"event\": \"Getting table cell 'Iuvaret' text under column 'Lorem'.\", \"level\": \"info\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:37\"}"}
+{"asctime": "2025-12-24 07:07:37", "levelname": "INFO", "name": "TestChallengingDom", "module": "test_challenging_dom", "funcName": "test_cells_content_per_column", "lineno": 60, "message": "{\"browser\": \"chrome\", \"event\": \"Getting table cell 'Iuvaret' text under column 'Lorem'.\", \"level\": \"info\", \"test_name\": \"test_cells_content_per_column_0_Lorem\", \"timestamp\": \"2025-12-24 07:07:37\"}"}
