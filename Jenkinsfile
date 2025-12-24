@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'linux-python' }
     
     parameters {
         choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox'], description: 'Browser to run tests on')
