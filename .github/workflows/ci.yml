@@ -7,11 +7,35 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
+      browser:
+        description: 'Browser to run tests on'
+        type: choice
+        options: 
+          - both
+          - chrome
+          - firefox
+        default: both
+        required: true
+      marker:
+        description: 'Test marker to run'
+        type: choice
+        options:
+          - smoke
+          - regression
+          - ui
+          - api
+        default: smoke
+        required: true
+      workers:
+        description: 'Number of parallel workers'
+        type: string
+        default: 'auto'
+        required: false
       clean_history:
         description: 'Clean all history and start fresh'
-        required: false
         type: boolean
         default: false
+        required: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -44,13 +68,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox]
-        workers: [auto]
-        include:
-          - suite: smoke
-            marker: smoke
+        # Use input if manual trigger, otherwise default to both browsers
+        browser: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.browser == 'both' && fromJSON('["chrome","firefox"]') || fromJSON(format('["{0}"]', github.event.inputs.browser))) || fromJSON('["chrome","firefox"]') }}
+        # Use input if manual trigger, otherwise default to smoke
+        marker: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.marker)) || fromJSON('["smoke"]') }}
+        # Use input if manual trigger, otherwise default to auto
+        workers: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.workers)) || fromJSON('["auto"]') }}
     
-    name: ${{ matrix.browser }} ${{ matrix.suite }} tests
+    name: ${{ matrix.browser }} - ${{ matrix.marker }} tests
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
