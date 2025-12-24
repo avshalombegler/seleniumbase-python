@@ -268,7 +268,7 @@ jobs:
           echo "📊 Next deployment will have zero history"
 
       - name: Checkout gh-pages branch for history
-        if: github.event.inputs.clean_history != 'true'  # Skip if we just cleaned
+        if: github.event.inputs.clean_history != 'true'
         run: |
           # Fetch gh-pages branch separately for history data
           if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
