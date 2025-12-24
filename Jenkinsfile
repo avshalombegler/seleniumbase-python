@@ -8,9 +8,9 @@ pipeline {
     }
     
     options {
-        timeout(time: 30, unit: 'MINUTES')
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-        timestamps()
+        timeout(time: 20, unit: 'MINUTES')              // Abort pipeline if it runs longer than 20 minutes
+        buildDiscarder(logRotator(numToKeepStr: '10'))  // Keep only the last 10 build records
+        timestamps()                                    // Add timestamps to console output
     }
     
     environment {
