@@ -41,6 +41,7 @@ pipeline {
                                         --headless \
                                         --alluredir=allure-results-${browser} \
                                         --junitxml=reports/junit.xml \
+                                        --reruns 3 --reruns-delay 2 \
                                         -m ${params.MARKER} || true
                                 """
                             }
