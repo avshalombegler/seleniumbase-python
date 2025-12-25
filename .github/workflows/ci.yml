@@ -75,7 +75,7 @@ jobs:
         # Use input if manual trigger, otherwise default to auto
         workers: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.workers)) || fromJSON('["auto"]') }}
     
-    name: ${{ matrix.browser }} - ${{ matrix.marker }} tests
+    name: ${{ matrix.marker }} test suite - ${{ matrix.browser }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
