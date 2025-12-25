@@ -60,6 +60,7 @@ class TestHorizontalSlider(UiBaseCase):
         page.set_horizontal_slider_value_using_keys(self.KEYS_RANGE)
 
         self.logger.info("Verifying horizontal slider new value.")
+        self.sleep(0.5)
         slider_value = page.get_horizontal_slider_value()
         self.assert_equal(
             self.EXPECTED_KEYS_RANGE,
