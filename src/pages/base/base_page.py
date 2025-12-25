@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 import allure
 import structlog
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import ElementNotVisibleException, NoSuchElementException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase import BaseCase
 
@@ -326,12 +326,16 @@ class BasePage:
             self.logger.debug(f"is_element_visible({locator}) -> True (waited)")
             return True
 
-        except (TimeoutException, NoSuchElementException) as e:
-            self.logger.debug(f"is_element_visible({locator}) -> False ({e})")
-            return False
         except Exception as e:
-            self.logger.error(f"Unexpected error checking visibility for {locator}: {e}")
-            raise
+            # Check if it's a visibility-related exception (e.g., by message or type)
+            if isinstance(
+                e, (ElementNotVisibleException, NoSuchElementException, TimeoutException)
+            ) or "not visible" in str(e):
+                self.logger.debug(f"is_element_visible({locator}) -> False ({e})")
+                return False
+            else:
+                self.logger.error(f"Unexpected error checking visibility for {locator}: {e}")
+                raise
 
     def is_element_selected(self, locator: Locator, timeout: int | float | None = None) -> bool:
         """
