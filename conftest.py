@@ -62,6 +62,8 @@ def pytest_configure(config: pytest.Config) -> None:
     Args:
         config (pytest.Config): The pytest configuration object to modify.
     """
+    is_ci_environment = os.environ.get("JENKINS_HOME") or os.environ.get("GITHUB_ACTIONS")
+    is_xdist_worker = os.environ.get("PYTEST_XDIST_WORKER")
     browser = os.environ.get("BROWSER", settings.BROWSER).lower()
 
     # Store for use in fixtures
@@ -71,7 +73,7 @@ def pytest_configure(config: pytest.Config) -> None:
     config.option.headless = settings.HEADLESS
 
     # Add Chrome arguments for user profile
-    if browser == "chrome":
+    if browser == "chrome" and not is_ci_environment:
         user_data_dir = os.path.abspath("chrome_user_data")
         os.makedirs(user_data_dir, exist_ok=True)
 
@@ -93,8 +95,6 @@ def pytest_configure(config: pytest.Config) -> None:
 
     # Clean allure results ONLY for non-xdist runs and local development
     # Don't clean in CI environments (Jenkins or GitHub Actions) where browsers run in parallel
-    is_ci_environment = os.environ.get("JENKINS_HOME") or os.environ.get("GITHUB_ACTIONS")
-    is_xdist_worker = os.environ.get("PYTEST_XDIST_WORKER")
 
     if not is_xdist_worker and not is_ci_environment:
         if allure_results_path.exists():
