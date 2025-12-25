@@ -1,0 +1,9 @@
+INFO     TestIframe:test_iframe.py:20 [1mTests iframe.                 [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     MainPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     MainPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     MainPage:main_page.py:196 [1mNavigating to Frames page.    [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     FramesPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mFramesPage[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     FramesPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mFramesPage[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     TestIframe:test_iframe.py:24 [1mClicking iframe link.         [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     TestIframe:test_iframe.py:27 [1mChecking if herokuapp blocked – TinyMCE read-only mode.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m
+INFO     TestIframe:test_iframe.py:29 [1mSkipping test: herokuapp blocked – TinyMCE read-only mode.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_iframe_functionality[0m

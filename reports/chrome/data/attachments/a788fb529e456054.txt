@@ -1,0 +1,17 @@
+08:49:19 | INFO     | TestInputs           | [1mChrome download directory set to[0m [36mbrowser[0m=[35mchrome[0m [36mdownload_path[0m=[35m/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | TestInputs           | [1mTests Inputs.                 [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | MainPage             | [1mNavigating to Inputs page.    [0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | InputsPage           | [1mWaiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | InputsPage           | [1mPage loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | TestInputs           | [1mEntering input number.        [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | InputsPage           | [1mSending keys '1337' to element '{'selector': 'input[type=number]', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | TestInputs           | [1mGetting input number value.   [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | TestInputs           | [1mVerifying input number value. [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:19 | INFO     | TestInputs           | [1mIncreasing number value using keyboard arrow.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:20 | INFO     | TestInputs           | [1mGetting input increased number value.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:20 | INFO     | TestInputs           | [1mVerifying input number value. [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:20 | INFO     | TestInputs           | [1mDecreasing number value using keyboard arrow.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:20 | INFO     | TestInputs           | [1mGetting decreased input number value.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+08:49:20 | INFO     | TestInputs           | [1mVerifying input number value. [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m

@@ -1,0 +1,9 @@
+INFO     TestDigestAuth:test_digest_auth_login_scenarios.py:25 [1mTests for Digest Authentication scenarios.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+INFO     MainPage:main_page.py:102 [1mNavigating to Digest Authentication page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+INFO     MainPage:base_page.py:183 [1mNavigating to url: https://wrong:admin@the-internet.herokuapp.com/digest_auth.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+INFO     MainPage:base_page.py:185 [1mNavigation completed.         [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+INFO     TestDigestAuth:test_digest_auth_login_scenarios.py:29 [1mCheck if login succeeded.     [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+ERROR    DigestAuthPage:base_page.py:421 [1mFailed to get text for '{'selector': 'div#content p', 'by': 'css selector'}': Message: 
+ Element {div#content p} was not present after 10 seconds!
+[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mDigestAuthPage[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m
+INFO     TestDigestAuth:test_digest_auth_login_scenarios.py:31 [1mLogin denied                  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_digest_auth_login_scenarios_1_wrong[0m

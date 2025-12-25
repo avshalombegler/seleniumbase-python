@@ -1,0 +1,32 @@
+08:45:46 | INFO     | root                 | Directory cleaned and recreated at: downloaded_files/gw2.
+
+Warning: chromedriver update needed. Getting it now:
+
+*** chromedriver to download = 143.0.7499.169 (Latest Stable) 
+
+Downloading chromedriver-linux64.zip from:
+https://storage.googleapis.com/chrome-for-testing-public/143.0.7499.169/linux64/chromedriver-linux64.zip ...
+Download Complete!
+
+Extracting ['chromedriver'] from chromedriver-linux64.zip ...
+Unzip Complete!
+
+The file [chromedriver] was saved to:
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/seleniumbase/drivers/
+chromedriver
+
+Making [chromedriver 143.0.7499.169] executable ...
+[chromedriver 143.0.7499.169] is now ready for use!
+
+08:46:10 | INFO     | TestFloatingMenu     | [1mChrome download directory set to[0m [36mbrowser[0m=[35mchrome[0m [36mdownload_path[0m=[35m/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw2[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:11 | INFO     | TestFloatingMenu     | [1mTests Files Download.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:11 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:11 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:11 | INFO     | MainPage             | [1mNavigating to Floating Menu page.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:12 | INFO     | FloatingMenuPage     | [1mWaiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mFloatingMenuPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:12 | INFO     | FloatingMenuPage     | [1mPage loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mFloatingMenuPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:12 | INFO     | TestFloatingMenu     | [1mScrolling down.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:12 | INFO     | TestFloatingMenu     | [1mClicking floating menu item 'Home'.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+08:46:19 | ERROR    | FloatingMenuPage     | [1mFailed to click element '{'selector': 'Home', 'by': 'link text'}': 
+ Link text {Home} was not found after 7 seconds![0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mFloatingMenuPage[0m [36mtest_name[0m=[35mtest_floating_menu_functionality_0_Home[0m
+WARNING: Unable to get screenshot!

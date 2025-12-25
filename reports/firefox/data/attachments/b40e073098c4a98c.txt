@@ -1,0 +1,26 @@
+08:48:16 | INFO     | TestInfiniteScroll   | [1mTests Infinite Scroll.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:16 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:16 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:16 | INFO     | MainPage             | [1mNavigating to Infinite Scroll page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:17 | INFO     | InfiniteScrollPage   | [1mWaiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mInfiniteScrollPage[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:17 | INFO     | InfiniteScrollPage   | [1mPage loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mInfiniteScrollPage[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:17 | INFO     | TestInfiniteScroll   | [1mGetting old page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:17 | INFO     | TestInfiniteScroll   | [1mScrolling to bottom of page.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:18 | INFO     | TestInfiniteScroll   | [1mGetting new page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:18 | INFO     | TestInfiniteScroll   | [1mVerifying new page height is bigger than old page height.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:18 | INFO     | TestInfiniteScroll   | [1mGetting old page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:18 | INFO     | TestInfiniteScroll   | [1mScrolling to bottom of page.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:19 | INFO     | TestInfiniteScroll   | [1mGetting new page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:19 | INFO     | TestInfiniteScroll   | [1mVerifying new page height is bigger than old page height.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:19 | INFO     | TestInfiniteScroll   | [1mGetting old page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:19 | INFO     | TestInfiniteScroll   | [1mScrolling to bottom of page.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:20 | INFO     | TestInfiniteScroll   | [1mGetting new page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:20 | INFO     | TestInfiniteScroll   | [1mVerifying new page height is bigger than old page height.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:20 | INFO     | TestInfiniteScroll   | [1mGetting old page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:20 | INFO     | TestInfiniteScroll   | [1mScrolling to bottom of page.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:21 | INFO     | TestInfiniteScroll   | [1mGetting new page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:21 | INFO     | TestInfiniteScroll   | [1mVerifying new page height is bigger than old page height.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:21 | INFO     | TestInfiniteScroll   | [1mGetting old page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:21 | INFO     | TestInfiniteScroll   | [1mScrolling to bottom of page.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:22 | INFO     | TestInfiniteScroll   | [1mGetting new page height.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m
+08:48:22 | INFO     | TestInfiniteScroll   | [1mVerifying new page height is bigger than old page height.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_infinite_scroll_functionality[0m

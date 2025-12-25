@@ -1,0 +1,14 @@
+08:46:57 | INFO     | TestJavaScriptAlerts | [1mTests JS Prompt.              [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:57 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:57 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:57 | INFO     | MainPage             | [1mNavigating to JavaScript Alerts page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | JavaScriptAlertsPage | [1mWaiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mJavaScriptAlertsPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | JavaScriptAlertsPage | [1mPage loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mJavaScriptAlertsPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mClicking JS Prompt button.    [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mEntering JS Prompt text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mGettingting result text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mVerifying result text.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mClicking JS Prompt button.    [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mWait for and dismiss alert.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mGettingting result text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+08:46:59 | INFO     | TestJavaScriptAlerts | [1mVerifying result text.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m

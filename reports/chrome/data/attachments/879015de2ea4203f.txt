@@ -1,0 +1,13 @@
+08:45:46 | INFO     | root                 | Directory cleaned and recreated at: downloaded_files/gw0.
+08:46:10 | INFO     | TestChallengingDom   | [1mChrome download directory set to[0m [36mbrowser[0m=[35mchrome[0m [36mdownload_path[0m=[35m/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:11 | INFO     | TestChallengingDom   | [1mVerify cell content per column.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:11 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:11 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:11 | INFO     | MainPage             | [1mNavigating to Challenging DOM page.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:12 | INFO     | ChallengingDomPage   | [1mWaiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mChallengingDomPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:12 | INFO     | ChallengingDomPage   | [1mPage loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mChallengingDomPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:12 | INFO     | TestChallengingDom   | [1mGetting table cell 'Iuvaret' text under column 'Lorem'.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+08:46:22 | ERROR    | ChallengingDomPage   | [1mFailed to get text for '{'selector': "//th[text()='Lorem']/ancestor::thead/following::tr//td[text()='Iuvaret0']", 'by': 'xpath'}': Message: 
+ Element {//th[text()='Lorem']/ancestor::thead/following::tr//td[text()='Iuvaret0']} was not present after 10 seconds!
+[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mChallengingDomPage[0m [36mtest_name[0m=[35mtest_cells_content_per_column_0_Lorem[0m
+WARNING: Unable to get screenshot!

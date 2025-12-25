@@ -1,0 +1,39 @@
+INFO     TestHovers:test_hovers.py:23 [1mTests Hovers.                 [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     MainPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     MainPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     MainPage:main_page.py:217 [1mNavigating to Hovers page.    [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:28 [1mHovering mouse over profile image.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:31 [1mGetting user name text.       [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:34 [1mVerifying user name text.     [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:41 [1mClicking view profile link.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:44 [1mGetting current browser url.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:47 [1mVerifying user name in current url.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:54 [1mNavigating back page.         [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:195 [1mNavigating back.              [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:197 [1mNavigation completed.         [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:28 [1mHovering mouse over profile image.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:31 [1mGetting user name text.       [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:34 [1mVerifying user name text.     [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:41 [1mClicking view profile link.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:44 [1mGetting current browser url.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:47 [1mVerifying user name in current url.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:54 [1mNavigating back page.         [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:195 [1mNavigating back.              [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:197 [1mNavigation completed.         [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:28 [1mHovering mouse over profile image.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:31 [1mGetting user name text.       [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:34 [1mVerifying user name text.     [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:41 [1mClicking view profile link.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:44 [1mGetting current browser url.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:47 [1mVerifying user name in current url.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     TestHovers:test_hovers.py:54 [1mNavigating back page.         [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:195 [1mNavigating back.              [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
+INFO     HoversUserPage:base_page.py:197 [1mNavigation completed.         [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mHoversUserPage[0m [36mtest_name[0m=[35mtest_hovers_functionality[0m
