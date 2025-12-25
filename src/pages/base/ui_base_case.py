@@ -49,6 +49,13 @@ class UiBaseCase(BaseCase):
         return self.get_downloads_folder()
 
     def setUp(self) -> None:
+        """
+        Set up the test environment for UI-based tests.
+        This method initializes the logger using structlog with the class name,
+        retrieves the worker ID from the PYTEST_XDIST_WORKER environment variable
+        (or defaults to 'local' if not set), and navigates to the base URL if the
+        test is marked with @pytest.mark.ui. The navigation is logged as an Allure step.
+        """
         super().setUp()
         self.logger = structlog.get_logger(self.__class__.__name__)
         self.worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
@@ -59,6 +66,15 @@ class UiBaseCase(BaseCase):
                 self.open(settings.BASE_URL)
 
     def tearDown(self) -> None:
+        """
+        Clean up after each test method.
+        Calls the parent class's tearDown method to perform standard cleanup.
+        If the test failed (indicated by errors in _outcome), attempts to attach
+        a screenshot from the 'latest_logs' directory to the Allure report.
+        The screenshot path is derived from the test node ID, and if it exists,
+        it is attached as a PNG file with a descriptive name. Logs success or
+        failure of the attachment process.
+        """
         super().tearDown()
 
         # Attach screenshot to Allure Report on failure

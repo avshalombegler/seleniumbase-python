@@ -101,4 +101,14 @@ def pytest_configure(config: pytest.Config) -> None:
 
 @pytest.fixture(autouse=True)
 def bind_test_context(request: pytest.FixtureRequest) -> None:
+    """Binds test context variables for structured logging.
+
+    This function sets up context variables for structlog, including the test name
+    from the pytest request and the browser setting. It is typically used as a pytest
+    fixture to provide logging context during test execution.
+
+    Args:
+        request (pytest.FixtureRequest): The pytest fixture request object, which
+            contains information about the current test node.
+    """
     structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)
