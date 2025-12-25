@@ -1,0 +1,31 @@
+09:04:11 | INFO     | TestKeyPresses       | [1mChrome download directory set to[0m [36mbrowser[0m=[35mchrome[0m [36mdownload_path[0m=[35m/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:11 | INFO     | TestKeyPresses       | [1mTests Key Presses.            [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:11 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:11 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:11 | INFO     | MainPage             | [1mNavigating to Key Presses page.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | KeyPressesPage       | [1mWaiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mKeyPressesPage[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | KeyPressesPage       | [1mPage loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mKeyPressesPage[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mPressing key '{key}'.         [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:12 | INFO     | TestKeyPresses       | [1mGetting result.               [0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m
+09:04:13 | INFO     | TestKeyPresses       | [1mVerifying result matches key press.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_key_presses_functionality[0m

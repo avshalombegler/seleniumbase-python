@@ -1,0 +1,5 @@
+INFO     ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 [1mTests basic autorization login scenatios.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_basic_auth_2_[0m
+INFO     MainPage:main_page.py:66 [1mReturning object of Basic Auth page.[0m [36mbrowser[0m=[35mchrome[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_basic_auth_2_[0m
+INFO     ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 [1mInitialize URL based on username and password.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_basic_auth_2_[0m
+INFO     ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 [1mGet status code and authorization message.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_basic_auth_2_[0m
+INFO     ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 [1mValidate status code and authorization message.[0m [36mbrowser[0m=[35mchrome[0m [36mtest_name[0m=[35mtest_basic_auth_2_[0m

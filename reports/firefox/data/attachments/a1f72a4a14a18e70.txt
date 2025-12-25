@@ -1,0 +1,16 @@
+INFO     TestInputs:test_inputs.py:23 [1mTests Inputs.                 [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     MainPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     MainPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     MainPage:main_page.py:231 [1mNavigating to Inputs page.    [0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     InputsPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     InputsPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:27 [1mEntering input number.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     InputsPage:base_page.py:254 [1mSending keys '1337' to element '{'selector': 'input[type=number]', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mInputsPage[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:30 [1mGetting input number value.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:33 [1mVerifying input number value. [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:40 [1mIncreasing number value using keyboard arrow.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:43 [1mGetting input increased number value.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:46 [1mVerifying input number value. [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:53 [1mDecreasing number value using keyboard arrow.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:56 [1mGetting decreased input number value.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m
+INFO     TestInputs:test_inputs.py:59 [1mVerifying input number value. [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_inputs_functionality[0m

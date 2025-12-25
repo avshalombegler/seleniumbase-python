@@ -1,0 +1,5 @@
+09:04:22 | INFO     | ui_test_suite.test_basic_auth_login_scenarios | [1mTests basic autorization login scenatios.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_basic_auth_1_wrong[0m
+09:04:22 | INFO     | MainPage             | [1mReturning object of Basic Auth page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_basic_auth_1_wrong[0m
+09:04:22 | INFO     | ui_test_suite.test_basic_auth_login_scenarios | [1mInitialize URL based on username and password.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_basic_auth_1_wrong[0m
+09:04:22 | INFO     | ui_test_suite.test_basic_auth_login_scenarios | [1mGet status code and authorization message.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_basic_auth_1_wrong[0m
+09:04:22 | INFO     | ui_test_suite.test_basic_auth_login_scenarios | [1mValidate status code and authorization message.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_basic_auth_1_wrong[0m

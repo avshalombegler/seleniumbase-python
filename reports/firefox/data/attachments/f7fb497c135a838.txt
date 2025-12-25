@@ -1,0 +1,14 @@
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:88 [1mTests JS Prompt.              [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     MainPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     MainPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     MainPage:main_page.py:245 [1mNavigating to JavaScript Alerts page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     JavaScriptAlertsPage:base_page.py:82 [1mWaiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mJavaScriptAlertsPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     JavaScriptAlertsPage:base_page.py:84 [1mPage loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mJavaScriptAlertsPage[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:92 [1mClicking JS Prompt button.    [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:95 [1mEntering JS Prompt text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:98 [1mGettingting result text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:101 [1mVerifying result text.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:108 [1mClicking JS Prompt button.    [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:111 [1mWait for and dismiss alert.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:114 [1mGettingting result text.      [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m
+INFO     TestJavaScriptAlerts:test_javascript_alerts.py:117 [1mVerifying result text.        [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_js_prompt[0m

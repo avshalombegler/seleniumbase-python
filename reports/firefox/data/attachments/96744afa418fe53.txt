@@ -1,0 +1,17 @@
+09:05:02 | INFO     | TestDynamicControls  | [1mTest Remove/add checkbox area.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:02 | INFO     | MainPage             | [1mWaiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:02 | INFO     | MainPage             | [1mPage loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:02 | INFO     | MainPage             | [1mNavigating to Dynamic Controls page.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mMainPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:03 | INFO     | DynamicControlsPage  | [1mWaiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mDynamicControlsPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:03 | INFO     | DynamicControlsPage  | [1mPage loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mDynamicControlsPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:03 | INFO     | TestDynamicControls  | [1mChecking if checkbox is present.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:03 | INFO     | TestDynamicControls  | [1mClicking remove button.       [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:03 | INFO     | DynamicControlsPage  | [1mWaiting for loader to complete.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mDynamicControlsPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:06 | INFO     | TestDynamicControls  | [1mChecking if checkbox absent.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:16 | INFO     | TestDynamicControls  | [1mGetting remove message text.  [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:17 | INFO     | TestDynamicControls  | [1mVerifying remove message text.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:17 | INFO     | TestDynamicControls  | [1mClicking add button.          [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:17 | INFO     | DynamicControlsPage  | [1mWaiting for loader to complete.[0m [36mbrowser[0m=[35mfirefox[0m [36mpage[0m=[35mDynamicControlsPage[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:20 | INFO     | TestDynamicControls  | [1mChecking if checkbox is present.[0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:20 | INFO     | TestDynamicControls  | [1mGetting add message text.     [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
+09:05:20 | INFO     | TestDynamicControls  | [1mVerifying add message text.   [0m [36mbrowser[0m=[35mfirefox[0m [36mtest_name[0m=[35mtest_checkbox_remove_and_add[0m
