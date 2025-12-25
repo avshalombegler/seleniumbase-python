@@ -74,15 +74,12 @@ def pytest_configure(config: pytest.Config) -> None:
     if browser == "chrome":
         user_data_dir = os.path.abspath("chrome_user_data")
         os.makedirs(user_data_dir, exist_ok=True)
-        
+
         # Add chromium arguments
         if not hasattr(config.option, "chromium_arg") or not config.option.chromium_arg:
             config.option.chromium_arg = []
-        
-        config.option.chromium_arg.extend([
-            f"--user-data-dir={user_data_dir}",
-            "--profile-directory=Default"
-        ])
+
+        config.option.chromium_arg.extend([f"--user-data-dir={user_data_dir}", "--profile-directory=Default"])
 
     # Get the allure results directory from pytest options
     allure_results_dir = getattr(config.option, "allure_report_dir", None)
