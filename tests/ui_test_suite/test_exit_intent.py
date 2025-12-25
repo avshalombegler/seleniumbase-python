@@ -11,7 +11,6 @@ from src.pages.common.main_page.main_page import MainPage
 class TestExitIntent(UiBaseCase):
     """Tests Exit Intent functionality"""
 
-    @pytest.mark.skip(reason="Test is not yet complete")
     @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
@@ -19,6 +18,10 @@ class TestExitIntent(UiBaseCase):
         self.logger.info("Tests Exit Intent.")
         main_page = MainPage(self)
         page = main_page.click_exit_intent_link()
+
+        self.logger.info("Maximize broser window for better stability.")
+        self.maximize_window()
+        self.sleep(1)
 
         self.logger.info("Moving mouse out of the viewport pane.")
         page.trigger_exit_intent_js()

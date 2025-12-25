@@ -18,12 +18,29 @@ class ExitIntentPage(BasePage):
         super().__init__(driver)
         self.wait_for_page_to_load(ExitIntentPageLocators.PAGE_LOADED_INDICATOR)
 
-    @allure.step("Trigger exit intent via JavaScript (headless fallback)")
+    @allure.step("Trigger exit intent via JavaScript")
     def trigger_exit_intent_js(self) -> None:
         self.driver.execute_script(
             """
-            var event = new Event('mouseleave');
-            document.dispatchEvent(event);
+            // First trigger mouseout event on document
+            var mouseoutEvent = new MouseEvent('mouseout', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true,
+                'clientX': window.innerWidth / 2,
+                'clientY': 0
+            });
+            document.documentElement.dispatchEvent(mouseoutEvent);
+            
+            // Then trigger mouseleave on document
+            var mouseleaveEvent = new MouseEvent('mouseleave', {
+                'view': window,
+                'bubbles': true,
+                'cancelable': true,
+                'clientX': window.innerWidth / 2,
+                'clientY': -10
+            });
+            document.documentElement.dispatchEvent(mouseleaveEvent);
         """
         )
 
