@@ -48,7 +48,20 @@ def clean_directories_at_start() -> None:
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
-    """Add browser info to Allure environment and ensure clean results directory."""
+    """
+    Configure pytest settings for browser testing with Allure reporting.
+    This function sets up the browser configuration based on environment variables or default settings,
+    ensures the Allure results directory is properly managed (cleaned for local runs, preserved in CI/xdist),
+    and generates an environment.properties file with relevant test metadata.
+    Key actions:
+    - Retrieves and sets the browser type (defaulting to settings.BROWSER).
+    - Configures headless mode from settings.
+    - For Chrome, sets up a user data directory and adds necessary Chromium arguments.
+    - Manages the Allure results directory: cleans it for non-CI, non-xdist runs; ensures existence otherwise.
+    - Writes environment properties including browser, headless mode, base URL, and CI-specific details.
+    Args:
+        config (pytest.Config): The pytest configuration object to modify.
+    """
     browser = os.environ.get("BROWSER", settings.BROWSER).lower()
 
     # Store for use in fixtures
@@ -56,6 +69,20 @@ def pytest_configure(config: pytest.Config) -> None:
 
     config.option.browser = browser
     config.option.headless = settings.HEADLESS
+
+    # Add Chrome arguments for user profile
+    if browser == "chrome":
+        user_data_dir = os.path.abspath("chrome_user_data")
+        os.makedirs(user_data_dir, exist_ok=True)
+        
+        # Add chromium arguments
+        if not hasattr(config.option, "chromium_arg") or not config.option.chromium_arg:
+            config.option.chromium_arg = []
+        
+        config.option.chromium_arg.extend([
+            f"--user-data-dir={user_data_dir}",
+            "--profile-directory=Default"
+        ])
 
     # Get the allure results directory from pytest options
     allure_results_dir = getattr(config.option, "allure_report_dir", None)

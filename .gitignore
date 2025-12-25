@@ -48,3 +48,6 @@ assets/
 # Logs
 test_logs.jsonl
 *.log
+
+# Chrome
+chrome_user_data/
