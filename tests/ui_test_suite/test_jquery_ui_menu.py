@@ -31,8 +31,13 @@ class TestJQueryUIMenus(UiBaseCase):
 
         self.logger.info(".")
         page.hover_menu_item(self.ENABLED)
+        self.sleep(1)
         page.hover_menu_item(self.DOWNLOADS)
-        page.click_menu_item(link_menu_item)
+        self.sleep(1)
+        page.hover_menu_item(link_menu_item)
+        self.sleep(1)
+        page.hover_and_click_menu_item(link_menu_item)
+        # page.js_open_menu_and_click(link_menu_item)
         page.wait_for_file_to_download(f"{self.FILE_NAME}.{file_extension}")
 
         actual_downloaded_files_count = len(page.driver.get_downloaded_files())

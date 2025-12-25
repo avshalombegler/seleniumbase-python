@@ -26,12 +26,6 @@ class EntryAdPage(BasePage):
     def is_modal_displayed(self) -> bool:
         return self.is_element_visible(EntryAdPageLocators.MODAL_LOADED_INDICATOR, timeout=5)
 
-    # click using JS - currently does not work
-    # @allure.step("Click re-enable it link")
-    # def click_re_enable_link(self) -> None:
-    #     def action() -> None:
-    #         link = self._safe_wait(EC.element_to_be_clickable, EntryAdPageLocators.RE_ENABLE_LINK)
-    #         self.driver.execute_script("arguments[0].click();", link)
-    #         self.logger.info("Re-enable link clicked via JS.")
-
-    #     self._retry(action, locator=EntryAdPageLocators.RE_ENABLE_LINK, retry_count=3)
+    @allure.step("Click re-enable it link")
+    def click_re_enable_link(self) -> None:
+        self.click_element(EntryAdPageLocators.RE_ENABLE_LINK)

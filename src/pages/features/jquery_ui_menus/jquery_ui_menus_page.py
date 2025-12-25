@@ -22,13 +22,46 @@ class JQueryUIMenusPage(BasePage):
     def hover_menu_item(self, item: str) -> None:
         locator = self.format_locator(JQueryUIMenusPageLocators.MENU_ITEM, item=item)
         self.driver.hover(**locator)
-        self.driver.sleep(0.3)  # Allow menu animation to complete
 
-    @allure.step("Click menu item '{item}'")
-    def click_menu_item(self, item: str) -> None:
-        locator = self.format_locator(JQueryUIMenusPageLocators.MENU_ITEM, item=item)
-        # self.driver.hover(**locator)
-        elem = self.driver.wait_for_element_visible(**locator)
-        self.actions.move_to_element(elem).perform()
-        self.driver.sleep(0.3)  # Allow menu animation
-        self.driver.click(**locator)
+    # @allure.step("Click menu item '{item}'")
+    # def hover_and_click_menu_item(self, item: str) -> None:
+    #     xpath = self.format_locator(JQueryUIMenusPageLocators.MENU_ITEM_XPATH, item=item)
+    #     menu_item_elem = self.wait_for_visibility(xpath)
+    #     element_size = menu_item_elem.size
+    #     width = 2
+    #     height = element_size["height"] / 2
+
+    #     self.actions.move_to_element_with_offset(menu_item_elem, width, height).click().perform()
+
+    # @allure.step("Click menu item '{item}'")
+    # def hover_and_click_menu_item(self, downloads: str, item: str) -> None:
+    #     downloads_locator = self.format_locator(JQueryUIMenusPageLocators.MENU_ITEM, item=downloads)
+    #     menu_item_locator = self.format_locator(JQueryUIMenusPageLocators.MENU_ITEM, item=item)
+
+    #     self.driver.hover_and_click(
+    #         hover_selector=downloads_locator["selector"],
+    #         click_selector=menu_item_locator["selector"],
+    #         hover_by=downloads_locator["by"],
+    #         click_by=menu_item_locator["by"],
+    #     )
+
+    # def js_open_menu_and_click(self, item_text: str) -> None:
+    #     """ """
+    #     script = f"""
+    #     var item = $("ul#menu a:contains('{item_text}')").filter(function() {{
+    #         return $(this).text().trim() === '{item_text}';
+    #     }});
+
+    #     if (item.length === 0) {{
+    #         throw new Error("Menu item '{item_text}' not found");
+    #     }}
+
+    #     item.parents('li').trigger('mouseenter');
+
+    #     item.trigger('focus').trigger('mouseenter');
+
+    #     setTimeout(function() {{
+    #         item.trigger('click');
+    #     }}, 300);
+    #     """
+    #     self.driver.execute_script(script)
