@@ -57,6 +57,7 @@ services:
     restart: unless-stopped
     environment:
       - ALLURE_DOCKER_PUBLIC_API_URL=/allure-api
+      - ROUTER_BASE_NAME=/
     ports:
       - "5252:5252"
     networks:
