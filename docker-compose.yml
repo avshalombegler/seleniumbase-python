@@ -35,14 +35,14 @@ services:
     image: frankescobar/allure-docker-service:latest
     container_name: allure-server
     restart: unless-stopped
-    ports:
-      - "5050:5050"
-    volumes:
-      - allure_data:/app/allure-docker-api
     environment:
       - CHECK_RESULTS_EVERY_SECONDS=30
       - KEEP_HISTORY=1
       - KEEP_HISTORY_LATEST=25
+    ports:
+      - "5050:5050"
+    volumes:
+      - allure_data:/app/allure-docker-api
     networks:
       - jenkins-network
     healthcheck:
@@ -55,11 +55,11 @@ services:
     image: frankescobar/allure-docker-service-ui:latest
     container_name: allure-ui
     restart: unless-stopped
-    ports:
-      - "5252:5252"
     environment:
       - ALLURE_DOCKER_PUBLIC_API_URL=/allure-api
       - ROUTER_BASE_NAME=/
+    ports:
+      - "5252:5252"
     networks:
       - jenkins-network
     depends_on:
@@ -85,7 +85,9 @@ services:
 
 volumes:
   jenkins_home:
+    name: jenkins_home
   allure_data:
+    name: allure_data
 
 networks:
   jenkins-network:
