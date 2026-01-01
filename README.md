@@ -259,28 +259,27 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 ```text
 seleniumbase-python/
 ├── .github/
-│    └── workflows/ci.yml                   # GitHub Actions workflow for CI/CD
-├── reports/                                # Allure test results and artifacts
-├── src/                                    # Automation framework source code
-│   ├── config/                             # Configuration files
-│   │    └── logging_config.py              # Logging configuration settings
-│   │    └── nginx.conf                     # Nginx configuration for reverse proxy
-│   │    └── project_config.py              # Project-specific configuration
-│   └── pages/                              # Page Object Model classes
-│        ├── base/                          # Base classes like BasePage and UiBaseCase
-│        ├── common/                        # Common page objects, e.g., MainPage
-│        └── features/                      # Feature-specific page objects
-├── tests/                                  # Test case files
-├── .env                                    # Environment variables file (gitignored)
-├── conftest.py                             # Pytest configuration and plugin registration
-├── docker-compose.yml                      # Docker Compose setup for CI/CD environment
-├── Dockerfile.jenkins                      # Dockerfile for custom Jenkins agent image
-├── environment.yml                         # Conda environment specification
-├── Jenkinsfile                             # Jenkins pipeline definition
-├── pyproject.toml                          # Project configuration and dependencies
-├── requirements.txt                        # Legacy requirements file (replaced by pyproject.toml)
-├── start-ngrok.ps1                         # PowerShell script to start ngrok tunnel
-└── README.md                               
+│    └── workflows/ci.yml
+├── reports/
+├── src/
+│   ├── config/
+│   │    └── logging_config.py
+│   │    └── nginx.conf
+│   │    └── project_config.py
+│   └── pages/
+│        ├── base/
+│        ├── common/
+│        └── features/
+├── tests/
+├── .env
+├── conftest.py
+├── docker-compose.yml
+├── Dockerfile.jenkins
+├── environment.yml
+├── Jenkinsfile
+├── pyproject.toml
+├── start-ngrok.ps1                 # PowerShell script to start ngrok tunnel
+└── README.md
 ```
 
 ## How to Add New Tests
