@@ -60,6 +60,7 @@ addopts = [
     # "--durations=0",
     # suppress warnings
     "--disable-warnings",
+    "--show-capture=no",
 
     # Screenshot of test failure:
     "--screenshot",
@@ -117,8 +118,8 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 
 # Rerun configurations:
-# reruns = 2
-# reruns_delay = 1
+# reruns = 3
+# reruns_delay = 2
 
 # Log printing to CLI with custom format for structlog
 log_cli = false
