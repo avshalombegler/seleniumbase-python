@@ -56,8 +56,6 @@ addopts = [
     "-ra",
     # use short traceback format
     "--tb=short",
-    # capture description
-    # "--capture=tee-sys",
     # durations description
     # "--durations=0",
     # suppress warnings
@@ -122,9 +120,11 @@ python_functions = ["test_*"]
 # reruns = 2
 # reruns_delay = 1
 
-# Log printing to CLI:
-# log_cli = true
-# log_cli_level = "INFO"
+# Log printing to CLI with custom format for structlog
+log_cli = false
+log_cli_level = "INFO"
+log_cli_format = "%(message)s"
+log_format = "%(message)s"
 
 
 [tool.ruff]

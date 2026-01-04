@@ -10,14 +10,15 @@ from pathlib import Path
 
 import pytest
 import structlog
+from dotenv import load_dotenv
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
 from src.config import settings
-from src.config.logging_config import configure_logging
 
-# Configure root logging once for the test session
-configure_logging()
+load_dotenv()
+
+
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
 logging.getLogger("undetected_chromedriver").setLevel(logging.WARNING)
@@ -53,15 +54,21 @@ def pytest_configure(config: pytest.Config) -> None:
     This function sets up the browser configuration based on environment variables or default settings,
     ensures the Allure results directory is properly managed (cleaned for local runs, preserved in CI/xdist),
     and generates an environment.properties file with relevant test metadata.
-    Key actions:
-    - Retrieves and sets the browser type (defaulting to settings.BROWSER).
-    - Configures headless mode from settings.
-    - For Chrome, sets up a user data directory and adds necessary Chromium arguments.
-    - Manages the Allure results directory: cleans it for non-CI, non-xdist runs; ensures existence otherwise.
-    - Writes environment properties including browser, headless mode, base URL, and CI-specific details.
-    Args:
-        config (pytest.Config): The pytest configuration object to modify.
     """
+    show_logs = os.environ.get("SHOW_LOGS", "false").lower() == "true"
+
+    # Set environment variable for logging_config
+    os.environ["SHOW_LOGS"] = "true" if show_logs else "false"
+
+    # Now configure logging
+    from src.config.logging_config import configure_logging
+
+    configure_logging()
+
+    # If showing logs, we need to disable capture
+    if show_logs:
+        config.option.capture = "no"
+
     is_ci_environment = os.environ.get("JENKINS_HOME") or os.environ.get("GITHUB_ACTIONS")
     is_xdist_worker = os.environ.get("PYTEST_XDIST_WORKER")
     browser = os.environ.get("BROWSER", settings.BROWSER).lower()
@@ -130,14 +137,5 @@ def pytest_configure(config: pytest.Config) -> None:
 
 @pytest.fixture(autouse=True)
 def bind_test_context(request: pytest.FixtureRequest) -> None:
-    """Binds test context variables for structured logging.
-
-    This function sets up context variables for structlog, including the test name
-    from the pytest request and the browser setting. It is typically used as a pytest
-    fixture to provide logging context during test execution.
-
-    Args:
-        request (pytest.FixtureRequest): The pytest fixture request object, which
-            contains information about the current test node.
-    """
+    """Binds test context variables for structured logging."""
     structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)
