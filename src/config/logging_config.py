@@ -1,11 +1,15 @@
 import logging
 import sys
 
+import colorama
 import structlog
 from pythonjsonlogger import jsonlogger
 
 
 def configure_logging(log_level: str = "INFO") -> None:
+    # Initialize colorama to enable ANSI colors on Windows
+    colorama.init()
+
     root = logging.getLogger()
     if root.handlers:
         root.handlers.clear()
@@ -36,7 +40,7 @@ def configure_logging(log_level: str = "INFO") -> None:
             structlog.processors.StackInfoRenderer(),
             structlog.dev.set_exc_info,
             structlog.dev.ConsoleRenderer(
-                colors=True,
+                colors=False,
                 exception_formatter=structlog.dev.plain_traceback,
             ),
         ],
