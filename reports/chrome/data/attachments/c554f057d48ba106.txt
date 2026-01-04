@@ -1,0 +1,10 @@
+12:45:41 | INFO | TestChallengingDom:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0
+12:45:41 | INFO | TestChallengingDom:test_challenging_dom.py:54 | Verify cell content per column.
+12:45:41 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+12:45:41 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+12:45:41 | INFO | MainPage:main_page.py:79 | Navigating to Challenging DOM page.
+12:45:42 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+12:45:42 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+12:45:42 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
+12:45:42 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
+12:45:42 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
