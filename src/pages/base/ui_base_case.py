@@ -82,6 +82,9 @@ class UiBaseCase(BaseCase):
             try:
                 nodeid = self.request.node.nodeid
                 test_path = nodeid.replace(".py::", ".").replace("::", ".").replace("/", ".").replace("\\", ".")
+                # Strip leading "tests." to match actual directory structure
+                if test_path.startswith("tests."):
+                    test_path = test_path[6:]  # Remove "tests." (6 characters)
 
                 screenshot_dir = Path("latest_logs") / test_path
                 screenshot_filename = "screenshot.png"
