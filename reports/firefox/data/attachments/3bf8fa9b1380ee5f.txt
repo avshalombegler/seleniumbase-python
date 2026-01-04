@@ -1,0 +1,22 @@
+06:32:14 | INFO     | TestAddRemoveElements | Tests for remove elements.     browser=firefox test_name=test_remove_elements
+06:32:14 | INFO     | MainPage             | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s. browser=firefox page=MainPage test_name=test_remove_elements
+06:32:14 | INFO     | MainPage             | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'. browser=firefox page=MainPage test_name=test_remove_elements
+06:32:14 | INFO     | MainPage             | Navigating to Add/Remove Elements page. browser=firefox page=MainPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Waiting for page to load with indicator '{'selector': 'div#content h3', 'by': 'css selector'}' for 10s. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Page loaded successfully with indicator '{'selector': 'div#content h3', 'by': 'css selector'}'. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | TestAddRemoveElements | Ensure there are elements to remove browser=firefox test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Clicking Add Element button.   browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Clicking Add Element button.   browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | TestAddRemoveElements | Remove all elements            browser=firefox test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting Delete Element button(s). browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Clicking Delete Element button. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting Delete Element button(s). browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Clicking Delete Element button. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting Delete Element button(s). browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | TestAddRemoveElements | Getting delete buttons count.  browser=firefox test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting Delete Element button(s). browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | AddRemoveElementsPage | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=firefox page=AddRemoveElementsPage test_name=test_remove_elements
+06:32:15 | INFO     | TestAddRemoveElements | Verifying delete buttons count. browser=firefox test_name=test_remove_elements

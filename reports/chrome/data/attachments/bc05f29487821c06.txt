@@ -1,0 +1,23 @@
+INFO     TestAddRemoveElements:ui_base_case.py:37 Chrome download directory set to browser=chrome download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1 test_name=test_remove_elements
+INFO     TestAddRemoveElements:test_add_remove_elements.py:42 Tests for remove elements.     browser=chrome test_name=test_remove_elements
+INFO     MainPage:base_page.py:82 Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s. browser=chrome page=MainPage test_name=test_remove_elements
+INFO     MainPage:base_page.py:84 Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'. browser=chrome page=MainPage test_name=test_remove_elements
+INFO     MainPage:main_page.py:59 Navigating to Add/Remove Elements page. browser=chrome page=MainPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:82 Waiting for page to load with indicator '{'selector': 'div#content h3', 'by': 'css selector'}' for 10s. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:84 Page loaded successfully with indicator '{'selector': 'div#content h3', 'by': 'css selector'}'. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     TestAddRemoveElements:test_add_remove_elements.py:46 Ensure there are elements to remove browser=chrome test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:21 Clicking Add Element button.   browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:21 Clicking Add Element button.   browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     TestAddRemoveElements:test_add_remove_elements.py:49 Remove all elements            browser=chrome test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:30 Counting Delete Element button(s). browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:451 Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:26 Clicking Delete Element button. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:30 Counting Delete Element button(s). browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:451 Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:26 Clicking Delete Element button. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:30 Counting Delete Element button(s). browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:451 Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     TestAddRemoveElements:test_add_remove_elements.py:52 Getting delete buttons count.  browser=chrome test_name=test_remove_elements
+INFO     AddRemoveElementsPage:add_remove_elements_page.py:30 Counting Delete Element button(s). browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     AddRemoveElementsPage:base_page.py:451 Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'. browser=chrome page=AddRemoveElementsPage test_name=test_remove_elements
+INFO     TestAddRemoveElements:test_add_remove_elements.py:55 Verifying delete buttons count. browser=chrome test_name=test_remove_elements

@@ -1,0 +1,8 @@
+06:32:08 | INFO     | TestChallengingDom   | Chrome download directory set to browser=chrome download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0 test_name=test_table_header_per_column_1_Ipsum
+06:32:08 | INFO     | TestChallengingDom   | Verify table head text per column. browser=chrome test_name=test_table_header_per_column_1_Ipsum
+06:32:08 | INFO     | MainPage             | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s. browser=chrome page=MainPage test_name=test_table_header_per_column_1_Ipsum
+06:32:08 | INFO     | MainPage             | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'. browser=chrome page=MainPage test_name=test_table_header_per_column_1_Ipsum
+06:32:08 | INFO     | MainPage             | Navigating to Challenging DOM page. browser=chrome page=MainPage test_name=test_table_header_per_column_1_Ipsum
+06:32:09 | INFO     | ChallengingDomPage   | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s. browser=chrome page=ChallengingDomPage test_name=test_table_header_per_column_1_Ipsum
+06:32:09 | INFO     | ChallengingDomPage   | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'. browser=chrome page=ChallengingDomPage test_name=test_table_header_per_column_1_Ipsum
+06:32:09 | INFO     | TestChallengingDom   | Getting table head text of column 'Ipsum'. browser=chrome test_name=test_table_header_per_column_1_Ipsum

@@ -1,0 +1,10 @@
+INFO     TestChallengingDom:ui_base_case.py:37 Chrome download directory set to browser=chrome download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0 test_name=test_cells_content_per_column_5_Diceret
+INFO     TestChallengingDom:test_challenging_dom.py:54 Verify cell content per column. browser=chrome test_name=test_cells_content_per_column_5_Diceret
+INFO     MainPage:base_page.py:82 Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s. browser=chrome page=MainPage test_name=test_cells_content_per_column_5_Diceret
+INFO     MainPage:base_page.py:84 Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'. browser=chrome page=MainPage test_name=test_cells_content_per_column_5_Diceret
+INFO     MainPage:main_page.py:79 Navigating to Challenging DOM page. browser=chrome page=MainPage test_name=test_cells_content_per_column_5_Diceret
+INFO     ChallengingDomPage:base_page.py:82 Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s. browser=chrome page=ChallengingDomPage test_name=test_cells_content_per_column_5_Diceret
+INFO     ChallengingDomPage:base_page.py:84 Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'. browser=chrome page=ChallengingDomPage test_name=test_cells_content_per_column_5_Diceret
+INFO     TestChallengingDom:test_challenging_dom.py:60 Getting table cell 'Phaedrum' text under column 'Diceret'. browser=chrome test_name=test_cells_content_per_column_5_Diceret
+INFO     TestChallengingDom:test_challenging_dom.py:60 Getting table cell 'Phaedrum' text under column 'Diceret'. browser=chrome test_name=test_cells_content_per_column_5_Diceret
+INFO     TestChallengingDom:test_challenging_dom.py:60 Getting table cell 'Phaedrum' text under column 'Diceret'. browser=chrome test_name=test_cells_content_per_column_5_Diceret

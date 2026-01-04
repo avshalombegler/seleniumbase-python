@@ -1,0 +1,7 @@
+06:32:44 | INFO     | TestChallengingDom   | Verify each button in page is clickable. browser=firefox test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | MainPage             | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s. browser=firefox page=MainPage test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | MainPage             | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'. browser=firefox page=MainPage test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | MainPage             | Navigating to Challenging DOM page. browser=firefox page=MainPage test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | ChallengingDomPage   | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s. browser=firefox page=ChallengingDomPage test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | ChallengingDomPage   | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'. browser=firefox page=ChallengingDomPage test_name=test_each_button_clicks_2_green
+06:32:44 | INFO     | TestChallengingDom   | Clicking green button.         browser=firefox test_name=test_each_button_clicks_2_green
