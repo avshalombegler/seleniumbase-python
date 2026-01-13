@@ -1,0 +1,19 @@
+
+Warning: chromedriver update needed. Getting it now:
+
+*** chromedriver to download = 143.0.7499.192 (Latest Stable) 
+
+Downloading chromedriver-linux64.zip from:
+https://storage.googleapis.com/chrome-for-testing-public/143.0.7499.192/linux64/chromedriver-linux64.zip ...
+Download Complete!
+
+Extracting ['chromedriver'] from chromedriver-linux64.zip ...
+Unzip Complete!
+
+The file [chromedriver] was saved to:
+/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/seleniumbase/drivers/
+chromedriver
+
+Making [chromedriver 143.0.7499.192] executable ...
+[chromedriver 143.0.7499.192] is now ready for use!
+
