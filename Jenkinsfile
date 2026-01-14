@@ -2,33 +2,8 @@ pipeline {
     agent { label 'linux-python' }
     
     parameters {
+        choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox'], description: 'Browser to run tests on')
         choice(name: 'MARKER', choices: ['smoke', 'regression', 'ui', 'api'], description: 'Test marker to run')
-        activeChoice(
-            name: 'BROWSER',
-            choiceType: 'PT_SINGLE_SELECT',
-            description: 'Browser to run tests on (not applicable for API tests)',
-            filterLength: 1,
-            filterable: false,
-            script: [
-                $class: 'GroovyScript',
-                fallbackScript: [
-                    classpath: [],
-                    sandbox: true,
-                    script: 'return ["chrome"]'
-                ],
-                script: [
-                    classpath: [],
-                    sandbox: true,
-                    script: '''
-                        if (MARKER == 'api') {
-                            return ['N/A:disabled']
-                        } else {
-                            return ['both:selected', 'chrome', 'firefox']
-                        }
-                    '''
-                ]
-            ]
-        )
         string(name: 'WORKERS', defaultValue: 'auto', description: 'Number of parallel workers')
     }
     
