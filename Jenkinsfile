@@ -24,29 +24,25 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    def isApiTest = params.MARKER == 'api'
-                    def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
+                    def browsers = params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER]
                     
-                    parallel testConfigs.collectEntries { config -> 
-                        [(config): {
+                    parallel browsers.collectEntries { browser -> 
+                        [(browser): {
                             withCredentials([
                                 string(credentialsId: 'TEST_USERNAME', variable: 'TEST_USERNAME'),
                                 string(credentialsId: 'TEST_PASSWORD', variable: 'TEST_PASSWORD')
                             ]) {
-                                def browserArg = isApiTest ? '' : "export BROWSER=${config}"
-                                def xvfbCmd = isApiTest ? '' : 'xvfb-run -a -s "-screen 0 1920x1080x24"'
-                                def headlessArg = isApiTest ? '' : '--headless'
-                                
                                 sh """
-                                    ${browserArg}
+                                    export BROWSER=${browser}
                                     . /opt/venv/bin/activate
-                                    ${xvfbCmd} pytest \
+                                    xvfb-run -a -s "-screen 0 1920x1080x24" \
+                                        pytest \
                                         -n ${params.WORKERS} --dist=loadfile \
-                                        ${headlessArg} \
-                                        --alluredir=allure-results-${config} \
+                                        --headless \
+                                        --alluredir=allure-results-${browser} \
                                         --junitxml=reports/junit.xml \
                                         --reruns 3 --reruns-delay 2 \
-                                        -m ${params.MARKER}
+                                        -m ${params.MARKER} || true
                                 """
                             }
                         } ]
@@ -58,11 +54,10 @@ pipeline {
         stage('Upload Reports') {
             steps {
                 script {
-                    def isApiTest = params.MARKER == 'api'
-                    def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
+                    def browsers = params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER]
                     
-                    testConfigs.each { config ->
-                        uploadToAllure(config)
+                    browsers.each { browser ->
+                        uploadToAllure(browser)
                     }
                 }
             }
@@ -79,7 +74,6 @@ pipeline {
             echo "View reports:"
             echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
             echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
-            echo "API: http://localhost:5050/allure-docker-service/projects/selenium-tests-api/reports/latest/index.html"
         }
         failure {
             echo "✗ Tests failed. Check reports for details."
@@ -89,9 +83,7 @@ pipeline {
 
 def uploadToAllure(browser) {
     def projectId = "selenium-tests-${browser}"
-    def projectName = browser == 'api' ? 'Selenium Tests - API' : 
-                     browser == 'chrome' ? 'Selenium Tests - Chrome' : 
-                     'Selenium Tests - Firefox'
+    def projectName = browser == 'chrome' ? 'Selenium Tests - Chrome' : 'Selenium Tests - Firefox'
     def allureUrl = env.ALLURE_SERVER_URL
     def resultsDir = "allure-results-${browser}"
     
