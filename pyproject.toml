@@ -77,9 +77,9 @@ addopts = [
 
     # Markers:
     # "-m regression or smoke",
-    "-m smoke",
+    # "-m smoke",
     # "-m ui",
-    # "-m api",
+    "-m api",
     # "-m current",
     # enforce marker validation
     "--strict-markers",
@@ -96,6 +96,7 @@ markers = [
     "regression: full regression test suite",
     "smoke: critical tests",
     "ui: user interface interactions - auto-navigate to base url",
+    "api: ",
     "fix: test need to be fixed",
     # "flaky: tests that may fail intermittently",
     # "slow: tests that take more than 10 seconds",
