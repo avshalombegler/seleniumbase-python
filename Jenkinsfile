@@ -75,11 +75,23 @@ pipeline {
             cleanWs()
         }
         success {
-            echo "✓ Tests passed and report uploaded to Allure Docker Service!"
-            echo "View reports:"
-            echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
-            echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
-            echo "API: http://localhost:5050/allure-docker-service/projects/selenium-tests-api/reports/latest/index.html"
+            script {
+                echo "✓ Tests passed and report uploaded to Allure Docker Service!"
+                echo "View reports:"
+                
+                def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api'
+                
+                if (isApiTest) {
+                    echo "API: http://localhost:5050/allure-docker-service/projects/selenium-tests-api/reports/latest/index.html"
+                } else if (params.BROWSER == 'both') {
+                    echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
+                    echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
+                } else if (params.BROWSER == 'chrome') {
+                    echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
+                } else if (params.BROWSER == 'firefox') {
+                    echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
+                }
+            }
         }
         failure {
             echo "✗ Tests failed. Check reports for details."
