@@ -2,8 +2,33 @@ pipeline {
     agent { label 'linux-python' }
     
     parameters {
-        choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox'], description: 'Browser to run tests on')
         choice(name: 'MARKER', choices: ['smoke', 'regression', 'ui', 'api'], description: 'Test marker to run')
+        activeChoice(
+            name: 'BROWSER',
+            choiceType: 'PT_SINGLE_SELECT',
+            description: 'Browser to run tests on (not applicable for API tests)',
+            filterLength: 1,
+            filterable: false,
+            script: [
+                $class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: true,
+                    script: 'return ["chrome"]'
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: true,
+                    script: '''
+                        if (MARKER == 'api') {
+                            return ['N/A:disabled']
+                        } else {
+                            return ['both:selected', 'chrome', 'firefox']
+                        }
+                    '''
+                ]
+            ]
+        )
         string(name: 'WORKERS', defaultValue: 'auto', description: 'Number of parallel workers')
     }
     
@@ -24,25 +49,29 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    def browsers = params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER]
+                    def isApiTest = params.MARKER == 'api'
+                    def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
                     
-                    parallel browsers.collectEntries { browser -> 
-                        [(browser): {
+                    parallel testConfigs.collectEntries { config -> 
+                        [(config): {
                             withCredentials([
                                 string(credentialsId: 'TEST_USERNAME', variable: 'TEST_USERNAME'),
                                 string(credentialsId: 'TEST_PASSWORD', variable: 'TEST_PASSWORD')
                             ]) {
+                                def browserArg = isApiTest ? '' : "export BROWSER=${config}"
+                                def xvfbCmd = isApiTest ? '' : 'xvfb-run -a -s "-screen 0 1920x1080x24"'
+                                def headlessArg = isApiTest ? '' : '--headless'
+                                
                                 sh """
-                                    export BROWSER=${browser}
+                                    ${browserArg}
                                     . /opt/venv/bin/activate
-                                    xvfb-run -a -s "-screen 0 1920x1080x24" \
-                                        pytest \
+                                    ${xvfbCmd} pytest \
                                         -n ${params.WORKERS} --dist=loadfile \
-                                        --headless \
-                                        --alluredir=allure-results-${browser} \
+                                        ${headlessArg} \
+                                        --alluredir=allure-results-${config} \
                                         --junitxml=reports/junit.xml \
                                         --reruns 3 --reruns-delay 2 \
-                                        -m ${params.MARKER} || true
+                                        -m ${params.MARKER}
                                 """
                             }
                         } ]
@@ -54,10 +83,11 @@ pipeline {
         stage('Upload Reports') {
             steps {
                 script {
-                    def browsers = params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER]
+                    def isApiTest = params.MARKER == 'api'
+                    def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
                     
-                    browsers.each { browser ->
-                        uploadToAllure(browser)
+                    testConfigs.each { config ->
+                        uploadToAllure(config)
                     }
                 }
             }
@@ -74,6 +104,7 @@ pipeline {
             echo "View reports:"
             echo "Chrome: http://localhost:5050/allure-docker-service/projects/selenium-tests-chrome/reports/latest/index.html"
             echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
+            echo "API: http://localhost:5050/allure-docker-service/projects/selenium-tests-api/reports/latest/index.html"
         }
         failure {
             echo "✗ Tests failed. Check reports for details."
@@ -83,7 +114,9 @@ pipeline {
 
 def uploadToAllure(browser) {
     def projectId = "selenium-tests-${browser}"
-    def projectName = browser == 'chrome' ? 'Selenium Tests - Chrome' : 'Selenium Tests - Firefox'
+    def projectName = browser == 'api' ? 'Selenium Tests - API' : 
+                     browser == 'chrome' ? 'Selenium Tests - Chrome' : 
+                     'Selenium Tests - Firefox'
     def allureUrl = env.ALLURE_SERVER_URL
     def resultsDir = "allure-results-${browser}"
     
