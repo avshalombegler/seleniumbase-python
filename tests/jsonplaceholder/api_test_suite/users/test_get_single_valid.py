@@ -1,9 +1,9 @@
 import allure
 import pytest
 
-from tests.j.conftest import APITestContext
-from tests.j.helpers import assert_common_response_checks
-from tests.j.models import User
+from tests.jsonplaceholder.conftest import APITestContext
+from tests.jsonplaceholder.helpers import assert_common_response_checks
+from tests.jsonplaceholder.models import User
 
 
 @allure.parent_suite("JSONPlaceholder")

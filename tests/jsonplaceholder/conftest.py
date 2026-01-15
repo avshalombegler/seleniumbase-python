@@ -21,7 +21,7 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from tests.j.api_test_suite.api_constants import JSONPlaceholderConfig
+from tests.jsonplaceholder.api_test_suite.api_constants import JSONPlaceholderConfig
 
 # ============================================================================
 # CONFIGURATION
