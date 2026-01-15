@@ -15,6 +15,7 @@ class EnvEnum(str, Enum):
 class BrowserEnum(str, Enum):
     chrome = "chrome"
     firefox = "firefox"
+    api_none = "api_none"
 
 
 class Settings(BaseSettings):

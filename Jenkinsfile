@@ -2,7 +2,7 @@ pipeline {
     agent { label 'linux-python' }
     
     parameters {
-        choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox', 'api-none'], description: 'Browser to run tests on (select "api-none" for API tests)')
+        choice(name: 'BROWSER', choices: ['both', 'chrome', 'firefox', 'api_none'], description: 'Browser to run tests on (select "api_none" for API tests)')
         choice(name: 'MARKER', choices: ['smoke', 'regression', 'ui', 'api'], description: 'Test marker to run')
         string(name: 'WORKERS', defaultValue: 'auto', description: 'Number of parallel workers')
     }
@@ -24,7 +24,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api-none'
+                    def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api_none'
                     def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
                     
                     parallel testConfigs.collectEntries { config -> 
@@ -58,7 +58,7 @@ pipeline {
         stage('Upload Reports') {
             steps {
                 script {
-                    def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api-none'
+                    def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api_none'
                     def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
                     
                     testConfigs.each { config ->
