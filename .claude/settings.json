@@ -4,6 +4,11 @@
       "type": "stdio",
       "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe",
       "args": ["tools/seleniumbase-mcp/server.py"]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
     }
   }
 }

@@ -27,7 +27,10 @@
       "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m py_compile tools/seleniumbase-mcp/server.py)",
       "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -c \":*)",
       "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pytest tests/the_internet/ui_test_suite/test_ab_testing.py --browser=chrome --headless --json-report --json-report-file=.pytest_mcp_report.json --tb=long --no-header -q -m \"ui\")",
-      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pip install pytest-json-report)"
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pip install pytest-json-report)",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -c \"import mcp, seleniumbase, pytest, requests, bs4, pytest_jsonreport; print\\(''PACKAGES_OK''\\)\")",
+      "Bash(npx --version)",
+      "Bash(powershell -Command \":*)"
     ]
   }
 }
