@@ -28,6 +28,7 @@ dependencies = [
     "requests>=2.32.5",
     "seleniumbase>=4.44.20",
     "structlog>=25.5.0",
+    "mcp>=1.0.0",
 ]
 
 

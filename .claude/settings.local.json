@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show mcp)",
+      "Bash(pip install mcp --break-system-packages)",
+      "Bash(python -m py_compile tools/seleniumbase-mcp/server.py)",
+      "Bash(python -c \":*)",
+      "Bash(pip install beautifulsoup4 --break-system-packages)",
+      "Bash(pip show beautifulsoup4)",
+      "Bash(python -c \"from bs4 import BeautifulSoup; print\\(''bs4 OK''\\)\")",
+      "Bash(python -m pytest tests/the_internet/ui_test_suite/test_ab_testing.py --browser=chrome --headless --json-report --json-report-file=.pytest_mcp_report.json -q --no-header --tb=short -m \"ui\")",
+      "Bash(pip show seleniumbase)",
+      "Bash(python -m pytest --help)",
+      "Bash(python -c \"import seleniumbase; print\\(seleniumbase.__version__\\)\")",
+      "Bash(where python)",
+      "Bash(\"C:/Users/Avshalom/.pyenv/pyenv-win/versions/3.12.0/python.exe\" -c \"import seleniumbase; print\\(seleniumbase.__version__\\)\")",
+      "Bash(ls .venv/Scripts/python*)",
+      "Bash(ls venv/Scripts/python*)",
+      "Bash(python -m pytest --version)",
+      "Bash(python -c \"import pytest; print\\(pytest.__file__\\)\")",
+      "Bash(CONDA_PYTHON=\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\")",
+      "Bash(\"$CONDA_PYTHON\" -c \"import seleniumbase; print\\(seleniumbase.__version__\\)\")",
+      "Bash(\"$CONDA_PYTHON\" -m pytest --version)",
+      "Bash(\"$CONDA_PYTHON\" -c \"import mcp\")",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -c \"import mcp\")",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pip install mcp)",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m py_compile tools/seleniumbase-mcp/server.py)",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -c \":*)",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pytest tests/the_internet/ui_test_suite/test_ab_testing.py --browser=chrome --headless --json-report --json-report-file=.pytest_mcp_report.json --tb=long --no-header -q -m \"ui\")",
+      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pip install pytest-json-report)"
+    ]
+  }
+}
