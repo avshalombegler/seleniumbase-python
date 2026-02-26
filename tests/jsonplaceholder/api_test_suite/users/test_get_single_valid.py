@@ -26,7 +26,7 @@ class TestGetSingleValid:
 
         with allure.step("Send GET request to users endpoint"):
             response = api_context.session.get(api_endpoint, timeout=api_context.timeout)
-            
+
         assert_common_response_checks(response, api_context.timeout)
 
         with allure.step("Parse and validate user data"):

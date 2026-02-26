@@ -412,18 +412,18 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
     }
 
     # Extract file and line: patterns like "src/pages/foo.py:42:" or "FAILED tests/...::test - "
-    file_line_match = re.search(r'([\w/\\.\-]+\.py)[:\s]+(\d+)', longrepr)
+    file_line_match = re.search(r"([\w/\\.\-]+\.py)[:\s]+(\d+)", longrepr)
     if file_line_match:
         result["file"] = file_line_match.group(1).replace("\\", "/")
         result["line"] = int(file_line_match.group(2))
 
     # Extract error type from the last Exception line
     error_type_match = re.search(
-        r'(NoSuchElementException|ElementNotVisibleException|TimeoutException|'
-        r'AssertionError|StaleElementReferenceException|WebDriverException|'
-        r'ElementClickInterceptedException|NoSuchWindowException|'
-        r'InvalidSelectorException|MoveTargetOutOfBoundsException|'
-        r'[\w]+Error|[\w]+Exception)',
+        r"(NoSuchElementException|ElementNotVisibleException|TimeoutException|"
+        r"AssertionError|StaleElementReferenceException|WebDriverException|"
+        r"ElementClickInterceptedException|NoSuchWindowException|"
+        r"InvalidSelectorException|MoveTargetOutOfBoundsException|"
+        r"[\w]+Error|[\w]+Exception)",
         longrepr,
     )
     if error_type_match:
@@ -444,7 +444,7 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
             result["failed_selector"] = sel_kw_match.group(1)
 
     # Extract assertion message
-    assert_match = re.search(r'AssertionError:\s*(.+)', longrepr)
+    assert_match = re.search(r"AssertionError:\s*(.+)", longrepr)
     if assert_match:
         result["assertion_message"] = assert_match.group(1).strip()
 
@@ -565,14 +565,14 @@ def get_code_template(template_type: str, name: str) -> str:
     # Derive naming variants
     # Convert to snake_case for method/file names
     # e.g. "CheckboxPage" -> "checkbox_page", "dropdown_list" -> "dropdown_list"
-    snake = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower().strip('_')
-    snake = re.sub(r'[^a-z0-9_]', '_', snake).strip('_')
+    snake = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower().strip("_")
+    snake = re.sub(r"[^a-z0-9_]", "_", snake).strip("_")
 
     # PascalCase class name
-    pascal = ''.join(word.capitalize() for word in re.split(r'[_\s]+', name))
+    pascal = "".join(word.capitalize() for word in re.split(r"[_\s]+", name))
 
     # Human-readable feature name
-    feature_name = ' '.join(word.capitalize() for word in re.split(r'[_\s]+', name))
+    feature_name = " ".join(word.capitalize() for word in re.split(r"[_\s]+", name))
 
     # sub-suite name (same as feature_name)
     sub_suite = feature_name
