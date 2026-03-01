@@ -30,7 +30,8 @@
       "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -m pip install pytest-json-report)",
       "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" -c \"import mcp, seleniumbase, pytest, requests, bs4, pytest_jsonreport; print\\(''PACKAGES_OK''\\)\")",
       "Bash(npx --version)",
-      "Bash(powershell -Command \":*)"
+      "Bash(powershell -Command \":*)",
+      "Bash(C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe -c \"import py_compile; py_compile.compile\\(''tools/seleniumbase-mcp/server.py'', doraise=True\\); print\\(''syntax OK''\\)\")"
     ]
   }
 }

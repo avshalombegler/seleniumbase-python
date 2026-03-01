@@ -17,6 +17,8 @@ tools:
   - playwright/browser_navigate
   - playwright/browser_snapshot
   - playwright/browser_close
+  - get_session_stats
+  - reset_session_stats
 model: claude-sonnet-4-5
 mcp-servers:
   seleniumbase:
@@ -138,7 +140,9 @@ Follow these steps in strict order.
 
 ### Step 1 — Initial Execution
 
-Call `run_pytest(test_path=<developer-provided path>, headless=True, browser="chrome")`.
+First, call `reset_session_stats()` to start a clean session budget.
+
+Then call `run_pytest(test_path=<developer-provided path>, headless=True, browser="chrome")`.
 Do not add markers unless the developer explicitly specified them.
 
 - If `exit_code == 0` and `failed == 0` and `errors == 0`: report all passing and stop.
@@ -160,14 +164,28 @@ Categorize each failure:
 
 Resolve in this order: code errors → stale locators → assertion mismatches → timing.
 
-### Step 3 — Context7 Lookup (Mandatory Before Any Code Change)
+### Step 2b — Group Failures by Root Cause
 
-Before writing any SeleniumBase code, use Context7. This is not optional.
+Before fixing anything, group the triaged failures:
 
-1. Call Context7's library resolver to get the SeleniumBase library ID
-2. Call Context7's query tool with a narrow, specific query
+| Group by | Criteria | Benefit |
+|---|---|---|
+| **Same locator file** | Multiple tests fail on selectors from the same `locators.py` | Fix the locator once, verify all grouped tests together |
+| **Same page URL** | Multiple tests navigate to the same page and fail on stale locators | One browser inspection serves all grouped tests |
+| **Same error pattern** | Identical `error_type` + similar `failed_selector` structure | Apply the same fix pattern without re-analyzing |
 
-Query by fix type:
+Process groups as units: inspect the page once, fix the shared locator file once, then verify all tests in the group in a single `run_pytest` call using space-separated nodeids. This eliminates redundant browser inspections and file reads.
+
+### Step 3 — Context7 Lookup (With Session Caching)
+
+Before writing SeleniumBase code, you need current API documentation. However, do not repeat identical lookups within the same session:
+
+1. On the **first fix** of the session, call `resolve-library-id` for SeleniumBase and then `query-docs` for the specific method you need. Remember the result.
+2. For **subsequent fixes in the same session**: if you need the same method you already looked up (e.g., `wait_for_element_visible`, `click`, `type`), use the documentation you already retrieved. Do **not** call Context7 again for the same method.
+3. **Do** call Context7 again if you encounter a method you haven't looked up yet in this session.
+4. When in `"caution"` or `"critical"` budget status, only call Context7 for methods you have genuine uncertainty about — skip it for basic methods like `click`, `type`, `assert_equal` that you have high confidence on.
+
+Query by fix type when a lookup is needed:
 
 | Fix type | Context7 query |
 |---|---|
@@ -177,7 +195,7 @@ Query by fix type:
 | Input / typing | `"seleniumbase type send_keys input clear"` |
 | Dynamic element | `"seleniumbase wait_for_text get_text dynamic element"` |
 
-Confirm the correct method signature for `seleniumbase==4.44.20` before writing code.
+Confirm the correct method signature for `seleniumbase==4.44.20` before writing code on first use.
 
 ### Step 4 — Read the Full Failure Context
 
@@ -195,6 +213,14 @@ Also attempt to read the failure screenshot:
 - Call `read_file("latest_logs/<converted_path>/screenshot.png")` — continue if not found
 
 ### Step 5 — Live Browser Inspection (Stale Locator Failures Only)
+
+**Browser Inspection Caching Rule:**
+
+Before calling `playwright/browser_navigate`, check if you have already inspected this exact URL during this session.
+
+- **Same URL already inspected:** Use the snapshot you already have. Do not navigate again. The page structure at `https://the-internet.herokuapp.com/<path>` does not change between requests within a single healing session.
+- **New URL not yet inspected:** Proceed with `browser_navigate` → `browser_snapshot` → `browser_close` as normal.
+- Keep a mental list of URLs you have inspected and their key findings (available elements, IDs, structure). Reference this list instead of re-inspecting.
 
 When `error_type` is `NoSuchElementException`, `ElementNotVisibleException`, or `TimeoutException`:
 
@@ -228,6 +254,16 @@ The browser approach works for both static and dynamic pages. `get_page_source` 
 provisional and flag the fix for human verification.
 
 ### Step 6 — Apply the Fix
+
+**File Read Caching Rule:**
+
+Before calling `read_file` on a file, check if you have already read this exact file during this session and no `write_file` has been called on it since.
+
+- **Already read, not modified since:** Use the content you already have.
+- **Already read, but modified since last read:** Call `read_file` again to get the updated version.
+- **Not yet read:** Call `read_file` as normal.
+
+This is especially important for `locators.py` files that may be read repeatedly when fixing multiple tests in the same feature.
 
 **Where each fix type belongs:**
 
@@ -264,12 +300,39 @@ After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid o
 - Still fails → call `parse_pytest_failure` on the new `longrepr`; re-analyze from Step 2
   with the updated error — do not apply a second fix without understanding the new failure
 
-### Step 8 — Iteration
+### Step 8 — Iteration with Budget Awareness
 
-Work through each failure from the triage list in Step 2, one at a time. After all individual
-fixes are verified, run the full original target path one final time to confirm nothing regressed.
+Work through each failure group from Step 2b. After completing each group (not each individual test), call `get_session_stats()` and check `budget_status`:
 
-After the final run passes with zero failures, call `cleanup_backups(".")` to remove all
+**If `"healthy"`:**
+Continue to the next failure group normally.
+
+**If `"caution"`:**
+Switch to **lightweight mode** for remaining failures:
+- Skip Context7 lookups for standard SeleniumBase methods
+- Reuse any existing browser snapshots — do not open new browser sessions unless the URL is completely new
+- Apply only high-confidence fixes (stale locators with clear replacements, obvious assertion value changes)
+- For anything ambiguous, mark immediately with `@pytest.mark.fix` instead of attempting multiple fix iterations
+- Reduce the per-test attempt limit from 3 to 1
+
+**If `"critical"`:**
+Enter **wrap-up mode** immediately:
+- Stop attempting new fixes
+- Mark all remaining unresolved failures with `@pytest.mark.fix` and a comment: `# HEALER: <date> — Session budget exhausted. <brief description of failure>.`
+- Skip the full regression run — only run a targeted verification of the fixes already applied
+- Proceed directly to the output report
+
+**Mandatory stop condition:** If `fix_success_rate` drops below **0.25** (fewer than 1 in 4 fixes succeeding) after at least 4 fix attempts, enter wrap-up mode regardless of budget status. The session is unlikely to be productive.
+
+**Final Verification (replaces "run the full original target path"):**
+
+Choose the verification strategy based on the session's scope:
+
+- **≤ 5 tests were modified:** Run only the modified test nodeids in a single `run_pytest` call. This is sufficient to confirm no regressions among changed files.
+- **6–15 tests were modified:** Run `run_pytest` on the full target path, but with `timeout=120` to fail fast on hangs.
+- **> 15 tests were modified or budget is `"caution"`/`"critical"`:** Skip the full regression run. Report which tests were fixed and verified individually, and note that a full regression was not performed due to session scope. Recommend the developer run the full suite manually.
+
+After the final verification passes with zero failures, call `cleanup_backups(".")` to remove all
 `.bak` files created during the session. Do not call `cleanup_backups` if any tests are
 still failing or marked for review — the backups may be needed for rollback.
 
@@ -340,4 +403,13 @@ After completing all healing work, produce this report for the developer:
 
 ### Final Run
 All <n> tests passing ✅   |   <n> marked for human review ⚠️
+
+### Session Efficiency
+**Total tool calls:** <n>
+**Total pytest runs:** <n>
+**Browser inspections:** <n>
+**Fixes attempted / succeeded:** <n> / <n> (<success_rate>%)
+**Elapsed time:** <minutes>m
+**Budget status at completion:** <healthy|caution|critical>
+**Mode at completion:** <normal|lightweight|wrap-up>
 ```

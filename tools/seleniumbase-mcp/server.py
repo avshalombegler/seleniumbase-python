@@ -1,8 +1,9 @@
 """
 SeleniumBase MCP Server
 
-Provides 17 tools across 4 groups for test execution, file I/O, HTML analysis,
-and code scaffolding. Used by sb-healer, sb-generator, and sb-planner Claude Code agents.
+Provides 19 tools across 5 groups for test execution, file I/O, HTML analysis,
+code scaffolding, and session budget tracking. Used by sb-healer, sb-generator,
+and sb-planner Claude Code agents.
 
 Tool groups:
   Group 1 — Execution:  run_pytest, get_test_results
@@ -11,6 +12,7 @@ Tool groups:
   Group 3 — Analysis:   get_page_source, analyze_page_elements, parse_pytest_failure
   Group 4 — Scaffold:   create_test_file, create_page_object_file,
                         create_locators_file, get_code_template
+  Group 5 — Budget:     get_session_stats, reset_session_stats
 """
 
 from __future__ import annotations
@@ -20,6 +22,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +38,63 @@ from mcp.server.fastmcp import FastMCP
 # REPO_ROOT is three levels up: tools/seleniumbase-mcp -> tools -> repo_root
 REPO_ROOT = Path(__file__).parent.parent.parent.resolve()
 REPORT_PATH = REPO_ROOT / ".pytest_mcp_report.json"
+
+# ---------------------------------------------------------------------------
+# Session Budget System
+# ---------------------------------------------------------------------------
+
+SESSION_LIMITS = {
+    "max_total_tool_calls": 200,
+    "max_pytest_runs": 30,
+    "max_browser_inspections": 15,
+    "max_fixes_attempted": 25,
+    "max_elapsed_minutes": 30,
+    "caution_threshold_pct": 0.6,   # 60% of any limit → "caution"
+    "critical_threshold_pct": 0.85, # 85% of any limit → "critical"
+}
+
+_session_state: dict[str, Any] = {
+    "total_tool_calls": 0,
+    "total_pytest_runs": 0,
+    "total_browser_inspections": 0,
+    "total_fixes_attempted": 0,
+    "total_fixes_succeeded": 0,
+    "tests_remaining": 0,
+    "session_start_time": None,
+    "_pending_verification": False,
+}
+
+
+def _record_tool_call() -> None:
+    """Increment total_tool_calls and set session_start_time on the first call."""
+    if _session_state["session_start_time"] is None:
+        _session_state["session_start_time"] = time.time()
+    _session_state["total_tool_calls"] += 1
+
+
+def _compute_budget_status() -> str:
+    """Return 'healthy', 'caution', or 'critical' based on current counters."""
+    caution_pct = SESSION_LIMITS["caution_threshold_pct"]
+    critical_pct = SESSION_LIMITS["critical_threshold_pct"]
+
+    start = _session_state["session_start_time"]
+    elapsed_minutes = (time.time() - start) / 60.0 if start else 0.0
+
+    ratios = [
+        _session_state["total_tool_calls"] / SESSION_LIMITS["max_total_tool_calls"],
+        _session_state["total_pytest_runs"] / SESSION_LIMITS["max_pytest_runs"],
+        _session_state["total_browser_inspections"] / SESSION_LIMITS["max_browser_inspections"],
+        _session_state["total_fixes_attempted"] / SESSION_LIMITS["max_fixes_attempted"],
+        elapsed_minutes / SESSION_LIMITS["max_elapsed_minutes"],
+    ]
+
+    max_ratio = max(ratios)
+    if max_ratio >= critical_pct:
+        return "critical"
+    elif max_ratio >= caution_pct:
+        return "caution"
+    return "healthy"
+
 
 # ---------------------------------------------------------------------------
 # MCP server instance
@@ -74,6 +134,9 @@ def run_pytest(
         dict with keys: exit_code, passed, failed, errors, duration, failures.
         Each item in failures has: nodeid, message, longrepr.
     """
+    _record_tool_call()
+    _session_state["total_pytest_runs"] += 1
+
     abs_test_path = REPO_ROOT / test_path if not Path(test_path).is_absolute() else Path(test_path)
 
     cmd = [
@@ -104,6 +167,7 @@ def run_pytest(
             cwd=str(REPO_ROOT),
         )
     except subprocess.TimeoutExpired:
+        _session_state["_pending_verification"] = False
         return {
             "exit_code": -1,
             "passed": 0,
@@ -114,7 +178,15 @@ def run_pytest(
         }
 
     # Parse report if it exists
-    return _parse_report(result.returncode)
+    report = _parse_report(result.returncode)
+
+    # Track fix verification: if a write was pending and this run passed, count it
+    if _session_state["_pending_verification"]:
+        if report.get("exit_code") == 0 and report.get("failed", 1) == 0 and report.get("errors", 1) == 0:
+            _session_state["total_fixes_succeeded"] += 1
+        _session_state["_pending_verification"] = False
+
+    return report
 
 
 @mcp.tool()
@@ -125,6 +197,7 @@ def get_test_results() -> dict[str, Any]:
     duration, failures (each with nodeid, message, longrepr).
     Returns {"error": "No report found"} if no report exists yet.
     """
+    _record_tool_call()
     if not REPORT_PATH.exists():
         return {"error": "No report found"}
     return _parse_report(exit_code=None)
@@ -207,6 +280,7 @@ def read_file(path: str) -> str:
     Raises:
         FileNotFoundError: If the file does not exist.
     """
+    _record_tool_call()
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
     if not abs_path.exists():
         raise FileNotFoundError(f"File not found: {abs_path}")
@@ -231,6 +305,7 @@ def write_file(path: str, content: str) -> dict[str, Any]:
     import py_compile
     import tempfile
 
+    _record_tool_call()
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
 
     # Validate Python syntax before writing
@@ -255,6 +330,12 @@ def write_file(path: str, content: str) -> dict[str, Any]:
     abs_path.parent.mkdir(parents=True, exist_ok=True)
     encoded = content.encode("utf-8")
     abs_path.write_bytes(encoded)
+
+    # Track fix attempts: any successful .py write counts as a fix attempt
+    if path.endswith(".py"):
+        _session_state["total_fixes_attempted"] += 1
+        _session_state["_pending_verification"] = True
+
     return {"success": True, "path": str(abs_path.relative_to(REPO_ROOT)), "bytes_written": len(encoded)}
 
 
@@ -275,6 +356,7 @@ def backup_file(path: str) -> dict[str, Any]:
     """
     import shutil
 
+    _record_tool_call()
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
     if not abs_path.exists():
         return {"success": False, "error": f"File not found: {path}", "original_path": path}
@@ -301,6 +383,7 @@ def cleanup_backups(directory: str = ".") -> dict[str, Any]:
     Returns:
         dict with keys: deleted (list of deleted relative paths), count (int).
     """
+    _record_tool_call()
     abs_dir = REPO_ROOT / directory if not Path(directory).is_absolute() else Path(directory)
     deleted = []
     for p in abs_dir.rglob("*.bak"):
@@ -330,6 +413,7 @@ def validate_python(code: str) -> dict[str, Any]:
     import py_compile
     import tempfile
 
+    _record_tool_call()
     with tempfile.NamedTemporaryFile(
         mode="w", suffix=".py", encoding="utf-8", delete=False
     ) as tmp:
@@ -376,6 +460,7 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
     import py_compile
     import tempfile
 
+    _record_tool_call()
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
     if not abs_path.exists():
         return {"success": False, "error": f"File not found: {path}", "path": path}
@@ -446,6 +531,7 @@ def list_files(directory: str = ".", pattern: str = "*.py") -> list[str]:
     Returns:
         List of relative paths (from repo root) matching the pattern.
     """
+    _record_tool_call()
     abs_dir = REPO_ROOT / directory if not Path(directory).is_absolute() else Path(directory)
     if not abs_dir.exists():
         return []
@@ -476,6 +562,7 @@ def get_project_structure() -> dict[str, Any]:
           - total_tests: int
           - total_features: int
     """
+    _record_tool_call()
     features_dir = REPO_ROOT / "src" / "pages" / "features"
     tests_dir = REPO_ROOT / "tests"
 
@@ -540,6 +627,8 @@ def get_page_source(url: str) -> str:
     Returns:
         Raw HTML string, or a JSON-encoded error dict on failure.
     """
+    _record_tool_call()
+    _session_state["total_browser_inspections"] += 1
     try:
         resp = requests.get(url, timeout=15)
         resp.raise_for_status()
@@ -566,6 +655,7 @@ def analyze_page_elements(html: str) -> dict[str, Any]:
           - selects: list of {id, name, options, selector}
           - forms: list of {action, method, field_count}
     """
+    _record_tool_call()
     soup = BeautifulSoup(html, "html.parser")
 
     inputs = []
@@ -684,6 +774,7 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
           - assertion_message: assertion message if it's an assertion failure
           - raw: the full longrepr string
     """
+    _record_tool_call()
     result: dict[str, Any] = {
         "file": None,
         "line": None,
@@ -756,6 +847,7 @@ def create_test_file(path: str, content: str) -> dict[str, Any]:
     Raises:
         ValueError: If path does not start with 'tests/' or does not end with '.py'.
     """
+    _record_tool_call()
     norm = path.replace("\\", "/")
     if not norm.startswith("tests/"):
         raise ValueError(f"Test file path must start with 'tests/', got: {path}")
@@ -787,6 +879,7 @@ def create_page_object_file(path: str, content: str) -> dict[str, Any]:
     Raises:
         ValueError: If path validation fails.
     """
+    _record_tool_call()
     norm = path.replace("\\", "/")
     if not norm.startswith("src/pages/"):
         raise ValueError(f"Page object path must start with 'src/pages/', got: {path}")
@@ -819,6 +912,7 @@ def create_locators_file(path: str, content: str) -> dict[str, Any]:
     Raises:
         ValueError: If path validation fails.
     """
+    _record_tool_call()
     norm = path.replace("\\", "/")
     if not norm.startswith("src/pages/"):
         raise ValueError(f"Locators file path must start with 'src/pages/', got: {path}")
@@ -851,6 +945,7 @@ def get_code_template(template_type: str, name: str) -> str:
     Raises:
         ValueError: If template_type is not one of the three valid types.
     """
+    _record_tool_call()
     # Derive naming variants
     # Convert to snake_case for method/file names
     # e.g. "CheckboxPage" -> "checkbox_page", "dropdown_list" -> "dropdown_list"
@@ -937,6 +1032,82 @@ class {pascal}Locators:
         raise ValueError(
             f"Unknown template_type '{template_type}'. Must be one of: 'test_class', 'page_object', 'locators'."
         )
+
+
+# ===========================================================================
+# Group 5: Budget Tools  (2 tools: get_session_stats, reset_session_stats)
+# ===========================================================================
+
+
+@mcp.tool()
+def get_session_stats() -> dict[str, Any]:
+    """Return current session budget counters and derived efficiency metrics.
+
+    Call this after completing each failure group to check the budget_status
+    and decide whether to continue in normal mode, switch to lightweight mode,
+    or enter wrap-up mode.
+
+    Returns:
+        dict with keys:
+          - total_tool_calls (int)
+          - total_pytest_runs (int)
+          - total_browser_inspections (int)
+          - total_fixes_attempted (int)
+          - total_fixes_succeeded (int)
+          - tests_remaining (int)
+          - session_start_time (float | None)
+          - elapsed_minutes (float)
+          - fix_success_rate (float): succeeded / attempted, or 0.0 if none attempted
+          - avg_tool_calls_per_fix (float)
+          - budget_status (str): one of "healthy", "caution", "critical"
+    """
+    _record_tool_call()
+    start = _session_state["session_start_time"]
+    elapsed_minutes = (time.time() - start) / 60.0 if start else 0.0
+
+    attempted = _session_state["total_fixes_attempted"]
+    succeeded = _session_state["total_fixes_succeeded"]
+
+    fix_success_rate = succeeded / attempted if attempted > 0 else 0.0
+    avg_tool_calls_per_fix = _session_state["total_tool_calls"] / attempted if attempted > 0 else 0.0
+
+    return {
+        "total_tool_calls": _session_state["total_tool_calls"],
+        "total_pytest_runs": _session_state["total_pytest_runs"],
+        "total_browser_inspections": _session_state["total_browser_inspections"],
+        "total_fixes_attempted": attempted,
+        "total_fixes_succeeded": succeeded,
+        "tests_remaining": _session_state["tests_remaining"],
+        "session_start_time": _session_state["session_start_time"],
+        "elapsed_minutes": round(elapsed_minutes, 2),
+        "fix_success_rate": round(fix_success_rate, 3),
+        "avg_tool_calls_per_fix": round(avg_tool_calls_per_fix, 2),
+        "budget_status": _compute_budget_status(),
+    }
+
+
+@mcp.tool()
+def reset_session_stats() -> dict[str, Any]:
+    """Reset all session counters. Call at the start of a new healing session.
+
+    This clears all accumulated tool call counts, pytest runs, browser
+    inspections, and fix tracking so the session budget starts fresh.
+
+    Returns:
+        dict with keys: reset (bool), session_start_time (float).
+    """
+    now = time.time()
+    _session_state.update({
+        "total_tool_calls": 1,  # count this reset call itself
+        "total_pytest_runs": 0,
+        "total_browser_inspections": 0,
+        "total_fixes_attempted": 0,
+        "total_fixes_succeeded": 0,
+        "tests_remaining": 0,
+        "session_start_time": now,
+        "_pending_verification": False,
+    })
+    return {"reset": True, "session_start_time": now}
 
 
 # ===========================================================================
