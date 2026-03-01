@@ -269,8 +269,9 @@ After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid o
 Work through each failure from the triage list in Step 2, one at a time. After all individual
 fixes are verified, run the full original target path one final time to confirm nothing regressed.
 
-If the final run has `exit_code == 0` and `failed == 0` and `errors == 0`, call
-`cleanup_backups()` to delete all `.bak` files created during this session.
+After the final run passes with zero failures, call `cleanup_backups(".")` to remove all
+`.bak` files created during the session. Do not call `cleanup_backups` if any tests are
+still failing or marked for review — the backups may be needed for rollback.
 
 ### Step 9 — Last Resort: Mark as `fix`
 
@@ -301,8 +302,18 @@ These are hard rules — never violate them:
   against current documentation — never rely on training memory for API details.
 - **The locators file is the first place to look.** When a test fails on element interaction,
   `locators.py` is almost always where the fix belongs.
-- **Fix forward.** The app's current behavior is the ground truth. Update tests to match it.
+- **Fix forward, but verify intent first.** Before changing an assertion expected value,
+  confirm the app's new behavior is intentional — not a regression. Read the test's
+  `self.logger.info(...)` lines and docstring to understand the original intent. If the
+  test asserts "Login successful" but the page now shows "Welcome", update the assertion.
+  If the page now shows an error message, the app may be broken — mark with
+  `@pytest.mark.fix` and document the discrepancy instead of silently accepting the
+  new behavior.
 - **`write_file` requires complete content.** Always `read_file` first, never write partial files.
+- **Never create new test files, page objects, or locators files.** Creating new code is
+  the generator agent's responsibility. If a test fails because a required page object or
+  locators file does not exist, mark the test with `@pytest.mark.fix` and explain what is
+  missing — do not scaffold new files to fill the gap.
 
 ---
 

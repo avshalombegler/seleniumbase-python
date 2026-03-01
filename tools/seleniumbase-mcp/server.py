@@ -1,9 +1,16 @@
 """
 SeleniumBase MCP Server
 
-Provides tools for test execution, file I/O, HTML analysis, and code scaffolding
-for the seleniumbase-python project. Used by sb-healer, sb-generator, and sb-planner
-Claude Code agents.
+Provides 17 tools across 4 groups for test execution, file I/O, HTML analysis,
+and code scaffolding. Used by sb-healer, sb-generator, and sb-planner Claude Code agents.
+
+Tool groups:
+  Group 1 — Execution:  run_pytest, get_test_results
+  Group 2 — File:       read_file, write_file, backup_file, cleanup_backups,
+                        validate_python, insert_into_file, list_files, get_project_structure
+  Group 3 — Analysis:   get_page_source, analyze_page_elements, parse_pytest_failure
+  Group 4 — Scaffold:   create_test_file, create_page_object_file,
+                        create_locators_file, get_code_template
 """
 
 from __future__ import annotations
@@ -36,7 +43,7 @@ REPORT_PATH = REPO_ROOT / ".pytest_mcp_report.json"
 mcp = FastMCP("seleniumbase")
 
 # ===========================================================================
-# Group 1: Execution Tools
+# Group 1: Execution Tools  (2 tools: run_pytest, get_test_results)
 # ===========================================================================
 
 
@@ -181,7 +188,9 @@ def _parse_report(exit_code: int | None) -> dict[str, Any]:
 
 
 # ===========================================================================
-# Group 2: File Tools
+# Group 2: File Tools  (8 tools: read_file, write_file, backup_file,
+#                       cleanup_backups, validate_python, insert_into_file,
+#                       list_files, get_project_structure)
 # ===========================================================================
 
 
@@ -303,6 +312,130 @@ def cleanup_backups(directory: str = ".") -> dict[str, Any]:
 
 
 @mcp.tool()
+def validate_python(code: str) -> dict[str, Any]:
+    """Check a Python code string for syntax errors without writing to disk.
+
+    Use this during code generation to validate snippets or complete file
+    content before calling write_file or create_test_file.
+
+    Args:
+        code: Python source code string to validate.
+
+    Returns:
+        dict with keys:
+          - valid (bool): True if syntax is correct
+          - error (str | None): Syntax error message if invalid, None if valid
+          - line (int | None): Line number of the error if invalid, None if valid
+    """
+    import py_compile
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".py", encoding="utf-8", delete=False
+    ) as tmp:
+        tmp.write(code)
+        tmp_path = tmp.name
+
+    try:
+        py_compile.compile(tmp_path, doraise=True)
+        return {"valid": True, "error": None, "line": None}
+    except py_compile.PyCompileError as exc:
+        msg = str(exc)
+        line_match = re.search(r'line (\d+)', msg)
+        line = int(line_match.group(1)) if line_match else None
+        return {"valid": False, "error": msg, "line": line}
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
+
+
+@mcp.tool()
+def insert_into_file(path: str, anchor: str, content: str, position: str = "after") -> dict[str, Any]:
+    """Insert content into a file relative to an anchor string.
+
+    Finds the first occurrence of `anchor` in the file and inserts `content`
+    either immediately before or after it. For .py files, validates syntax
+    after insertion before writing.
+
+    Use this for surgical additions to shared files like main_page.py where
+    writing the entire file risks corrupting existing content.
+
+    Args:
+        path: File path relative to repo root.
+        anchor: Exact string to search for in the file (must be unique).
+        content: Text to insert. For "after", inserted on a new line immediately
+                 after the anchor line. For "before", inserted on a new line
+                 immediately before the anchor line.
+        position: "after" (default) or "before".
+
+    Returns:
+        dict with keys: success (bool), path (str), bytes_written (int).
+        On anchor not found: success (False), error (str).
+        On non-unique anchor: success (False), error (str).
+        On syntax error: success (False), error (str) — file NOT written.
+    """
+    import py_compile
+    import tempfile
+
+    abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
+    if not abs_path.exists():
+        return {"success": False, "error": f"File not found: {path}", "path": path}
+
+    original = abs_path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
+
+    # Find anchor line
+    anchor_indices = [i for i, line in enumerate(lines) if anchor in line]
+    if not anchor_indices:
+        return {"success": False, "error": f"Anchor not found: {repr(anchor)}", "path": path}
+    if len(anchor_indices) > 1:
+        return {
+            "success": False,
+            "error": f"Anchor matches {len(anchor_indices)} lines — must be unique. "
+                     f"Found at lines: {[i + 1 for i in anchor_indices]}",
+            "path": path,
+        }
+
+    insert_idx = anchor_indices[0]
+    insertion_line = content if content.endswith("\n") else content + "\n"
+
+    if position == "after":
+        lines.insert(insert_idx + 1, insertion_line)
+    elif position == "before":
+        lines.insert(insert_idx, insertion_line)
+    else:
+        return {"success": False, "error": f"Invalid position: {repr(position)}. Must be 'after' or 'before'.", "path": path}
+
+    new_content = "".join(lines)
+
+    # Validate Python syntax before writing
+    if path.endswith(".py"):
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".py", encoding="utf-8", delete=False
+        ) as tmp:
+            tmp.write(new_content)
+            tmp_path = tmp.name
+        try:
+            py_compile.compile(tmp_path, doraise=True)
+        except py_compile.PyCompileError as exc:
+            Path(tmp_path).unlink(missing_ok=True)
+            return {
+                "success": False,
+                "error": f"Python syntax error after insertion — file NOT written: {exc}",
+                "path": path,
+            }
+        finally:
+            Path(tmp_path).unlink(missing_ok=True)
+
+    encoded = new_content.encode("utf-8")
+    abs_path.write_bytes(encoded)
+    return {
+        "success": True,
+        "path": str(abs_path.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "bytes_written": len(encoded),
+    }
+
+
+@mcp.tool()
 def list_files(directory: str = ".", pattern: str = "*.py") -> list[str]:
     """List all files under a directory matching a glob pattern.
 
@@ -324,8 +457,74 @@ def list_files(directory: str = ".", pattern: str = "*.py") -> list[str]:
     return sorted(results)
 
 
+@mcp.tool()
+def get_project_structure() -> dict[str, Any]:
+    """Return a structured snapshot of the project's test and page object landscape.
+
+    Use this to understand what features already have coverage before planning
+    new tests, or to detect naming collisions before creating new files.
+
+    Returns:
+        dict with keys:
+          - features: list of feature dicts, each with:
+              - name (str): feature directory name (snake_case)
+              - has_locators (bool): locators.py exists
+              - has_page_object (bool): at least one *_page.py exists
+              - page_object_file (str | None): path to the page object file
+              - test_files (list[str]): paths to test_*.py files in tests/ for this feature
+          - untested_features: list of feature names that have page objects but no tests
+          - total_tests: int
+          - total_features: int
+    """
+    features_dir = REPO_ROOT / "src" / "pages" / "features"
+    tests_dir = REPO_ROOT / "tests"
+
+    features = []
+    for feature_path in sorted(features_dir.iterdir()):
+        if not feature_path.is_dir():
+            continue
+
+        name = feature_path.name
+        has_locators = (feature_path / "locators.py").exists()
+
+        page_files = list(feature_path.glob("*_page.py"))
+        has_page_object = bool(page_files)
+        page_object_file = (
+            str(page_files[0].relative_to(REPO_ROOT)).replace("\\", "/")
+            if page_files else None
+        )
+
+        # Find test files — search recursively under tests/ for files containing this feature name
+        test_files = []
+        for tf in tests_dir.rglob("test_*.py"):
+            if name.replace("_", "") in tf.stem.replace("_", ""):
+                test_files.append(str(tf.relative_to(REPO_ROOT)).replace("\\", "/"))
+
+        features.append({
+            "name": name,
+            "has_locators": has_locators,
+            "has_page_object": has_page_object,
+            "page_object_file": page_object_file,
+            "test_files": sorted(test_files),
+        })
+
+    untested = [f["name"] for f in features if f["has_page_object"] and not f["test_files"]]
+
+    total_tests = sum(
+        1 for _ in tests_dir.rglob("test_*.py")
+    )
+
+    return {
+        "features": features,
+        "untested_features": untested,
+        "total_tests": total_tests,
+        "total_features": len(features),
+    }
+
+
 # ===========================================================================
-# Group 3: Analysis Tools
+# Group 3: Analysis Tools  (3 tools: get_page_source, analyze_page_elements,
+#                            parse_pytest_failure)
 # ===========================================================================
 
 
@@ -535,7 +734,8 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
 
 
 # ===========================================================================
-# Group 4: Scaffold Tools
+# Group 4: Scaffold Tools  (4 tools: create_test_file, create_page_object_file,
+#                            create_locators_file, get_code_template)
 # ===========================================================================
 
 
@@ -564,7 +764,9 @@ def create_test_file(path: str, content: str) -> dict[str, Any]:
 
     abs_path = REPO_ROOT / path
     abs_path.parent.mkdir(parents=True, exist_ok=True)
-    abs_path.write_text(content, encoding="utf-8")
+    result = write_file(norm, content)
+    if not result.get("success"):
+        return {"success": False, "path": norm, "error": result.get("error", "Write failed")}
     return {"success": True, "path": norm}
 
 
@@ -593,7 +795,9 @@ def create_page_object_file(path: str, content: str) -> dict[str, Any]:
 
     abs_path = REPO_ROOT / path
     abs_path.parent.mkdir(parents=True, exist_ok=True)
-    abs_path.write_text(content, encoding="utf-8")
+    result = write_file(norm, content)
+    if not result.get("success"):
+        return {"success": False, "path": norm, "error": result.get("error", "Write failed")}
     return {"success": True, "path": norm}
 
 
@@ -623,7 +827,9 @@ def create_locators_file(path: str, content: str) -> dict[str, Any]:
 
     abs_path = REPO_ROOT / path
     abs_path.parent.mkdir(parents=True, exist_ok=True)
-    abs_path.write_text(content, encoding="utf-8")
+    result = write_file(norm, content)
+    if not result.get("success"):
+        return {"success": False, "path": norm, "error": result.get("error", "Write failed")}
     return {"success": True, "path": norm}
 
 
