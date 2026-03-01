@@ -49,8 +49,8 @@ SESSION_LIMITS = {
     "max_browser_inspections": 15,
     "max_fixes_attempted": 25,
     "max_elapsed_minutes": 30,
-    "caution_threshold_pct": 0.6,   # 60% of any limit → "caution"
-    "critical_threshold_pct": 0.85, # 85% of any limit → "critical"
+    "caution_threshold_pct": 0.6,  # 60% of any limit → "caution"
+    "critical_threshold_pct": 0.85,  # 85% of any limit → "critical"
 }
 
 _session_state: dict[str, Any] = {
@@ -310,9 +310,7 @@ def write_file(path: str, content: str) -> dict[str, Any]:
 
     # Validate Python syntax before writing
     if path.endswith(".py"):
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", encoding="utf-8", delete=False
-        ) as tmp:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8", delete=False) as tmp:
             tmp.write(content)
             tmp_path = tmp.name
         try:
@@ -372,7 +370,7 @@ def backup_file(path: str) -> dict[str, Any]:
 
 @mcp.tool()
 def cleanup_backups(directory: str = ".") -> dict[str, Any]:
-    """Delete all .bak files created by backup_file under a directory.
+    """Delete all .bak files created by backup_file under a directory and the transient .pytest_mcp_report.json file.
 
     Call this after a fully successful healing session (final run passes with
     no failures) to remove backup files that are no longer needed.
@@ -391,6 +389,11 @@ def cleanup_backups(directory: str = ".") -> dict[str, Any]:
             rel = str(p.relative_to(REPO_ROOT)).replace("\\", "/")
             p.unlink()
             deleted.append(rel)
+    # Remove transient pytest report file
+    if REPORT_PATH.exists():
+        rel = str(REPORT_PATH.relative_to(REPO_ROOT)).replace("\\", "/")
+        REPORT_PATH.unlink()
+        deleted.append(rel)
     return {"deleted": sorted(deleted), "count": len(deleted)}
 
 
@@ -414,9 +417,7 @@ def validate_python(code: str) -> dict[str, Any]:
     import tempfile
 
     _record_tool_call()
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".py", encoding="utf-8", delete=False
-    ) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8", delete=False) as tmp:
         tmp.write(code)
         tmp_path = tmp.name
 
@@ -425,7 +426,7 @@ def validate_python(code: str) -> dict[str, Any]:
         return {"valid": True, "error": None, "line": None}
     except py_compile.PyCompileError as exc:
         msg = str(exc)
-        line_match = re.search(r'line (\d+)', msg)
+        line_match = re.search(r"line (\d+)", msg)
         line = int(line_match.group(1)) if line_match else None
         return {"valid": False, "error": msg, "line": line}
     finally:
@@ -476,7 +477,7 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
         return {
             "success": False,
             "error": f"Anchor matches {len(anchor_indices)} lines — must be unique. "
-                     f"Found at lines: {[i + 1 for i in anchor_indices]}",
+            f"Found at lines: {[i + 1 for i in anchor_indices]}",
             "path": path,
         }
 
@@ -488,15 +489,17 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
     elif position == "before":
         lines.insert(insert_idx, insertion_line)
     else:
-        return {"success": False, "error": f"Invalid position: {repr(position)}. Must be 'after' or 'before'.", "path": path}
+        return {
+            "success": False,
+            "error": f"Invalid position: {repr(position)}. Must be 'after' or 'before'.",
+            "path": path,
+        }
 
     new_content = "".join(lines)
 
     # Validate Python syntax before writing
     if path.endswith(".py"):
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", encoding="utf-8", delete=False
-        ) as tmp:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", encoding="utf-8", delete=False) as tmp:
             tmp.write(new_content)
             tmp_path = tmp.name
         try:
@@ -576,10 +579,7 @@ def get_project_structure() -> dict[str, Any]:
 
         page_files = list(feature_path.glob("*_page.py"))
         has_page_object = bool(page_files)
-        page_object_file = (
-            str(page_files[0].relative_to(REPO_ROOT)).replace("\\", "/")
-            if page_files else None
-        )
+        page_object_file = str(page_files[0].relative_to(REPO_ROOT)).replace("\\", "/") if page_files else None
 
         # Find test files — search recursively under tests/ for files containing this feature name
         test_files = []
@@ -587,19 +587,19 @@ def get_project_structure() -> dict[str, Any]:
             if name.replace("_", "") in tf.stem.replace("_", ""):
                 test_files.append(str(tf.relative_to(REPO_ROOT)).replace("\\", "/"))
 
-        features.append({
-            "name": name,
-            "has_locators": has_locators,
-            "has_page_object": has_page_object,
-            "page_object_file": page_object_file,
-            "test_files": sorted(test_files),
-        })
+        features.append(
+            {
+                "name": name,
+                "has_locators": has_locators,
+                "has_page_object": has_page_object,
+                "page_object_file": page_object_file,
+                "test_files": sorted(test_files),
+            }
+        )
 
     untested = [f["name"] for f in features if f["has_page_object"] and not f["test_files"]]
 
-    total_tests = sum(
-        1 for _ in tests_dir.rglob("test_*.py")
-    )
+    total_tests = sum(1 for _ in tests_dir.rglob("test_*.py"))
 
     return {
         "features": features,
@@ -785,7 +785,7 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
     }
 
     # Extract file and line: patterns like "src/pages/foo.py:42:" or "FAILED tests/...::test - "
-    file_line_match = re.search(r'([A-Za-z]:[\\/][\w/\\.\-]+\.py|[\w/\\.\-]+\.py)[:\s]+(\d+)', longrepr)
+    file_line_match = re.search(r"([A-Za-z]:[\\/][\w/\\.\-]+\.py|[\w/\\.\-]+\.py)[:\s]+(\d+)", longrepr)
     if file_line_match:
         result["file"] = file_line_match.group(1).replace("\\", "/")
         result["line"] = int(file_line_match.group(2))
@@ -1097,16 +1097,18 @@ def reset_session_stats() -> dict[str, Any]:
         dict with keys: reset (bool), session_start_time (float).
     """
     now = time.time()
-    _session_state.update({
-        "total_tool_calls": 1,  # count this reset call itself
-        "total_pytest_runs": 0,
-        "total_browser_inspections": 0,
-        "total_fixes_attempted": 0,
-        "total_fixes_succeeded": 0,
-        "tests_remaining": 0,
-        "session_start_time": now,
-        "_pending_verification": False,
-    })
+    _session_state.update(
+        {
+            "total_tool_calls": 1,  # count this reset call itself
+            "total_pytest_runs": 0,
+            "total_browser_inspections": 0,
+            "total_fixes_attempted": 0,
+            "total_fixes_succeeded": 0,
+            "tests_remaining": 0,
+            "session_start_time": now,
+            "_pending_verification": False,
+        }
+    )
     return {"reset": True, "session_start_time": now}
 
 

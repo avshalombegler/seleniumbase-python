@@ -37,6 +37,9 @@ downloaded_files/
 !.env.example
 .github/workflows/*.log
 
+# MCP / pytest artifacts
+.pytest_mcp_report.json
+
 # SeleniumBase
 report.html
 dashboard.html
