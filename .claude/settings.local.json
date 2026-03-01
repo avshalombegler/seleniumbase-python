@@ -7,11 +7,8 @@
       "Read(*)",
       "Edit(*)",
       "Write(*)",
-      "Bash(python *)",
-      "Bash(\"C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe\" *)",
-      "Bash(npx *)",
-      "Bash(pip *)",
-      "Bash(powershell -Command *)"
+      "Bash(*)",
+      "WebFetch(*)"
     ],
     "deny": []
   }
