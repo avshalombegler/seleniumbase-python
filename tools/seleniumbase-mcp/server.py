@@ -46,6 +46,7 @@ def run_pytest(
     markers: str | None = None,
     browser: str = "chrome",
     headless: bool = True,
+    timeout: int = 300,
 ) -> dict[str, Any]:
     """Run pytest on a test path and return structured results.
 
@@ -59,6 +60,8 @@ def run_pytest(
         markers: Optional pytest -m expression (e.g. 'regression', 'smoke or ui').
         browser: Browser to use (default 'chrome').
         headless: Run browser in headless mode (default True).
+        timeout: Subprocess timeout in seconds (default 300). Use higher values for
+                 directory-level runs; lower values (e.g. 60) for single-test verification.
 
     Returns:
         dict with keys: exit_code, passed, failed, errors, duration, failures.
@@ -90,7 +93,7 @@ def run_pytest(
             cmd,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=timeout,
             cwd=str(REPO_ROOT),
         )
     except subprocess.TimeoutExpired:
@@ -100,7 +103,7 @@ def run_pytest(
             "failed": 0,
             "errors": 1,
             "duration": 0.0,
-            "failures": [{"nodeid": test_path, "message": "Timeout after 120s", "longrepr": ""}],
+            "failures": [{"nodeid": test_path, "message": f"Timeout after {timeout}s", "longrepr": ""}],
         }
 
     # Parse report if it exists
@@ -205,18 +208,98 @@ def read_file(path: str) -> str:
 def write_file(path: str, content: str) -> dict[str, Any]:
     """Write content to a file, creating parent directories if needed.
 
+    For .py files, validates Python syntax before writing. Returns an error
+    dict if syntax is invalid — the file is NOT written in that case.
+
     Args:
         path: Destination path relative to repo root.
         content: Text content to write.
 
     Returns:
         dict with keys: success (bool), path (str), bytes_written (int).
+        On syntax error: success (False), error (str), path (str).
     """
+    import py_compile
+    import tempfile
+
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
+
+    # Validate Python syntax before writing
+    if path.endswith(".py"):
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".py", encoding="utf-8", delete=False
+        ) as tmp:
+            tmp.write(content)
+            tmp_path = tmp.name
+        try:
+            py_compile.compile(tmp_path, doraise=True)
+        except py_compile.PyCompileError as exc:
+            Path(tmp_path).unlink(missing_ok=True)
+            return {
+                "success": False,
+                "error": f"Python syntax error — file NOT written: {exc}",
+                "path": path,
+            }
+        finally:
+            Path(tmp_path).unlink(missing_ok=True)
+
     abs_path.parent.mkdir(parents=True, exist_ok=True)
     encoded = content.encode("utf-8")
     abs_path.write_bytes(encoded)
     return {"success": True, "path": str(abs_path.relative_to(REPO_ROOT)), "bytes_written": len(encoded)}
+
+
+@mcp.tool()
+def backup_file(path: str) -> dict[str, Any]:
+    """Create a backup of a file before modifying it.
+
+    Copies the file to <path>.bak in the same directory. Call this before
+    any write_file call on an existing file so the original can be restored
+    if the fix introduces new failures.
+
+    Args:
+        path: Path relative to repo root of the file to back up.
+
+    Returns:
+        dict with keys: success (bool), backup_path (str), original_path (str).
+        Returns success: False with an error key if the file does not exist.
+    """
+    import shutil
+
+    abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
+    if not abs_path.exists():
+        return {"success": False, "error": f"File not found: {path}", "original_path": path}
+
+    backup_path = abs_path.with_suffix(abs_path.suffix + ".bak")
+    shutil.copy2(abs_path, backup_path)
+    return {
+        "success": True,
+        "original_path": str(abs_path.relative_to(REPO_ROOT)),
+        "backup_path": str(backup_path.relative_to(REPO_ROOT)),
+    }
+
+
+@mcp.tool()
+def cleanup_backups(directory: str = ".") -> dict[str, Any]:
+    """Delete all .bak files created by backup_file under a directory.
+
+    Call this after a fully successful healing session (final run passes with
+    no failures) to remove backup files that are no longer needed.
+
+    Args:
+        directory: Directory path relative to repo root to search (default '.').
+
+    Returns:
+        dict with keys: deleted (list of deleted relative paths), count (int).
+    """
+    abs_dir = REPO_ROOT / directory if not Path(directory).is_absolute() else Path(directory)
+    deleted = []
+    for p in abs_dir.rglob("*.bak"):
+        if p.is_file():
+            rel = str(p.relative_to(REPO_ROOT)).replace("\\", "/")
+            p.unlink()
+            deleted.append(rel)
+    return {"deleted": sorted(deleted), "count": len(deleted)}
 
 
 @mcp.tool()
@@ -412,7 +495,7 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
     }
 
     # Extract file and line: patterns like "src/pages/foo.py:42:" or "FAILED tests/...::test - "
-    file_line_match = re.search(r"([\w/\\.\-]+\.py)[:\s]+(\d+)", longrepr)
+    file_line_match = re.search(r'([A-Za-z]:[\\/][\w/\\.\-]+\.py|[\w/\\.\-]+\.py)[:\s]+(\d+)', longrepr)
     if file_line_match:
         result["file"] = file_line_match.group(1).replace("\\", "/")
         result["line"] = int(file_line_match.group(2))

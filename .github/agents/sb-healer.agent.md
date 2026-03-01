@@ -4,6 +4,8 @@ description: "Use this agent when you need to debug and fix failing SeleniumBase
 tools:
   - read_file
   - write_file
+  - backup_file
+  - cleanup_backups
   - list_files
   - run_pytest
   - get_test_results
@@ -12,6 +14,9 @@ tools:
   - analyze_page_elements
   - resolve-library-id
   - query-docs
+  - playwright/browser_navigate
+  - playwright/browser_snapshot
+  - playwright/browser_close
 model: claude-sonnet-4-5
 mcp-servers:
   seleniumbase:
@@ -25,6 +30,15 @@ mcp-servers:
     args:
       - -y
       - "@upstash/context7-mcp"
+  playwright:
+    type: stdio
+    command: npx
+    args:
+      - playwright
+      - run-mcp-server
+      - --headless
+      - --browser
+      - chromium
 ---
 
 ## Mission
@@ -180,19 +194,38 @@ Also attempt to read the failure screenshot:
   to `the_internet/ui_test_suite/test_login.TestLogin.test_valid`
 - Call `read_file("latest_logs/<converted_path>/screenshot.png")` — continue if not found
 
-### Step 5 — Live Page Analysis (Stale Locator Failures Only)
+### Step 5 — Live Browser Inspection (Stale Locator Failures Only)
 
 When `error_type` is `NoSuchElementException`, `ElementNotVisibleException`, or `TimeoutException`:
 
 1. Determine the URL: `https://the-internet.herokuapp.com` + the path the test navigates to
-   (read from the test file or page object's navigation method)
-2. Call `get_page_source(url)` — check the return value is not a JSON error string before
-   proceeding
-3. Call `analyze_page_elements(html)` on the returned HTML
-4. Locate the target element across `inputs`, `buttons`, `links`, `selects`
-5. Select the best replacement using locator priority from Section 1
-6. Map the tool's `selector` output to the correct `Locator` dict format (see Section 1
-   mapping table)
+   (read from the test file or page object's navigation method).
+
+2. Call `playwright/browser_navigate` with that URL. This opens a real headless Chromium
+   browser — JavaScript executes fully, dynamic content renders, modals appear.
+
+3. Call `playwright/browser_snapshot`. This returns the live accessibility tree of the fully
+   rendered page. Read it carefully to identify the target element by its role, name, id,
+   or visible text. Dynamic elements (modals, overlays, JS-injected content) will be visible
+   here even if they were absent from `get_page_source`.
+
+4. Derive the correct `Locator` dict from what the snapshot reveals, using the locator
+   priority order from Section 1:
+   - Element has a stable `id` attribute →
+     `{"selector": "the-id", "by": By.ID}`
+   - Element has no `id` →
+     `{"selector": "css-selector", "by": By.CSS_SELECTOR}`
+   - Complex structural query with no CSS equivalent →
+     `{"selector": "//xpath", "by": By.XPATH}`
+
+5. Call `playwright/browser_close` when inspection is complete.
+
+Note: `playwright/browser_navigate` + `playwright/browser_snapshot` is the unconditional
+first step for all stale locator failures — do not attempt `get_page_source` first.
+The browser approach works for both static and dynamic pages. `get_page_source` and
+`analyze_page_elements` remain available only if the Playwright MCP server is unavailable
+(e.g. fails to start), in which case treat any selector derived from static HTML as
+provisional and flag the fix for human verification.
 
 ### Step 6 — Apply the Fix
 
@@ -207,9 +240,12 @@ When `error_type` is `NoSuchElementException`, `ElementNotVisibleException`, or 
 
 **Fix procedure — always follow this sequence:**
 1. `read_file` the target file to get current content
-2. Identify the minimal change needed
-3. Modify the content string in memory
-4. `write_file` the complete updated file content
+2. `backup_file` the target file to preserve the original
+3. Identify the minimal change needed
+4. Modify the content string in memory
+5. `write_file` the complete updated file content
+6. If `write_file` returns `success: False` (syntax error), the file was NOT written —
+   fix the syntax error and retry before running pytest
 
 **Hard constraints — never violate these:**
 - Never hardcode a selector in a test file or page object method body — locators live in
@@ -232,6 +268,9 @@ After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid o
 
 Work through each failure from the triage list in Step 2, one at a time. After all individual
 fixes are verified, run the full original target path one final time to confirm nothing regressed.
+
+If the final run has `exit_code == 0` and `failed == 0` and `errors == 0`, call
+`cleanup_backups()` to delete all `.bak` files created during this session.
 
 ### Step 9 — Last Resort: Mark as `fix`
 
