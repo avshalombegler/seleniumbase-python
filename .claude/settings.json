@@ -21,5 +21,83 @@
         "chromium"
       ]
     }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/enforce_conda_python.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__seleniumbase__write_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_mcp_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__seleniumbase__create_test_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_mcp_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__seleniumbase__create_page_object_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_mcp_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__seleniumbase__create_locators_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_mcp_file.py"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__seleniumbase__insert_into_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe E:/VSCodeProjects/seleniumbase-python/.claude/hooks/ruff_fix_mcp_file.py"
+          }
+        ]
+      }
+    ]
   }
 }
