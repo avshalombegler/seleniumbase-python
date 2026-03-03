@@ -37,6 +37,9 @@ downloaded_files/
 !.env.example
 .github/workflows/*.log
 
+# Claude Code
+.claude/settings.local.json
+
 # MCP / pytest artifacts
 .pytest_mcp_report.json
 
