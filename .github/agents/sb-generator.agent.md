@@ -230,10 +230,27 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
 - No blank lines between locator definitions (match reference file spacing)
 - No methods, no `__init__`, no inheritance — just class attributes
 
-**Validation:**
+**Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
 2. If invalid, fix the syntax error and re-validate.
-3. Call `create_locators_file(path=<spec's locators file path>, content=<validated content>)`.
+3. **Self-review:** Check the validated content against this checklist:
+
+   | # | Check |
+   |---|---|
+   | L1 | Module docstring: `"""Module containing locators for <Feature Name> page object."""` |
+   | L2 | Imports: exactly `from selenium.webdriver.common.by import By` and `from src.pages.base.base_page import Locator` |
+   | L3 | Class name matches spec's `Locators class` field exactly |
+   | L4 | `PAGE_LOADED_INDICATOR` is the first class attribute |
+   | L5 | All locator names are `SCREAMING_SNAKE_CASE` |
+   | L6 | No `By.CLASS_NAME` alone, no `By.TAG_NAME` alone |
+   | L7 | Strategy priority respected: `By.ID` where element has stable `id`; `By.CSS_SELECTOR` otherwise; `By.XPATH` only as last resort |
+   | L8 | Every locator from spec's Page Elements table is present — none missing, none invented |
+   | L9 | No methods, no `__init__`, no class inheritance |
+   | L10 | No blank lines between locator definitions |
+
+   **Grade:** A = all pass → proceed. B = only L5/L10 violations → auto-correct and re-validate. C = any L1–L4, L6–L9 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+
+4. Call `create_locators_file(path=<spec's locators file path>, content=<reviewed content>)`.
 
 ### Step 6 — Generate the Page Object File
 
@@ -254,10 +271,28 @@ object file you read in Step 3. The spec's Page Object Methods table is the sour
 - Return types are explicit in the signature
 - No `self.logger` calls in page object methods (only test files log)
 
-**Validation:**
+**Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
 2. If invalid, fix the syntax error and re-validate.
-3. Call `create_page_object_file(path=<spec's page object file path>, content=<validated content>)`.
+3. **Self-review:** Check the validated content against this checklist:
+
+   | # | Check |
+   |---|---|
+   | P1 | First line is `from __future__ import annotations` |
+   | P2 | `if TYPE_CHECKING: pass` block present (even if unused) |
+   | P3 | Import order: `TYPE_CHECKING` → stdlib → `allure` → local (`base_page`, locators) |
+   | P4 | Class inherits from `BasePage` |
+   | P5 | Class docstring is a single line matching the spec |
+   | P6 | `__init__` calls `super().__init__(driver)` then `self.wait_for_page_to_load(<Locators>.PAGE_LOADED_INDICATOR)` |
+   | P7 | Every public method is decorated with `@allure.step(...)` |
+   | P8 | Method bodies reference `<Locators>.<NAME>` — no hardcoded selector strings |
+   | P9 | Return types are explicit on all methods |
+   | P10 | No `self.logger` calls in page object methods |
+   | P11 | Every method and return type matches spec's Page Object Methods table exactly |
+
+   **Grade:** A = all pass → proceed. B = only P5/P10 violations → auto-correct. C = any P1, P4, P6, P7, P8, P11 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+
+4. Call `create_page_object_file(path=<spec's page object file path>, content=<reviewed content>)`.
 
 ### Step 7 — Generate the Test File
 
@@ -296,10 +331,29 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
   (not via a page object method), write it as `page.click_element(<Locators>.<NAME>)` in
   the test method. Import the locators class in the test file for this purpose.
 
-**Validation:**
+**Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
 2. If invalid, fix the syntax error and re-validate.
-3. Call `create_test_file(path=<spec's test file path>, content=<validated content>)`.
+3. **Self-review:** Check the validated content against this checklist:
+
+   | # | Check |
+   |---|---|
+   | T1 | All three Allure class decorators present in order: `@allure.parent_suite("the-internet")`, `@allure.suite("UI Test Suite")`, `@allure.sub_suite("<spec sub_suite>")` |
+   | T2 | Class inherits from `UiBaseCase` |
+   | T3 | Class docstring: `"""Tests <Feature Name> functionality"""` |
+   | T4 | Test Data constants defined at **module level** (above the class) — not inside the class or methods |
+   | T5 | Decorator order on each test: `@pytest.mark.regression`, `@pytest.mark.ui`, `@allure.severity(...)` |
+   | T6 | `@pytest.mark.smoke` added only if spec explicitly assigns it |
+   | T7 | Each test method has `-> None` return type |
+   | T8 | First statement of each test method is `self.logger.info(...)` |
+   | T9 | Navigation uses `MainPage(self)` → `main_page.click_<feature>_link()` — no direct `self.navigate_to()` |
+   | T10 | Assertions use `self.assert_*` methods — no bare Python `assert` |
+   | T11 | One scenario per test method — no merged scenarios |
+   | T12 | Test method count matches spec's Test Scenarios section exactly |
+
+   **Grade:** A = all pass → proceed. B = only T3/T5/T6/T7 violations → auto-correct. C = any T1, T2, T4, T8, T9, T10, T11, T12 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+
+4. Call `create_test_file(path=<spec's test file path>, content=<reviewed content>)`.
 
 ### Step 8 — Create `__init__.py` in the Feature Directory
 
@@ -361,6 +415,22 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
 
 **Note the blank line between `click_element` and `return` — this matches the existing style.**
 
+**9d. Review the MainPage registration:**
+
+Verify the insertions made in 9a–9c against this checklist:
+
+| # | Check |
+|---|---|
+| M1 | Locator uses `By.LINK_TEXT` with the exact link text from the-internet's homepage |
+| M2 | Navigation method is decorated with `@allure.step("Navigate to {page_name} page")` |
+| M3 | Method signature: `def click_<feature>_link(self, page_name: str = "<Feature Name>") -> <FeaturePage>:` |
+| M4 | Method body contains `self.logger.info(f"Navigating to {page_name} page.")` |
+| M5 | Method body calls `self.click_element(MainPageLocators.<FEATURE>_LINK)` |
+| M6 | Blank line between `click_element` and `return` statement |
+| M7 | Method returns `<FeaturePage>(self.driver)` |
+
+**Grade:** A = all pass → proceed. B = M6 missing → revise the inserted method content, `backup_file`, and re-insert. C = any M2–M5, M7 violation → revise and re-insert. Record the final grade for the output report.
+
 ### Step 10 — Verification Run
 
 Run the generated tests to confirm they compile and pass:
@@ -411,6 +481,12 @@ After completing all generation work, produce this report for the developer:
 - Locator added: `<LOCATOR_NAME>` in `src/pages/common/main_page/locators.py`
 - Import added: `<import line>` in `src/pages/common/main_page/main_page.py`
 - Method added: `click_<feature>_link()` → returns `<PageClass>`
+
+### Code Review Grades
+- Locators file: <A|B|C>
+- Page object: <A|B|C>
+- Test file: <A|B|C>
+- MainPage registration: <A|B|C>
 
 ### Verification
 All <n> tests passing ✅

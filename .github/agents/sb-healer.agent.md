@@ -292,6 +292,25 @@ This is especially important for `locators.py` files that may be read repeatedly
 - Never use `time.sleep()` — use SeleniumBase wait methods (confirmed via Context7)
 - One fix at a time — apply, verify, then proceed
 
+### Step 6b — Post-Fix Safety Review
+
+Before calling `run_pytest`, verify the written fix does not introduce any new violations.
+This is a binary check — **Pass** (proceed to Step 7) or **Revise** (fix the violation, re-`write_file`, then proceed).
+Maximum 1 revision cycle — if still failing after revision, skip directly to Step 9 (`@pytest.mark.fix`).
+
+| # | Check | Applies to |
+|---|---|---|
+| S1 | No hardcoded selector strings in test file or page object — all selectors live in `locators.py` only | All fix types |
+| S2 | No `time.sleep()` introduced anywhere in the changed file | All fix types |
+| S3 | All `@allure.*` decorators intact and unmodified | Test file fixes |
+| S4 | All `self.logger.info(...)` lines intact and unmodified | Test file fixes |
+| S5 | Assertion intent unchanged — expected value may change, but assertion logic (method, variable) must not be removed | Assertion fixes |
+| S6 | Locator strategy priority maintained in any new or changed locator | Locator fixes |
+| S7 | No `By.CLASS_NAME` alone or `By.TAG_NAME` alone introduced | Locator fixes |
+| S8 | Change is minimal — no unrelated lines altered | All fix types |
+
+If any check fails: correct the violation in-memory, re-`write_file`, then proceed to Step 7.
+
 ### Step 7 — Verification
 
 After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid of the test that was just fixed.
