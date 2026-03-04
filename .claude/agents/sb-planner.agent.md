@@ -114,38 +114,16 @@ Derive:
 
 ## Allure Severity Mapping
 
-Use these levels — not the old critical/high/medium/low scale:
-
-| Scenario type | Allure severity |
-|---------------|-----------------|
-| Core happy path — site breaks without it | `CRITICAL` |
-| Important negative / error flow | `NORMAL` |
-| Edge case / secondary feature | `MINOR` |
-| Cosmetic / rarely-hit path | `TRIVIAL` |
+See SKILL.md Section 9 for severity levels. Each scenario gets exactly one level (`CRITICAL`, `NORMAL`, `MINOR`, or `TRIVIAL`).
 
 ---
 
 ## Assertion Methods Reference
 
-Generate actual `self.assert_*` code in every scenario's Assertions block. Never use prose
-only. Use the exact method signatures from the project:
+Assertion methods and rules are defined in SKILL.md Section 6. Generate actual `self.assert_*`
+code in every scenario's Assertions block — never prose only. Key patterns:
 
-```python
-# URL check
-self.assert_true(self.get_current_url().endswith("/segment"), "message")
-
-# Text substring check (most common for flash messages, headings)
-self.assert_in("expected substring", page.get_<x>(), "message")
-
-# Exact equality
-self.assert_equal(actual, expected, "message")
-
-# Visibility check (only if no get-text method exists)
-self.assert_true(page.is_element_visible(SomeLocators.ELEMENT), "message")
-```
-
-Rules:
-- URL assertions: always `self.get_current_url().endswith("/segment")`
+- URL assertions: `self.assert_true(self.get_current_url().endswith("/segment"), "message")`
 - Text assertions: `self.assert_in(expected_text, page.get_<method>(), "message")`
 - Never use bare Python `assert`
 - Every scenario must have at least one Assertions block with real code
@@ -282,14 +260,10 @@ locators file) so they are visible alongside the assertions that use them.
 
 ## Marker Conventions
 
-| Marker | When to apply |
-|--------|--------------|
-| `smoke` | Critical happy path only — add only if explicitly designated |
-| `regression` | Always — all scenarios |
-| `ui` | Always — all scenarios (triggers BASE_URL navigation in setUp) |
-
-`@pytest.mark.regression` and `@pytest.mark.ui` appear on every scenario's Markers line.
-`@pytest.mark.smoke` is reserved and added only when the spec explicitly designates a smoke test.
+See SKILL.md Section 8 for all registered markers. Apply to every scenario:
+- `@pytest.mark.regression` — always
+- `@pytest.mark.ui` — always (triggers BASE_URL navigation in setUp)
+- `@pytest.mark.smoke` — only when explicitly designated as a smoke test
 
 ---
 
