@@ -131,7 +131,7 @@ Specs live in `specs/the_internet/` as Markdown files. The spec is the authorita
 
 **`sb-healer`** — Diagnoses and fixes failing tests. Runs failing tests, parses errors, applies fixes using `write_file`/`insert_into_file`, and marks unresolvable tests with `@pytest.mark.fix`.
 
-**Shared standards:** All three agents reference `.claude/skills/sb-test-standards.md` for the project's coding conventions. This file is the single source of truth for what correct locator, page object, and test file code looks like. When a convention changes (new base method, updated import pattern, etc.), update this file — the agents will reflect the change on their next invocation.
+**Shared standards:** All three agents reference `.claude/skills/sb-test-standards/SKILL.md` for the project's coding conventions. This file is the single source of truth for what correct locator, page object, and test file code looks like. When a convention changes (new base method, updated import pattern, etc.), update this file — the agents will reflect the change on their next invocation.
 
 All agents use the MCP server (`tools/seleniumbase-mcp/server.py`) which exposes 19 tools for file I/O with syntax validation, pytest execution, test result parsing, and code scaffolding.
 
