@@ -77,6 +77,7 @@ Apply test design principles to observed behavior. Cover ALL applicable categori
 - Each scenario gets exactly one Allure severity (see Allure Severity Mapping below)
 - **Never leave Generator Notes empty if ambiguity exists**
 - **Never produce a spec with zero Out of Scope entries**
+- **Consult `.claude/skills/sb-test-standards.md` when designing Page Object Methods and Test Scenarios** — method signatures, return types, and assertion patterns in the spec must be compatible with the standards the generator will enforce
 
 ---
 
