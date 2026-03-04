@@ -4,13 +4,15 @@
 MCP tools use tool_input.path (repo-relative), unlike native Write which uses
 tool_input.file_path (absolute). Also checks tool_response.success before running.
 """
+
 import json
 import subprocess
 import sys
 from pathlib import Path
 
 RUFF = "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/Scripts/ruff.exe"
-REPO = Path("E:/VSCodeProjects/seleniumbase-python")
+# Derive repo root dynamically: .claude/hooks/ → .claude/ → repo root
+REPO = Path(__file__).parent.parent.parent.resolve()
 PYPROJECT = str(REPO / "pyproject.toml")
 
 data = json.load(sys.stdin)
@@ -30,6 +32,12 @@ if not rel_path.endswith(".py"):
     sys.exit(0)
 
 abs_path = str(REPO / rel_path)
-subprocess.run([RUFF, "check", abs_path, "--fix", "--config", PYPROJECT], capture_output=True)
-subprocess.run([RUFF, "format", abs_path, "--config", PYPROJECT], capture_output=True)
+r1 = subprocess.run([RUFF, "check", abs_path, "--fix", "--config", PYPROJECT], capture_output=True)
+r2 = subprocess.run([RUFF, "format", abs_path, "--config", PYPROJECT], capture_output=True)
+
+if r1.returncode != 0:
+    print(f"[ruff-hook] ruff check failed on {rel_path}:\n{r1.stderr.decode()}", file=sys.stderr)
+if r2.returncode != 0:
+    print(f"[ruff-hook] ruff format failed on {rel_path}:\n{r2.stderr.decode()}", file=sys.stderr)
+
 sys.exit(0)
