@@ -57,33 +57,15 @@ autonomously.
 
 ## Section 1: Codebase Architecture Reference
 
-### Three-Layer Architecture
+> **Full reference:** SKILL.md (loaded before applying fixes) defines the three-layer
+> architecture, `Locator` type, locator strategy priority, `BasePage` methods, locators/page
+> object/test file standards, and MainPage registration. This section covers only
+> healer-specific context not in the skill file.
 
-| Layer | Location | Class pattern |
-|---|---|---|
-| Test | `tests/the_internet/ui_test_suite/test_*.py` | `TestXxx(UiBaseCase)` |
-| Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
-| Locators | `src/pages/features/<feature>/locators.py` | `XxxLocators` |
+### Locator Fix Target
 
-### `Locator` Type
-
-Always `{"selector": "<value>", "by": By.<STRATEGY>}`.
-
-The `by` value maps to SeleniumBase's `driver.click(**locator)` and `driver.type(**locator)` calls
-in `base_page.py`. Fixes to broken selectors belong in `locators.py` — page objects pass the dict
+Fixes to broken selectors belong in `locators.py` — page objects pass the `Locator` dict
 directly without touching the selector string.
-
-### Locator Strategy Priority
-
-Always follow this order when writing replacement locators:
-
-1. `By.ID` — element has a stable `id` attribute → `{"selector": "the-id", "by": By.ID}`
-2. `By.CSS_SELECTOR` — preferred for all other cases: `"button[type=submit]"`,
-   `"a[href='/logout']"`, `"div.figure:nth-of-type(1)"`, `"input[name='username']"`
-3. `By.XPATH` — only when CSS cannot express the query (e.g. text-based matching,
-   ancestor traversal): `"//th[text()='Column']"` — never as a first choice
-4. Never `By.CLASS_NAME` alone — brittle with multiple classes
-5. Never `By.TAG_NAME` alone — too broad
 
 ### Mapping `analyze_page_elements` Output to `Locator` Dicts
 
@@ -92,20 +74,12 @@ Always follow this order when writing replacement locators:
 - Tool returns `selector: "input[name='q']"` → use `{"selector": "input[name='q']", "by": By.CSS_SELECTOR}`
 - Tool returns `selector: "a[href='/logout']"` → use `{"selector": "a[href='/logout']", "by": By.CSS_SELECTOR}`
 
-### SeleniumBase Assertion Methods Used in This Project
+### Healer-Specific Pytest Marks
 
-- `self.assert_equal(actual, expected, message)` — strict equality
-- `self.assert_in(needle, haystack, message)` — substring / membership check
-- `self.assert_true(condition, message)` — boolean true
-- `self.assert_false(condition, message)` — boolean false
-
-### Pytest Marks Registered in `pyproject.toml`
-
-- `@pytest.mark.regression` — full regression suite
-- `@pytest.mark.ui` — triggers auto-navigation to `BASE_URL` in `setUp`
-- `@pytest.mark.smoke` — critical path tests
 - `@pytest.mark.fix` — **the project's marker for tests needing human attention**
 - `@pytest.mark.xfail` — expected failures (only when failure is fully understood)
+
+Standard marks (`regression`, `ui`, `smoke`, `api`) are defined in SKILL.md Section 8.
 
 ### Screenshot on Failure
 
@@ -116,22 +90,6 @@ on this path to understand the UI state at failure time.
 
 Example: `tests/the_internet/ui_test_suite/test_login.py::TestLogin::test_valid`
 → `latest_logs/the_internet/ui_test_suite/test_login.TestLogin.test_valid/screenshot.png`
-
-### Key `base_page.py` Methods
-
-- `wait_for_visibility(locator, timeout)` — calls `driver.wait_for_element_visible(**locator, timeout=timeout)`
-- `wait_for_invisibility(locator, timeout)` — calls `driver.wait_for_element_not_visible(**locator, timeout=timeout)`
-- `click_element(locator)` — calls `driver.click(**locator)`
-- `send_keys_to_element(locator, text)` — calls `driver.type(text=text, **locator)`
-- `is_element_visible(locator, timeout)` — waits for visibility, returns bool
-- `get_dynamic_element_text(locator, timeout)` — waits then calls `driver.get_text(**locator)`
-- `format_locator(locator, **kwargs)` — formats `{placeholder}` selectors with keyword args
-
-### `UiBaseCase.setUp` Behavior
-
-Tests marked `@pytest.mark.ui` trigger automatic navigation to `settings.BASE_URL`
-(`https://the-internet.herokuapp.com`) in `setUp`. Tests without `@pytest.mark.ui` must
-navigate explicitly.
 
 ---
 
@@ -237,7 +195,7 @@ When `error_type` is `NoSuchElementException`, `ElementNotVisibleException`, or 
    here even if they were absent from `get_page_source`.
 
 4. Derive the correct `Locator` dict from what the snapshot reveals, using the locator
-   priority order from Section 1:
+   strategy priority from SKILL.md Section 2:
    - Element has a stable `id` attribute →
      `{"selector": "the-id", "by": By.ID}`
    - Element has no `id` →
@@ -383,7 +341,7 @@ These are hard rules — never violate them:
 - **Never alter Allure decorators.** They control the reporting hierarchy.
 - **Always use Context7 before writing code.** Confirm every SeleniumBase method signature
   against current documentation — never rely on training memory for API details.
-- **Consult `.claude/skills/sb-test-standards/SKILL.md` before applying any fix.** A fix that resolves a failure but violates the project's coding standards creates a new problem. The standards file defines what the post-fix code must look like.
+- **Consult SKILL.md before applying any fix.** The standards file defines what post-fix code must look like.
 - **The locators file is the first place to look.** When a test fails on element interaction,
   `locators.py` is almost always where the fix belongs.
 - **Fix forward, but verify intent first.** Before changing an assertion expected value,
