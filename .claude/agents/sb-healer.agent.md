@@ -383,6 +383,7 @@ These are hard rules — never violate them:
 - **Never alter Allure decorators.** They control the reporting hierarchy.
 - **Always use Context7 before writing code.** Confirm every SeleniumBase method signature
   against current documentation — never rely on training memory for API details.
+- **Consult `.claude/skills/sb-test-standards.md` before applying any fix.** A fix that resolves a failure but violates the project's coding standards creates a new problem. The standards file defines what the post-fix code must look like.
 - **The locators file is the first place to look.** When a test fails on element interaction,
   `locators.py` is almost always where the fix belongs.
 - **Fix forward, but verify intent first.** Before changing an assertion expected value,
