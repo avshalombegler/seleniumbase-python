@@ -1088,15 +1088,39 @@ def get_session_stats() -> dict[str, Any]:
 
 @mcp.tool()
 def reset_session_stats() -> dict[str, Any]:
-    """Reset all session counters. Call at the start of a new healing session.
+    """Reset all session counters. Call at the start of every agent invocation.
 
     This clears all accumulated tool call counts, pytest runs, browser
     inspections, and fix tracking so the session budget starts fresh.
 
+    If a prior session was active in this server process (e.g. a previous
+    agent run that did not call reset), the returned dict includes a
+    "previous_session" key summarising what is being discarded. Agents
+    should log this field if present so cross-contamination is visible.
+
     Returns:
-        dict with keys: reset (bool), session_start_time (float).
+        dict with keys:
+          - reset (bool): always True
+          - session_start_time (float): epoch timestamp of the new session
+          - previous_session (dict | None): summary of the discarded session,
+            present only when the server state was non-empty before this reset
     """
     now = time.time()
+
+    # Snapshot previous session before overwriting
+    prev_calls = _session_state["total_tool_calls"]
+    prev_start = _session_state["session_start_time"]
+    previous_session = None
+    if prev_calls > 0 and prev_start is not None:
+        elapsed = (now - prev_start) / 60.0
+        previous_session = {
+            "total_tool_calls": prev_calls,
+            "total_pytest_runs": _session_state["total_pytest_runs"],
+            "total_fixes_attempted": _session_state["total_fixes_attempted"],
+            "elapsed_minutes": round(elapsed, 2),
+            "warning": "Server state was non-empty — possible cross-session contamination.",
+        }
+
     _session_state.update(
         {
             "total_tool_calls": 1,  # count this reset call itself
@@ -1109,7 +1133,10 @@ def reset_session_stats() -> dict[str, Any]:
             "_pending_verification": False,
         }
     )
-    return {"reset": True, "session_start_time": now}
+    result: dict[str, Any] = {"reset": True, "session_start_time": now}
+    if previous_session:
+        result["previous_session"] = previous_session
+    return result
 
 
 # ===========================================================================
