@@ -110,7 +110,7 @@ Every page object method is decorated with `@allure.step(...)`.
 
 ## AI Agents
 
-Two Claude agents are defined in `.github/agents/` and invoked via `@<agent-name>`:
+Two Claude agents are defined in `.claude/agents/` and invoked via `@<agent-name>`:
 
 **`sb-generator`** — Generates the full four-file set (locators, page object, test file, `__init__.py`) plus `MainPage` registration from a spec file. Usage:
 
