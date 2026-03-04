@@ -4,6 +4,7 @@ description: "Use this agent when you need to debug and fix failing SeleniumBase
 tools:
   - read_file
   - write_file
+  - validate_python
   - backup_file
   - cleanup_backups
   - list_files
