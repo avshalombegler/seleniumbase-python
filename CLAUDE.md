@@ -110,24 +110,35 @@ Every page object method is decorated with `@allure.step(...)`.
 
 ## AI Agents
 
-Two Claude agents are defined in `.claude/agents/` and invoked via `@<agent-name>`:
+Three Claude agents are defined in `.claude/agents/` and invoked via `@<agent-name>`:
+
+**`sb-planner`** — Inspects a live page with a headless browser and produces a structured
+spec file that `sb-generator` can consume. Usage:
+
+```text
+@sb-planner plan the-internet/<feature>
+```
+
+Writes `specs/the_internet/spec_<feature_dir>.md`. Does not write test code.
 
 **`sb-generator`** — Generates the full four-file set (locators, page object, test file, `__init__.py`) plus `MainPage` registration from a spec file. Usage:
 
 ```text
-@sb-generator implement specs/the_internet/<spec-file>.md
+@sb-generator implement specs/the_internet/spec_<feature_dir>.md
 ```
 
 Specs live in `specs/the_internet/` as Markdown files. The spec is the authoritative source — the generator never invents names or scenarios. Uses the MCP server tools and Context7 for SeleniumBase API verification.
 
 **`sb-healer`** — Diagnoses and fixes failing tests. Runs failing tests, parses errors, applies fixes using `write_file`/`insert_into_file`, and marks unresolvable tests with `@pytest.mark.fix`.
 
-Both agents use the MCP server (`tools/seleniumbase-mcp/server.py`) which exposes 17 tools for file I/O with syntax validation, pytest execution, test result parsing, and code scaffolding.
+All agents use the MCP server (`tools/seleniumbase-mcp/server.py`) which exposes 19 tools for file I/O with syntax validation, pytest execution, test result parsing, and code scaffolding.
+
+**Hook maintenance:** `.claude/settings.json` registers a `PostToolUse` ruff-formatting hook for every MCP write tool by exact name (`mcp__seleniumbase__write_file`, `create_test_file`, etc.). **When a new write tool is added to `server.py`, a corresponding matcher entry must be added to `.claude/settings.json`** and a new entry added to `.claude/hooks/ruff_fix_mcp_file.py`'s docstring. The hook script itself requires no changes — only the matcher registration.
 
 ## Adding a New Feature
 
-1. Write a spec file at `specs/the_internet/<feature>-plan.md` following the spec format (see `sb-generator` agent for the required sections).
-2. Invoke `@sb-generator implement specs/the_internet/<feature>-plan.md`.
+1. Run `@sb-planner plan the-internet/<feature>` to generate `specs/the_internet/spec_<feature_dir>.md`.
+2. Invoke `@sb-generator implement specs/the_internet/spec_<feature_dir>.md`.
 
 Or manually:
 
