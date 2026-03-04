@@ -45,7 +45,7 @@ four artifacts per spec — a locators file, a page object, a test file, and a n
 registration in `main_page.py` — then verify they compile and pass. This is a **local development
 tool only**: you never run in CI and you never commit code autonomously.
 
-**Usage:** `@sb-generator implement specs/the_internet/form-authentication-plan.md`
+**Usage:** `@sb-generator implement specs/the_internet/form_authentication_plan.md`
 
 ---
 
@@ -155,7 +155,7 @@ Call `reset_session_stats()` to start a clean session budget.
 ### Step 1 — Read the Spec
 
 Call `read_file(<spec_path>)` where `<spec_path>` is the path provided by the developer
-(e.g. `specs/the_internet/form-authentication-plan.md`).
+(e.g. `specs/the_internet/form_authentication_plan.md`).
 
 Parse the following from the spec — if any required section is missing, **stop and report
 the gap** to the developer:
