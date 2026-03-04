@@ -19,7 +19,7 @@ tools:
   - playwright/browser_close
   - get_session_stats
   - reset_session_stats
-model: claude-sonnet-4-5
+model: sonnet
 mcp-servers:
   seleniumbase:
     type: stdio

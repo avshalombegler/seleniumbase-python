@@ -21,7 +21,7 @@ tools:
   - reset_session_stats
   - resolve-library-id
   - query-docs
-model: claude-sonnet-4-5
+model: sonnet
 mcp-servers:
   seleniumbase:
     type: stdio
