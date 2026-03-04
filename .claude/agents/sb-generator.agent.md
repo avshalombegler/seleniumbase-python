@@ -51,64 +51,14 @@ tool only**: you never run in CI and you never commit code autonomously.
 
 ## Section 1: Codebase Architecture Reference
 
-### Three-Layer Architecture
-
-| Layer | Location | Class pattern |
-|---|---|---|
-| Test | `tests/the_internet/ui_test_suite/test_*.py` | `TestXxx(UiBaseCase)` |
-| Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
-| Locators | `src/pages/features/<feature>/locators.py` | `XxxLocators` |
-
-### `Locator` Type
-
-Always `{"selector": "<value>", "by": By.<STRATEGY>}`.
-
-The `by` value maps to SeleniumBase's `driver.click(**locator)` and `driver.type(**locator)` calls
-in `base_page.py`. Locators are defined as class attributes in the `XxxLocators` class — page
-objects reference them by class attribute, never by hardcoded strings.
-
-### Locator Strategy Priority
-
-Always follow this order when writing locators:
-
-1. `By.ID` — element has a stable `id` attribute → `{"selector": "the-id", "by": By.ID}`
-2. `By.CSS_SELECTOR` — preferred for all other cases: `"button[type=submit]"`,
-   `"a[href='/logout']"`, `"div.figure:nth-of-type(1)"`, `"input[name='username']"`
-3. `By.XPATH` — only when CSS cannot express the query (e.g. text-based matching,
-   ancestor traversal): `"//th[text()='Column']"` — never as a first choice
-4. Never `By.CLASS_NAME` alone — brittle with multiple classes
-5. Never `By.TAG_NAME` alone — too broad
-
-### Key `base_page.py` Methods
-
-- `wait_for_page_to_load(locator)` — calls `wait_for_visibility(locator)` inside an allure step
-- `wait_for_visibility(locator, timeout)` — calls `driver.wait_for_element_visible(**locator, timeout=timeout)`
-- `wait_for_invisibility(locator, timeout)` — calls `driver.wait_for_element_not_visible(**locator, timeout=timeout)`
-- `click_element(locator)` — calls `driver.click(**locator)`
-- `send_keys_to_element(locator, text)` — calls `driver.type(text=text, **locator)`
-- `is_element_visible(locator, timeout)` — waits for visibility, returns bool
-- `get_dynamic_element_text(locator, timeout)` — waits then calls `driver.get_text(**locator)`
-- `format_locator(locator, **kwargs)` — formats `{placeholder}` selectors with keyword args
+> **Full reference:** SKILL.md (loaded in Step 3) defines the three-layer architecture,
+> `Locator` type, locator strategy priority, `BasePage` methods, assertion methods, and
+> pytest markers. This section covers only generator-specific context not in the skill file.
 
 ### `UiBaseCase.setUp` Behavior
 
 Tests marked `@pytest.mark.ui` trigger automatic navigation to `settings.BASE_URL`
-(`https://the-internet.herokuapp.com`) in `setUp`. Tests without `@pytest.mark.ui` must
-navigate explicitly. **Do not add an explicit navigate-to-base-URL step in test methods.**
-
-### Pytest Marks Registered in `pyproject.toml`
-
-- `@pytest.mark.regression` — full regression suite
-- `@pytest.mark.ui` — triggers auto-navigation to `BASE_URL` in `setUp`
-- `@pytest.mark.smoke` — critical path tests (only if spec explicitly designates a smoke test)
-- `@pytest.mark.fix` — tests needing human attention (never used by the generator)
-
-### SeleniumBase Assertion Methods Used in This Project
-
-- `self.assert_equal(actual, expected, message)` — strict equality
-- `self.assert_in(needle, haystack, message)` — substring / membership check
-- `self.assert_true(condition, message)` — boolean true
-- `self.assert_false(condition, message)` — boolean false
+(`https://the-internet.herokuapp.com`) in `setUp`. **Do not add an explicit navigate-to-base-URL step in test methods.**
 
 ### MainPage Navigation Pattern
 
@@ -220,17 +170,7 @@ do not exist.
 Construct the locators file content following the **exact style** of the reference locators
 file you read in Step 3. The spec's Page Elements table is the source of truth.
 
-**Style rules (non-negotiable):**
-- Module docstring: `"""Module containing locators for <Feature Name> page object."""`
-- Imports: `from selenium.webdriver.common.by import By` and
-  `from src.pages.base.base_page import Locator`
-- Class name: Exactly as specified in the spec's `Locators class` field
-- Every locator is a class attribute typed `Locator` with an inline dict:
-  `NAME: Locator = {"selector": "<value>", "by": By.<STRATEGY>}`
-- Locator names are `SCREAMING_SNAKE_CASE`
-- `PAGE_LOADED_INDICATOR` is always the first locator
-- No blank lines between locator definitions (match reference file spacing)
-- No methods, no `__init__`, no inheritance — just class attributes
+**Style rules:** Follow the Locators File Standards in SKILL.md Section 3 exactly.
 
 **Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
@@ -250,7 +190,7 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
    | L9 | No methods, no `__init__`, no class inheritance |
    | L10 | No blank lines between locator definitions |
 
-   **Grade:** A = all pass → proceed. B = only L5/L10 violations → auto-correct and re-validate. C = any L1–L4, L6–L9 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+   **Grade:** A (all pass) → proceed. B (L5/L10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_locators_file(path=<spec's locators file path>, content=<reviewed content>)`.
 
@@ -259,19 +199,7 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
 Construct the page object file content following the **exact style** of the reference page
 object file you read in Step 3. The spec's Page Object Methods table is the source of truth.
 
-**Style rules (non-negotiable):**
-- First line: `from __future__ import annotations`
-- Imports block order: `TYPE_CHECKING`, stdlib, third-party (`allure`), local
-  (`base_page`, feature locators)
-- `if TYPE_CHECKING: pass` block is always present (even if unused — matches repo convention)
-- Class inherits from `BasePage`
-- Class docstring: `"""Page object for the <Feature Name> page"""` (single line, no `containing
-  methods to interact with and validate page functionality` suffix unless the reference uses it)
-- `__init__` calls `super().__init__(driver)` then `self.wait_for_page_to_load(<Locators>.PAGE_LOADED_INDICATOR)`
-- Every public method is decorated with `@allure.step("<Step description>")`
-- Method bodies use `self.<base_page_method>(<Locators>.<LOCATOR_NAME>)` — never hardcoded selectors
-- Return types are explicit in the signature
-- No `self.logger` calls in page object methods (only test files log)
+**Style rules:** Follow the Page Object File Standards in SKILL.md Section 4 exactly.
 
 **Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
@@ -292,7 +220,7 @@ object file you read in Step 3. The spec's Page Object Methods table is the sour
    | P10 | No `self.logger` calls in page object methods |
    | P11 | Every method and return type matches spec's Page Object Methods table exactly |
 
-   **Grade:** A = all pass → proceed. B = only P5/P10 violations → auto-correct. C = any P1, P4, P6, P7, P8, P11 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+   **Grade:** A (all pass) → proceed. B (P5/P10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_page_object_file(path=<spec's page object file path>, content=<reviewed content>)`.
 
@@ -301,26 +229,10 @@ object file you read in Step 3. The spec's Page Object Methods table is the sour
 Construct the test file content following the **exact style** of the reference test file you
 read in Step 3. The spec's Test Scenarios section is the source of truth.
 
-**Style rules (non-negotiable):**
-- Imports: `allure`, `pytest`, `UiBaseCase`, `MainPage` — and the feature's page object class
-  **only if the test file references it by type** (it usually does not need to import the page
-  object class because it receives instances from `MainPage` navigation methods)
-- Allure decorators on the class: `@allure.parent_suite("the-internet")`,
-  `@allure.suite("UI Test Suite")`, `@allure.sub_suite("<spec's Allure sub_suite>")`
-- Class inherits from `UiBaseCase`
-- Class docstring: `"""Tests <Feature Name> functionality"""`
-- Test Data constants defined at **module level** (above the class) if the spec's Test Data
-  section prescribes them — not inside the class, not inside methods
-- Each test method:
-  - Decorated with `@pytest.mark.regression`, `@pytest.mark.ui`, and
-    `@allure.severity(allure.severity_level.<LEVEL>)` — in that exact order
-  - Additional markers only if the spec explicitly assigns them (e.g. `@pytest.mark.smoke`)
-  - Return type annotation `-> None`
-  - First line: `self.logger.info("<description>")`
-  - Creates `MainPage(self)` and navigates to the feature page via the nav method
-  - Uses page object methods for all interactions
-  - Uses `self.assert_*` methods for assertions with descriptive messages
-  - One scenario = one test method — never merge scenarios
+**Style rules:** Follow the Test File Standards in SKILL.md Section 6 exactly. Additional generator-specific rules:
+- Test Data constants at **module level** if the spec's Test Data section prescribes them
+- Additional markers only if the spec explicitly assigns them (e.g. `@pytest.mark.smoke`)
+- One scenario = one test method — never merge scenarios
 
 **Assertion style:**
 - Use the exact assertion code from the spec's `Assertions:` blocks when provided
@@ -353,7 +265,7 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
    | T11 | One scenario per test method — no merged scenarios |
    | T12 | Test method count matches spec's Test Scenarios section exactly |
 
-   **Grade:** A = all pass → proceed. B = only T3/T5/T6/T7 violations → auto-correct. C = any T1, T2, T4, T8, T9, T10, T11, T12 violation → revise content, re-validate, and re-review. Maximum 2 revision cycles. Record the final grade for the output report.
+   **Grade:** A (all pass) → proceed. B (T3/T5/T6/T7 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_test_file(path=<spec's test file path>, content=<reviewed content>)`.
 
@@ -402,36 +314,14 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
    - `path`: `"src/pages/common/main_page/main_page.py"`
    - `anchor`: The `return` statement of the preceding navigation method (must be unique —
      use the full `return XxxPage(self.driver)` line)
-   - `content`: A blank line followed by the complete method definition, following the exact
-     pattern from the reference:
-     ```
-     
-         @allure.step("Navigate to {page_name} page")
-         def click_<feature>_link(self, page_name: str = "<Feature Name>") -> <FeaturePage>:
-             self.logger.info(f"Navigating to {page_name} page.")
-             self.click_element(MainPageLocators.<FEATURE>_LINK)
-     
-             return <FeaturePage>(self.driver)
-     ```
+   - `content`: A blank line followed by the complete method definition, matching the
+     MainPage Registration Standards in SKILL.md Section 7 exactly (blank line between
+     `click_element` and `return`).
    - `position`: `"after"`
 
-**Note the blank line between `click_element` and `return` — this matches the existing style.**
+**9d. Review:** Verify the insertions match the MainPage Registration Standards in SKILL.md Section 7 (locator uses `By.LINK_TEXT`, method decorator/signature/body matches pattern, blank line before return).
 
-**9d. Review the MainPage registration:**
-
-Verify the insertions made in 9a–9c against this checklist:
-
-| # | Check |
-|---|---|
-| M1 | Locator uses `By.LINK_TEXT` with the exact link text from the-internet's homepage |
-| M2 | Navigation method is decorated with `@allure.step("Navigate to {page_name} page")` |
-| M3 | Method signature: `def click_<feature>_link(self, page_name: str = "<Feature Name>") -> <FeaturePage>:` |
-| M4 | Method body contains `self.logger.info(f"Navigating to {page_name} page.")` |
-| M5 | Method body calls `self.click_element(MainPageLocators.<FEATURE>_LINK)` |
-| M6 | Blank line between `click_element` and `return` statement |
-| M7 | Method returns `<FeaturePage>(self.driver)` |
-
-**Grade:** A = all pass → proceed. B = M6 missing → revise the inserted method content, `backup_file`, and re-insert. C = any M2–M5, M7 violation → revise and re-insert. Record the final grade for the output report.
+**Grade:** A (all match) → proceed. B (formatting only) → revise. C (structural) → revise. Record grade.
 
 ### Step 10 — Verification Run
 
@@ -527,11 +417,7 @@ These are hard rules — never violate them:
   against current documentation — never rely on training memory for API details.
 - **Always `validate_python` before writing.** Never call `create_*_file` or `write_file`
   with content that has not passed syntax validation.
-- **Always `backup_file` before `insert_into_file`.** `main_page.py` and `locators.py` in
-  `common/main_page/` are shared files — protect them.
-- **Locators live in `locators.py` only.** Never hardcode selectors in page objects or tests.
-- **Test data lives in the test file only.** Constants from the spec's Test Data section are
-  defined at module level in the test file, not in page objects or locators.
+- **Always `backup_file` before `insert_into_file`.** Shared files in `common/main_page/` — protect them.
 - **`write_file` requires complete content.** Always `read_file` first when modifying existing
   files. For new files, `create_*_file` is preferred because it includes path validation.
 - **One spec = one run.** The generator processes exactly one spec file per invocation. If the
