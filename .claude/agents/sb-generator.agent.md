@@ -183,6 +183,8 @@ a different spec.
 
 ### Step 3 — Read Reference Files for Style Matching
 
+Before reading reference files, load `.claude/skills/sb-test-standards.md` — it defines the project's coding standards. The reference file reads in Step 3 verify that your code matches the living codebase; the standards file defines what correct looks like.
+
 Before generating any code, read **existing reference files** to absorb the exact coding
 style. These reads are mandatory — never rely on memory or templates alone.
 
