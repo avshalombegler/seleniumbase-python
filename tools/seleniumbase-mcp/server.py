@@ -75,7 +75,7 @@ def _record_tool_call() -> None:
 
 def _check_duplicate_call(tool_name: str, **kwargs) -> str | None:
     """Track tool calls by (tool_name, args). Return a warning if call count >= 3."""
-    key = (tool_name, tuple(sorted((k, str(v)) for k, v in kwargs.items())))
+    key = (tool_name, tuple(sorted((k, v if v is not None else "__NONE__") for k, v in kwargs.items())))
     _session_state["_call_history"][key] = _session_state["_call_history"].get(key, 0) + 1
     count = _session_state["_call_history"][key]
     if count >= 3:
@@ -152,7 +152,7 @@ def run_pytest(
     """
     _record_tool_call()
     _session_state["total_pytest_runs"] += 1
-    warning = _check_duplicate_call("run_pytest", test_path=test_path, markers=str(markers))
+    warning = _check_duplicate_call("run_pytest", test_path=test_path, markers=markers)
 
     abs_test_path = REPO_ROOT / test_path if not Path(test_path).is_absolute() else Path(test_path)
 
@@ -488,9 +488,13 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
     import tempfile
 
     _record_tool_call()
+    warning = _check_duplicate_call("insert_into_file", path=path, anchor=anchor, content=content, position=position)
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
     if not abs_path.exists():
-        return {"success": False, "error": f"File not found: {path}", "path": path}
+        result = {"success": False, "error": f"File not found: {path}", "path": path}
+        if warning:
+            result["warning"] = warning
+        return result
 
     original = abs_path.read_text(encoding="utf-8")
     lines = original.splitlines(keepends=True)
@@ -498,14 +502,20 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
     # Find anchor line
     anchor_indices = [i for i, line in enumerate(lines) if anchor in line]
     if not anchor_indices:
-        return {"success": False, "error": f"Anchor not found: {repr(anchor)}", "path": path}
+        result = {"success": False, "error": f"Anchor not found: {repr(anchor)}", "path": path}
+        if warning:
+            result["warning"] = warning
+        return result
     if len(anchor_indices) > 1:
-        return {
+        result = {
             "success": False,
             "error": f"Anchor matches {len(anchor_indices)} lines — must be unique. "
             f"Found at lines: {[i + 1 for i in anchor_indices]}",
             "path": path,
         }
+        if warning:
+            result["warning"] = warning
+        return result
 
     insert_idx = anchor_indices[0]
     insertion_line = content if content.endswith("\n") else content + "\n"
@@ -515,11 +525,14 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
     elif position == "before":
         lines.insert(insert_idx, insertion_line)
     else:
-        return {
+        result = {
             "success": False,
             "error": f"Invalid position: {repr(position)}. Must be 'after' or 'before'.",
             "path": path,
         }
+        if warning:
+            result["warning"] = warning
+        return result
 
     new_content = "".join(lines)
 
@@ -532,21 +545,27 @@ def insert_into_file(path: str, anchor: str, content: str, position: str = "afte
             py_compile.compile(tmp_path, doraise=True)
         except py_compile.PyCompileError as exc:
             Path(tmp_path).unlink(missing_ok=True)
-            return {
+            result = {
                 "success": False,
                 "error": f"Python syntax error after insertion — file NOT written: {exc}",
                 "path": path,
             }
+            if warning:
+                result["warning"] = warning
+            return result
         finally:
             Path(tmp_path).unlink(missing_ok=True)
 
     encoded = new_content.encode("utf-8")
     abs_path.write_bytes(encoded)
-    return {
+    result = {
         "success": True,
         "path": str(abs_path.relative_to(REPO_ROOT)).replace("\\", "/"),
         "bytes_written": len(encoded),
     }
+    if warning:
+        result["warning"] = warning
+    return result
 
 
 @mcp.tool()

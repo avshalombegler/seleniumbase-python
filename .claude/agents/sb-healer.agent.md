@@ -109,17 +109,10 @@ Do not add markers unless the developer explicitly specified them.
 
 **Skipped test handling:**
 
-After the initial `run_pytest`, check for skipped tests in the result. If any skipped tests
-have `reason` containing "not yet complete", "not implemented", "WIP", or "TODO":
-
-1. Read the test file and page object to assess whether the skip reason is still valid
-2. If the page object implementation appears complete (all methods the test calls exist and
-   are not commented out): remove `@pytest.mark.skip` and re-run. If the test passes, the
-   skip was stale — report it as fixed.
-3. If the page object is genuinely incomplete: proceed through Step 5b to attempt a fix.
-   If the fix requires test logic changes (as in the jquery_ui_menus case), mark with
-   `@pytest.mark.fix` and explain what's needed.
-4. Do NOT attempt to fix skipped tests when budget status is `"caution"` or `"critical"`.
+After the initial `run_pytest`, note any skipped tests in the result. Record which skipped
+tests have `reason` containing "not yet complete", "not implemented", "WIP", or "TODO" —
+these are candidates for investigation. However, **do not investigate them yet**. Proceed
+to Step 2 to triage all failures first. Skipped test investigation happens in Step 2c.
 
 Skipped tests with reasons like "browser-specific", "environment-specific", or "known bug"
 should NOT be touched — these are intentional skips, not incomplete work.
@@ -170,22 +163,32 @@ Categorize each failure:
 
 Resolve in this order: code errors → incomplete page object → stale locators → assertion mismatches → timing.
 
-**Incomplete page object early detection:**
+**Incomplete page object early detection (two tiers):**
 
-After categorizing each failure, also check for these signals that may indicate an incomplete
-page object even when the error type doesn't directly reveal it:
+*Tier 1 — Evaluate during triage (no file reads required):*
+
+These checks use only the `parse_pytest_failure` output and the `run_pytest` result:
+
+- `error_type` is `AttributeError` with a message like `'XxxPage' object has no attribute '...'`
+  → the page object is missing a method the test calls. Categorize as **Incomplete page object**.
+- `error_type` is `AssertionError` but the assertion values suggest a prerequisite action never
+  happened (e.g. expected download count is 1 but actual is 0) → flag as *possibly* incomplete
+  page object. Tentative categorization — confirm in Step 4 after reading files.
+
+*Tier 2 — Evaluate in Step 4 after reading files:*
+
+These checks require reading the test file and page object, which happens in Step 4 ("Read the
+Full Failure Context"). After reading both files, check:
 
 - The test file contains `@pytest.mark.skip(reason=...)` where the reason mentions "not yet
   complete", "not implemented", "WIP", "TODO", or similar
 - The test calls a page object method that only partially does what the test expects (e.g.
   `hover_menu_item` when the test context implies a hover + click is needed)
 - The page object file contains commented-out methods that match what the test is trying to do
-- The failure is `AssertionError` but the root cause is that a prerequisite action (like a
-  click to trigger a download) was never performed — meaning the page object method that
-  should perform it is missing or incomplete
 
-When any of these signals are present, re-categorize the failure as **Incomplete page object**
-and proceed through Step 5b instead of the standard fix path.
+If any Tier 2 signal is present, re-categorize the failure as **Incomplete page object**
+(upgrading from its initial Step 2 category) and proceed through Step 5b instead of the
+standard fix path. This re-categorization happens at the end of Step 4, before Step 5.
 
 ### Step 2b — Group Failures by Root Cause
 
@@ -198,6 +201,24 @@ Before fixing anything, group the triaged failures:
 | **Same error pattern** | Identical `error_type` + similar `failed_selector` structure | Apply the same fix pattern without re-analyzing |
 
 Process groups as units: inspect the page once, fix the shared locator file once, then verify all tests in the group in a single `run_pytest` call using space-separated nodeids. This eliminates redundant browser inspections and file reads.
+
+### Step 2c — Investigate Skipped Tests
+
+**Process skipped tests only after completing Steps 2–2b for all failures.** If there are
+no failures (all tests either passed or were skipped), proceed directly to this step.
+
+For each skipped test noted in Step 1 whose reason suggests incomplete work:
+
+1. Read the test file and page object to assess whether the skip reason is still valid.
+2. If the page object implementation appears complete (all methods the test calls exist and
+   are not commented out): remove `@pytest.mark.skip` and re-run. If the test passes, the
+   skip was stale — report it as fixed.
+3. If the page object is genuinely incomplete: proceed through Step 5b to attempt a fix.
+   If the fix requires test logic changes (as in the jquery_ui_menus case), mark with
+   `@pytest.mark.fix` and explain what's needed.
+4. Do NOT investigate skipped tests when budget status is `"caution"` or `"critical"` —
+   mark them with `@pytest.mark.fix` and note "skipped test not investigated due to budget
+   constraints."
 
 ### Step 3 — Context7 Lookup (With Session Caching)
 
