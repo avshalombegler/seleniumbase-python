@@ -121,7 +121,7 @@ spec file that `sb-generator` can consume. Usage:
 
 Writes `specs/the_internet/spec_<feature_dir>.md`. Does not write test code.
 
-**`sb-generator`** — Generates the full four-file set (locators, page object, test file, `__init__.py`) plus `MainPage` registration from a spec file. Usage:
+**`sb-generator`** — Generates the full three-file set (locators, page object, test file) plus `MainPage` registration from a spec file. Usage:
 
 ```text
 @sb-generator implement specs/the_internet/spec_<feature_dir>.md
@@ -146,7 +146,6 @@ Or manually:
 
 1. Create `src/pages/features/<feature>/locators.py` — `XxxLocators` class with `Locator` attributes, `PAGE_LOADED_INDICATOR` first.
 2. Create `src/pages/features/<feature>/<feature>_page.py` — `XxxPage(BasePage)`, `__init__` calls `super().__init__(driver)` then `wait_for_page_to_load(...)`, all methods decorated with `@allure.step`.
-3. Create `src/pages/features/<feature>/__init__.py` (empty).
-4. Add `FEATURE_LINK: Locator` to `MainPageLocators` in `src/pages/common/main_page/locators.py`.
-5. Add import and `click_<feature>_link()` method to `src/pages/common/main_page/main_page.py`.
-6. Create `tests/the_internet/ui_test_suite/test_<feature>.py` — `TestXxx(UiBaseCase)` with Allure class decorators.
+3. Add `FEATURE_LINK: Locator` to `MainPageLocators` in `src/pages/common/main_page/locators.py`.
+4. Add import and `click_<feature>_link()` method to `src/pages/common/main_page/main_page.py`.
+5. Create `tests/the_internet/ui_test_suite/test_<feature>.py` — `TestXxx(UiBaseCase)` with Allure class decorators.
