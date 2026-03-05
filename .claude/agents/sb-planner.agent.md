@@ -130,6 +130,83 @@ code in every scenario's Assertions block — never prose only. Key patterns:
 
 ---
 
+## Phase 3 — Self-Review
+
+Before writing the spec file to disk, review the completed spec content against these
+checklists. This is a mandatory gate — do not call `write_file` until all checks pass or
+violations are resolved.
+
+### S — Structure Checks
+
+| # | Check |
+|---|-------|
+| S1 | Title line present: `# <Feature Name> Test Plan` |
+| S2 | `SPEC FORMAT v1.0` comment block present immediately after title |
+| S3 | Feature Metadata table present with all 12 fields populated (no empty values) |
+| S4 | Page Elements table present with at least one row |
+| S5 | `PAGE_LOADED_INDICATOR` is the first entry in the Page Elements table |
+| S6 | Page Object Methods table present with `__init__` as the first row |
+| S7 | Test Scenarios section present with at least one scenario |
+| S8 | Out of Scope table present with at least one entry |
+| S9 | Generator Notes section present; non-empty if any `LOCATOR_UNRESOLVED` items exist or inline interactions are needed |
+
+### N — Naming Checks
+
+| # | Check |
+|---|-------|
+| N1 | `feature_dir` derives correctly: feature_name → lowercase, spaces → underscore, hyphens → underscore |
+| N2 | `page_obj_class` matches `PascalCase(feature_name) + "Page"` |
+| N3 | `locators_class` matches `PascalCase(feature_name) + "Locators"` |
+| N4 | `test_class` matches `"Test" + PascalCase(feature_name)` |
+| N5 | `nav_method` matches `click_<feature_dir>_link` |
+| N6 | File paths follow patterns: `test_file` = `tests/the_internet/ui_test_suite/test_<feature_dir>.py`, `page_obj_file` = `src/pages/features/<feature_dir>/<feature_dir>_page.py`, `locators_file` = `src/pages/features/<feature_dir>/locators.py` |
+| N7 | `allure_sub_suite` matches the human-readable feature name verbatim |
+
+### L — Locator Quality Checks
+
+| # | Check |
+|---|-------|
+| L1 | No `By.CLASS_NAME` alone in any Page Element strategy |
+| L2 | No `By.TAG_NAME` alone in any Page Element strategy |
+| L3 | No positional XPath (e.g., `//div[3]`, `//span[2]`) in any selector |
+| L4 | Strategy priority respected: `By.ID` when element has stable `id`; `By.CSS_SELECTOR` preferred; `By.XPATH` only as last resort |
+| L5 | Every `LOCATOR_UNRESOLVED` flag has a corresponding entry in Generator Notes |
+| L6 | All locator names in Page Elements table are `SCREAMING_SNAKE_CASE` |
+| L7 | No auto-generated or hash-based class names used in selectors |
+
+### T — Test Design Checks
+
+| # | Check |
+|---|-------|
+| T1 | Every scenario has an Allure severity level (`CRITICAL`, `NORMAL`, `MINOR`, or `TRIVIAL`) |
+| T2 | Every scenario has both `@pytest.mark.regression` and `@pytest.mark.ui` in its Markers line |
+| T3 | Every scenario's Assertions block contains actual `self.assert_*` code — not prose only |
+| T4 | No bare Python `assert` in any Assertions block |
+| T5 | URL assertions use `self.assert_true(self.get_current_url().endswith(...), "message")` pattern |
+| T6 | At least one happy-path scenario exists (typically severity `CRITICAL`) |
+| T7 | Every scenario has at least one `expect:` step annotation and one Assertions block |
+| T8 | `@pytest.mark.smoke` only present when explicitly designated — not added by default |
+
+### D — Data Checks
+
+| # | Check |
+|---|-------|
+| D1 | Every literal string referenced in Assertions blocks is defined as a Test Data constant |
+| D2 | All Test Data constant names are `SCREAMING_SNAKE_CASE` |
+| D3 | Test Data section present when assertions reference literal values; if no inputs or expected text values exist, Generator Notes states "No test data constants required — page has no form inputs" |
+
+### Grading
+
+| Grade | Criteria | Action |
+|-------|----------|--------|
+| **A** | All checks in all groups pass | Write the spec file |
+| **B** | Only minor violations: naming style (N1–N7), comment format (S2), constant casing (D2) | Auto-correct the violations inline, then write the spec file |
+| **C** | Structural violations: missing sections (S3–S9), zero scenarios (S7), forbidden locators (L1–L3), missing assertions (T3–T4), missing severity (T1) | Revise the spec content, re-run the checklist — maximum 2 revision cycles |
+
+Record the final grade for inclusion in the output report.
+
+---
+
 ## Output — Spec File
 
 **File path:** `specs/the_internet/spec_<feature_dir>.md`
@@ -276,6 +353,30 @@ HTML interactions.
 **Always out of scope:** Performance testing, visual regression, accessibility auditing,
 network-level assertions, browser console errors (unless tied to visible behavior), behavior
 requiring non-public credentials, scenarios requiring `time.sleep()`.
+
+---
+
+## Output Report
+
+After writing the spec file, produce this summary for the developer:
+
+```
+## Planner Report
+
+**Feature:** <feature name>
+**Spec file:** specs/the_internet/spec_<feature_dir>.md
+
+### Spec Summary
+- **Scenarios planned:** <n>
+- **Locators defined:** <n>
+- **Page object methods:** <n>
+- **Out of scope items:** <n>
+
+### Quality Gate
+- **Checklist grade:** <A|B|C>
+- **Revision cycles:** <0|1|2>
+- **Items revised:** <list of check IDs that required correction, or "None">
+```
 
 ---
 
