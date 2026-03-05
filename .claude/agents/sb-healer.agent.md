@@ -107,9 +107,38 @@ Do not add markers unless the developer explicitly specified them.
 - If `exit_code == 0` and `failed == 0` and `errors == 0`: report all passing and stop.
 - Otherwise: collect the `failures` list and proceed.
 
+**Nodeid Capture (MANDATORY before any targeted run):**
+
+After the initial `run_pytest` call, extract the exact `nodeid` strings from the `failures`
+list in the result. These are the ground-truth nodeids — use them verbatim for all
+subsequent targeted runs.
+
+**Never construct a nodeid by inference** from the test filename, class name, or method name.
+The actual nodeids may differ from what the filename suggests (e.g. parameterized tests
+append `_0_PDF`, `_1_CSV` etc.).
+
+If you need to discover all nodeids in a file (not just failures), run:
+`run_pytest(test_path="<file_path> --collect-only -q")`
+and parse the output. Use the exact strings returned — do not modify them.
+
+Store the captured nodeids and reference them for all subsequent `run_pytest` calls in
+this session.
+
 ### Step 2 — Triage All Failures
 
-For each entry in `failures`, call `parse_pytest_failure(longrepr=<item's longrepr>)`.
+**MANDATORY GATE — do not proceed to Step 3 or beyond until this is complete:**
+
+For **every** entry in the `failures` list from Step 1, call
+`parse_pytest_failure(longrepr=<item's longrepr>)`. The `longrepr` field from the initial
+`run_pytest` result already contains the full traceback — there is no need to re-run pytest
+to obtain it.
+
+Do not skip any failure. Do not read any file before completing triage of ALL failures.
+The purpose of this gate is to ensure you understand every failure's category before
+touching any code.
+
+If `failures` contains N entries, you must make exactly N `parse_pytest_failure` calls
+before proceeding.
 
 Categorize each failure:
 
@@ -162,9 +191,23 @@ For each failure:
 
 1. `read_file` the **test file** — derive path from `nodeid` (e.g.
    `tests/the_internet/ui_test_suite/test_login.py`)
-2. `read_file` the **page object file** — use `list_files("src/pages/features/", "*.py")`
-   to find the relevant feature directory, then read the page object
-3. `read_file` the **locators file** — same feature directory, filename `locators.py`
+2. **Discover the feature directory (MANDATORY — never skip):**
+   Call `list_files("src/pages/features/", "*.py")`. Scan the returned paths to find the
+   directory whose name best matches the feature under test. **Do not infer the directory
+   name from the test filename** — they frequently differ (e.g. `test_jquery_ui_menu.py`
+   targets `jquery_ui_menus/`, not `jquery_ui_menu/`).
+
+   - If exactly one directory matches: use it.
+   - If zero directories match: the page object may not exist. Mark the test with
+     `@pytest.mark.fix` and note "page object directory not found" — do not create files.
+   - If multiple directories could match: read the test file's import statements to
+     determine which page object it actually imports, and use that path.
+
+   Store the discovered directory path and reuse it for all subsequent reads in this
+   feature (page object, locators).
+
+3. `read_file` the **page object file** using the path discovered in step 2
+4. `read_file` the **locators file** — same discovered directory, filename `locators.py`
 
 Also attempt to read the failure screenshot:
 - Convert `nodeid` like `tests/the_internet/ui_test_suite/test_login.py::TestLogin::test_valid`
@@ -351,7 +394,25 @@ These are hard rules — never violate them:
   If the page now shows an error message, the app may be broken — mark with
   `@pytest.mark.fix` and document the discrepancy instead of silently accepting the
   new behavior.
+- **If `read_file` returns "file not found", STOP and re-derive the path.** Do not retry
+  the same path. Call `list_files` on the parent directory to discover the correct path.
+  If `list_files` also returns nothing, the file does not exist — mark the test with
+  `@pytest.mark.fix`. Maximum 1 retry after path correction; if the corrected path also
+  fails, mark and move on.
+- **If `run_pytest` returns "no tests collected" or a collection error,** the nodeid is
+  wrong. Re-run with `--collect-only -q` on the file path (without nodeid) to discover
+  the actual nodeids. Do not retry the same nodeid.
 - **`write_file` requires complete content.** Always `read_file` first, never write partial files.
+- **Never read the same file more than twice without an intervening write.** If you have
+  already read a file and have not written to it since, use the content you already have.
+  The only exception is if another tool has modified the file (e.g. `insert_into_file`).
+  Reading the test file 18 times or the `.bak` file 8 times is a budget-destroying
+  anti-pattern — catch yourself if you are re-reading a file you already have in context.
+- **Loop detection:** If you are about to call the same tool with the same arguments for
+  a third time in this session, STOP. This is a loop signal. Do not make the call. Instead:
+  (a) re-examine your assumptions about file paths and nodeids,
+  (b) call `list_files` or `run_pytest --collect-only` to get ground truth, or
+  (c) if stuck, mark the test with `@pytest.mark.fix` and move to the next failure.
 - **Never create new test files, page objects, or locators files.** Creating new code is
   the generator agent's responsibility. If a test fails because a required page object or
   locators file does not exist, mark the test with `@pytest.mark.fix` and explain what is

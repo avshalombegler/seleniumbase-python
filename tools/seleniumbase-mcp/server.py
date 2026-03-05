@@ -62,6 +62,7 @@ _session_state: dict[str, Any] = {
     "tests_remaining": 0,
     "session_start_time": None,
     "_pending_verification": False,
+    "_call_history": {},  # key: (tool_name, frozen_args) → count
 }
 
 
@@ -70,6 +71,21 @@ def _record_tool_call() -> None:
     if _session_state["session_start_time"] is None:
         _session_state["session_start_time"] = time.time()
     _session_state["total_tool_calls"] += 1
+
+
+def _check_duplicate_call(tool_name: str, **kwargs) -> str | None:
+    """Track tool calls by (tool_name, args). Return a warning if call count >= 3."""
+    key = (tool_name, tuple(sorted((k, str(v)) for k, v in kwargs.items())))
+    _session_state["_call_history"][key] = _session_state["_call_history"].get(key, 0) + 1
+    count = _session_state["_call_history"][key]
+    if count >= 3:
+        return (
+            f"LOOP_WARNING: This exact {tool_name} call has been made {count} times "
+            f"with identical arguments. This is likely a loop. Re-examine your assumptions "
+            f"about file paths or nodeids before retrying. Use list_files or "
+            f"run_pytest --collect-only to discover correct paths."
+        )
+    return None
 
 
 def _compute_budget_status() -> str:
@@ -136,6 +152,7 @@ def run_pytest(
     """
     _record_tool_call()
     _session_state["total_pytest_runs"] += 1
+    warning = _check_duplicate_call("run_pytest", test_path=test_path, markers=str(markers))
 
     abs_test_path = REPO_ROOT / test_path if not Path(test_path).is_absolute() else Path(test_path)
 
@@ -186,6 +203,8 @@ def run_pytest(
             _session_state["total_fixes_succeeded"] += 1
         _session_state["_pending_verification"] = False
 
+    if warning:
+        report["warning"] = warning
     return report
 
 
@@ -281,10 +300,17 @@ def read_file(path: str) -> str:
         FileNotFoundError: If the file does not exist.
     """
     _record_tool_call()
+    warning = _check_duplicate_call("read_file", path=path)
     abs_path = REPO_ROOT / path if not Path(path).is_absolute() else Path(path)
     if not abs_path.exists():
-        raise FileNotFoundError(f"File not found: {abs_path}")
-    return abs_path.read_text(encoding="utf-8")
+        msg = f"File not found: {abs_path}"
+        if warning:
+            msg += f"\n\n{warning}"
+        raise FileNotFoundError(msg)
+    content = abs_path.read_text(encoding="utf-8")
+    if warning:
+        return f"⚠️ {warning}\n\n---\n\n{content}"
+    return content
 
 
 @mcp.tool()
@@ -1131,6 +1157,7 @@ def reset_session_stats() -> dict[str, Any]:
             "tests_remaining": 0,
             "session_start_time": now,
             "_pending_verification": False,
+            "_call_history": {},
         }
     )
     result: dict[str, Any] = {"reset": True, "session_start_time": now}
