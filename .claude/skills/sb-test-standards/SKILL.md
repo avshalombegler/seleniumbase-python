@@ -16,8 +16,6 @@ Every feature follows a strict three-layer Page Object Model. Each layer has a d
 | Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
 | Test | `tests/the_internet/ui_test_suite/test_<feature>.py` | `TestXxx(UiBaseCase)` |
 
-An `__init__.py` (empty) lives alongside the locators and page object in `src/pages/features/<feature>/`.
-
 ### What belongs in each layer
 
 **Locators layer** (`locators.py`)
