@@ -107,6 +107,23 @@ Do not add markers unless the developer explicitly specified them.
 - If `exit_code == 0` and `failed == 0` and `errors == 0`: report all passing and stop.
 - Otherwise: collect the `failures` list and proceed.
 
+**Skipped test handling:**
+
+After the initial `run_pytest`, check for skipped tests in the result. If any skipped tests
+have `reason` containing "not yet complete", "not implemented", "WIP", or "TODO":
+
+1. Read the test file and page object to assess whether the skip reason is still valid
+2. If the page object implementation appears complete (all methods the test calls exist and
+   are not commented out): remove `@pytest.mark.skip` and re-run. If the test passes, the
+   skip was stale — report it as fixed.
+3. If the page object is genuinely incomplete: proceed through Step 5b to attempt a fix.
+   If the fix requires test logic changes (as in the jquery_ui_menus case), mark with
+   `@pytest.mark.fix` and explain what's needed.
+4. Do NOT attempt to fix skipped tests when budget status is `"caution"` or `"critical"`.
+
+Skipped tests with reasons like "browser-specific", "environment-specific", or "known bug"
+should NOT be touched — these are intentional skips, not incomplete work.
+
 **Nodeid Capture (MANDATORY before any targeted run):**
 
 After the initial `run_pytest` call, extract the exact `nodeid` strings from the `failures`
@@ -149,8 +166,26 @@ Categorize each failure:
 | **Timing issue** | `TimeoutException` but selector appears structurally valid |
 | **Page structure change** | Interaction fails but element type is correct — wrong parent or sibling |
 | **Code / import error** | `error_type` is `ImportError`, `AttributeError`, `TypeError`, or syntax-level error |
+| **Incomplete page object** | `error_type` is `AttributeError` and message indicates a missing method on the page object (e.g. `'XxxPage' object has no attribute 'click_menu_item'`); OR the test calls a page object method that exists but whose implementation is incomplete (method only hovers when it should also click, method is commented out, method raises `NotImplementedError`) — identified by reading the page object source and comparing to what the test expects |
 
-Resolve in this order: code errors → stale locators → assertion mismatches → timing.
+Resolve in this order: code errors → incomplete page object → stale locators → assertion mismatches → timing.
+
+**Incomplete page object early detection:**
+
+After categorizing each failure, also check for these signals that may indicate an incomplete
+page object even when the error type doesn't directly reveal it:
+
+- The test file contains `@pytest.mark.skip(reason=...)` where the reason mentions "not yet
+  complete", "not implemented", "WIP", "TODO", or similar
+- The test calls a page object method that only partially does what the test expects (e.g.
+  `hover_menu_item` when the test context implies a hover + click is needed)
+- The page object file contains commented-out methods that match what the test is trying to do
+- The failure is `AssertionError` but the root cause is that a prerequisite action (like a
+  click to trigger a download) was never performed — meaning the page object method that
+  should perform it is missing or incomplete
+
+When any of these signals are present, re-categorize the failure as **Incomplete page object**
+and proceed through Step 5b instead of the standard fix path.
 
 ### Step 2b — Group Failures by Root Cause
 
@@ -255,6 +290,73 @@ The browser approach works for both static and dynamic pages. `get_page_source` 
 (e.g. fails to start), in which case treat any selector derived from static HTML as
 provisional and flag the fix for human verification.
 
+### Step 5b — Incomplete Page Object Fix Procedure
+
+This step applies ONLY when the failure is categorized as **Incomplete page object** in Step 2.
+For all other fix types, skip to Step 6.
+
+**Scope of what the healer may do:**
+- Uncomment an existing commented-out method in the page object
+- Rewrite an existing method body (not signature) to fix its implementation
+- Add a new method to the page object that the test already calls but that doesn't exist yet
+
+**Scope of what the healer may NOT do:**
+- Modify the test file (other than removing `@pytest.mark.skip` or `@pytest.mark.fix` after
+  a successful fix)
+- Add methods the test does not call
+- Change existing method signatures (name, parameters, return type)
+- Add new imports that aren't already present in similar page objects in the codebase
+- Modify `base_page.py` or `ui_base_case.py`
+
+**Procedure:**
+
+1. **Identify what the test expects.** Read the test file. List every page object method call
+   and the arguments passed. This is the contract the page object must fulfill.
+
+2. **Read the page object file.** Check which methods exist, which are commented out, and which
+   are incomplete. Look for commented-out implementations — they often contain prior attempts
+   that may be close to correct.
+
+3. **Determine the minimal change.** In priority order:
+   a. **Uncomment an existing method** if one matches the needed signature and its implementation
+      looks correct. Verify it references existing locators and uses `BasePage` methods.
+   b. **Fix an existing method's body** if the method exists but its implementation is wrong
+      (e.g. only hovers when it should hover + click). Keep the method signature unchanged.
+   c. **Add a new method** if no commented-out version exists. Model it on a similar method
+      in the same page object or in a reference page object from a similar feature. The method
+      MUST:
+      - Be decorated with `@allure.step("...")`
+      - Use only `BasePage` methods for element interaction (never raw `self.driver.find_element`)
+      - Reference locators from the feature's `locators.py` (add a new locator ONLY if needed
+        and derivable from live browser inspection)
+      - Follow the exact style of existing methods in the same file
+
+   **Adding a new locator (only when required by a new page object method):**
+   - The new locator MUST be derived from live browser inspection (Step 5), never guessed
+   - The new locator MUST follow SKILL.md Section 2 conventions: `Locator` dict type,
+     `SCREAMING_SNAKE_CASE` name, locator strategy priority (ID → CSS → XPath)
+   - Add the locator to the existing `locators.py` file for the feature — never to a
+     different feature's locators
+   - The locator must be placed after `PAGE_LOADED_INDICATOR` and existing locators, with no
+     blank lines between entries (matching existing style)
+   - Maximum 2 new locators per session — if more are needed, the test requires generator-level
+     work; mark with `@pytest.mark.fix`
+
+4. **Verify with Context7.** Before writing, confirm any `BasePage` method or SeleniumBase
+   method you use via Context7 — especially for less common methods like `hover_and_click`,
+   `execute_script`, or `wait_for_and_accept_alert`.
+
+5. **Apply the fix.** Follow the standard fix procedure from Step 6:
+   `read_file` → `backup_file` → modify → `write_file` → verify syntax → run pytest.
+
+6. **If the test also has `@pytest.mark.skip`:** Remove the skip decorator as part of the same
+   `write_file` call on the test file. This is NOT changing test logic — it is removing a
+   temporary gate that blocked an incomplete test from running.
+
+7. **If the page object fix passes all tests:** Also clean up any remaining commented-out
+   method attempts that are now superseded by the working implementation. This keeps the
+   codebase clean. Do this in a separate `write_file` call after verification passes.
+
 ### Step 6 — Apply the Fix
 
 **File Read Caching Rule:**
@@ -275,6 +377,7 @@ This is especially important for `locators.py` files that may be read repeatedly
 | Changed assertion | Test file only | Expected value in `self.assert_equal(...)` or `self.assert_in(...)` |
 | Timing | Page object only | Add or adjust `wait_for_visibility` / `wait_for_element_present` call |
 | Code / import error | Whichever file contains the error | Fix the Python error |
+| Incomplete page object | Page object file + optionally `locators.py` | Add or uncomment or rewrite a method using existing `BasePage` methods and existing locators. May add a new locator to `locators.py` ONLY if the method needs a selector that doesn't exist yet and the selector can be derived from live page inspection. |
 
 **Fix procedure — always follow this sequence:**
 1. `read_file` the target file to get current content
@@ -290,7 +393,10 @@ This is especially important for `locators.py` files that may be read repeatedly
   `locators.py` only
 - Never remove or alter any `@allure` decorator
 - Never remove any `self.logger.info(...)` line
-- Never change test logic — fix the implementation, not the intent
+- Never change test logic — fix the implementation, not the intent. Removing
+  `@pytest.mark.skip` or `@pytest.mark.fix` decorators after a successful fix is NOT
+  changing test logic — it is removing a gate that is no longer needed. The test's step
+  sequence, assertions, and imports must remain identical.
 - Never use `time.sleep()` — use SeleniumBase wait methods (confirmed via Context7)
 - One fix at a time — apply, verify, then proceed
 
@@ -310,6 +416,11 @@ Maximum 1 revision cycle — if still failing after revision, skip directly to S
 | S6 | Locator strategy priority maintained in any new or changed locator | Locator fixes |
 | S7 | No `By.CLASS_NAME` alone or `By.TAG_NAME` alone introduced | Locator fixes |
 | S8 | Change is minimal — no unrelated lines altered | All fix types |
+| S9 | New page object method has `@allure.step(...)` decorator | Incomplete page object fixes |
+| S10 | New page object method uses only `BasePage` methods for interaction (no raw `self.driver.find_element`) | Incomplete page object fixes |
+| S11 | New page object method references only locators from the feature's `locators.py` | Incomplete page object fixes |
+| S12 | No `self.logger.info(...)` calls added to page object (logging belongs in test layer) | Incomplete page object fixes |
+| S13 | If `@pytest.mark.skip` was removed, no other test decorators were altered | Incomplete page object fixes |
 
 If any check fails: correct the violation in-memory, re-`write_file`, then proceed to Step 7.
 
@@ -413,10 +524,16 @@ These are hard rules — never violate them:
   (a) re-examine your assumptions about file paths and nodeids,
   (b) call `list_files` or `run_pytest --collect-only` to get ground truth, or
   (c) if stuck, mark the test with `@pytest.mark.fix` and move to the next failure.
-- **Never create new test files, page objects, or locators files.** Creating new code is
-  the generator agent's responsibility. If a test fails because a required page object or
-  locators file does not exist, mark the test with `@pytest.mark.fix` and explain what is
-  missing — do not scaffold new files to fill the gap.
+- **Never create new files.** Creating new test files, page object files, or locator files
+  from scratch is the generator agent's responsibility. If a test fails because a required
+  file does not exist at all, mark the test with `@pytest.mark.fix` and explain what is
+  missing.
+- **Modifying existing page object files is permitted** when the failure is categorized as
+  "Incomplete page object" (see Step 5b). This includes: uncommenting existing methods,
+  fixing method bodies, or adding a missing method that the test already calls. This is
+  NOT "creating new code" — it is completing existing code to match the test's expectations.
+  All modifications must follow the standard fix procedure (backup → write → verify) and
+  must comply with SKILL.md coding standards.
 
 ---
 
