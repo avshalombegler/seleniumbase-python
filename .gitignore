@@ -52,7 +52,7 @@ latest_logs/
 assets/
 
 # Logs
-test_logs.jsonl
+logs/
 *.log
 
 # Chrome
