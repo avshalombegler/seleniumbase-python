@@ -9,15 +9,10 @@ import shutil
 from pathlib import Path
 
 import pytest
-import structlog
-from dotenv import load_dotenv
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
 from src.config import settings
-
-load_dotenv()
-
 
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
@@ -26,7 +21,7 @@ logging.getLogger("undetected_chromedriver").setLevel(logging.WARNING)
 
 def clean_directory(dir_path: Path, lock_suffix: str = "lock") -> None:
     """Helper to clean and recreate a directory with file locking."""
-    lock_file = dir_path / f"{lock_suffix}.lock"
+    lock_file = dir_path.parent / f"{lock_suffix}.lock"
     dir_path.mkdir(parents=True, exist_ok=True)
 
     # Add timeout to prevent deadlocks
@@ -81,7 +76,11 @@ def pytest_configure(config: pytest.Config) -> None:
 
     # Add Chrome arguments for user profile
     if browser == "chrome" and not is_ci_environment:
-        user_data_dir = os.path.abspath("chrome_user_data")
+        # Use per-worker subdirectory when running in parallel to avoid Chrome profile lock conflicts
+        if is_xdist_worker:
+            user_data_dir = os.path.abspath(os.path.join("chrome_user_data", is_xdist_worker))
+        else:
+            user_data_dir = os.path.abspath("chrome_user_data")
         os.makedirs(user_data_dir, exist_ok=True)
 
         # Add chromium arguments
@@ -122,20 +121,15 @@ def pytest_configure(config: pytest.Config) -> None:
         if is_ci_environment:
             logging.info(f"Running in CI environment - preserving existing results in: {allure_results_path}")
 
-    env_properties_path = allure_results_path / "environment.properties"
-    with open(env_properties_path, "w") as f:
-        f.write(f"Browser={browser.capitalize()}\n")
-        f.write(f"Headless={settings.HEADLESS}\n")
-        f.write(f"Base_URL={settings.BASE_URL}\n")
-        if os.environ.get("GITHUB_ACTIONS"):
-            f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
-            f.write(f"GitHub_Actions_Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
-        elif os.environ.get("JENKINS_HOME"):
-            f.write(f"Jenkins_Job_Name={os.environ.get('JOB_NAME', 'N/A')}\n")
-            f.write(f"Jenkins_Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
-
-
-@pytest.fixture(autouse=True)
-def bind_test_context(request: pytest.FixtureRequest) -> None:
-    """Binds test context variables for structured logging."""
-    structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)
+    if not is_xdist_worker:
+        env_properties_path = allure_results_path / "environment.properties"
+        with open(env_properties_path, "w") as f:
+            f.write(f"Browser={browser.capitalize()}\n")
+            f.write(f"Headless={settings.HEADLESS}\n")
+            f.write(f"Base_URL={settings.BASE_URL}\n")
+            if os.environ.get("GITHUB_ACTIONS"):
+                f.write(f"GitHub_Actions_Workflow={os.environ.get('GITHUB_WORKFLOW', 'N/A')}\n")
+                f.write(f"GitHub_Actions_Run_ID={os.environ.get('GITHUB_RUN_ID', 'N/A')}\n")
+            elif os.environ.get("JENKINS_HOME"):
+                f.write(f"Jenkins_Job_Name={os.environ.get('JOB_NAME', 'N/A')}\n")
+                f.write(f"Jenkins_Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
