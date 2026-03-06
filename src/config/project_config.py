@@ -38,19 +38,15 @@ class Settings(BaseSettings):
     UC_MODE: bool = True
 
     # Timeouts
-    SHORT_TIMEOUT: PositiveInt = Field(default=5, ge=1, le=30)
+    SHORT_TIMEOUT: PositiveInt = Field(default=5, le=30)
     LONG_TIMEOUT: PositiveInt = Field(default=15, ge=5, le=60)
+    REQUEST_TIMEOUT: PositiveInt = Field(default=5, le=30)
 
     # URLs
     BASE_URL: str | AnyUrl = Field(
         default="https://the-internet.herokuapp.com/",
         description="Application Under Test base URL",
     )
-    ALLURE_SERVER_URL: AnyUrl | None = Field(
-        default=None,
-        description="Allure Server for report upload (optional in local/CI)",
-    )
-
     # Test data
     TEST_USERNAME: str | None = Field(default=None, min_length=1)
     TEST_PASSWORD: PydanticSecretStr | None = Field(default=None)
