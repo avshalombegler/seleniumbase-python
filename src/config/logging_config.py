@@ -85,8 +85,11 @@ def configure_logging(log_level: str = "INFO") -> None:
 
     root.setLevel(log_level)
 
-    # File handler with JSON format (always enabled)
-    file_handler = logging.FileHandler("test_logs.jsonl")
+    # File handler with JSON format (always enabled, per-worker to avoid concurrent write corruption)
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
+    logs_dir = os.path.join(os.getcwd(), "logs")
+    os.makedirs(logs_dir, exist_ok=True)
+    file_handler = logging.FileHandler(os.path.join(logs_dir, f"test_logs_{worker_id}.jsonl"))
     json_formatter = jsonlogger.JsonFormatter(
         fmt="%(asctime)s %(levelname)s %(name)s %(module)s %(funcName)s %(lineno)d %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
