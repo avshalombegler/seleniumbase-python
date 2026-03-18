@@ -1,0 +1,14 @@
+Directory cleaned and recreated at: downloaded_files/gw1.
+22:11:57 | INFO | TestAddRemoveElements:test_add_remove_elements.py:22 | Tests for add elements.
+22:11:57 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+22:11:57 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+22:11:57 | INFO | MainPage:main_page.py:59 | Navigating to Add/Remove Elements page.
+22:11:57 | INFO | AddRemoveElementsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div#content h3', 'by': 'css selector'}' for 10s.
+22:11:57 | INFO | AddRemoveElementsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div#content h3', 'by': 'css selector'}'.
+22:11:57 | INFO | TestAddRemoveElements:test_add_remove_elements.py:26 | Add two elements.
+22:11:57 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+22:11:57 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+22:11:58 | INFO | TestAddRemoveElements:test_add_remove_elements.py:29 | Getting delete buttons count.
+22:11:58 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+22:11:58 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+22:11:58 | INFO | TestAddRemoveElements:test_add_remove_elements.py:32 | Verifying delete buttons count.
