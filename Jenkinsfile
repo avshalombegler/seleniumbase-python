@@ -33,10 +33,12 @@ pipeline {
                                 string(credentialsId: 'TEST_USERNAME', variable: 'TEST_USERNAME'),
                                 string(credentialsId: 'TEST_PASSWORD', variable: 'TEST_PASSWORD')
                             ]) {
+                                def effectiveMarker = isApiTest ? 'api' : params.MARKER
                                 def browserArg = isApiTest ? '' : "export BROWSER=${config}"
                                 def xvfbCmd = isApiTest ? '' : 'xvfb-run -a -s "-screen 0 1920x1080x24"'
                                 def headlessArg = isApiTest ? '' : '--headless'
-                                
+                                def rerunArgs = isApiTest ? '' : '--reruns 3 --reruns-delay 2'
+
                                 sh """
                                     ${browserArg}
                                     . /opt/venv/bin/activate
@@ -44,9 +46,9 @@ pipeline {
                                         -n ${params.WORKERS} --dist=loadfile \
                                         ${headlessArg} \
                                         --alluredir=allure-results-${config} \
-                                        --junitxml=reports/junit.xml \
-                                        --reruns 3 --reruns-delay 2 \
-                                        -m ${params.MARKER}
+                                        --junitxml=reports/junit-${config}.xml \
+                                        ${rerunArgs} \
+                                        -m ${effectiveMarker}
                                 """
                             }
                         } ]
@@ -71,7 +73,7 @@ pipeline {
     
     post {
         always {
-            junit allowEmptyResults: true, testResults: 'reports/junit.xml'
+            junit allowEmptyResults: true, testResults: 'reports/junit-*.xml'
             cleanWs()
         }
         success {
