@@ -52,7 +52,6 @@ class User(BaseModel):
             raise ValueError(f"Phone must have at least 10 digits, got {len(digits)} in '{v}'")
         return v
 
-    # THIS VALIDATOR MAY NEED TO CHANGE
     @field_validator("website")
     @classmethod
     def validate_website(cls, v: str) -> str:
