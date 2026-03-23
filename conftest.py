@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import structlog
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
@@ -155,7 +156,13 @@ def clean_directories_at_start() -> None:
     """Clean downloads directory at session start."""
     worker_id = os.environ.get("PYTEST_XDIST_WORKER") or "local"
 
-    # Clean downloads
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
 
+
+
+@pytest.fixture(autouse=True)
+def bind_test_context(request: pytest.FixtureRequest) -> None:
+    """Bind per-test context for structured JSON logging (test_name, browser)."""
+    structlog.contextvars.clear_contextvars()
+    structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)
