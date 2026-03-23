@@ -14,7 +14,7 @@ Every feature follows a strict three-layer Page Object Model. Each layer has a d
 | --- | --- | --- |
 | Locators | `src/pages/features/<feature>/locators.py` | `XxxLocators` |
 | Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
-| Test | `tests/the_internet/ui_test_suite/test_<feature>.py` | `TestXxx(UiBaseCase)` |
+| Test | `tests/the_internet/ui_test_suite/test_<feature>.py` for single-page features; `tests/the_internet/ui_test_suite/test_<feature>/test_<subpage>.py` for multi-page features — one file per sub-page (e.g., `test_frames/test_iframe.py`). All sub-pages share the same `@allure.sub_suite` value. | `TestXxx(UiBaseCase)` |
 
 ### What belongs in each layer
 
@@ -26,7 +26,7 @@ Every feature follows a strict three-layer Page Object Model. Each layer has a d
 
 **Page Object layer** (`<feature>_page.py`)
 
-- All element interaction goes through `BasePage` methods — never `self.driver.find_element()` directly
+- Standard element interactions (click, type, visibility checks, text retrieval) go through `BasePage` methods. For browser operations without a `BasePage` wrapper (hover, drag-and-drop, JS execution, alert handling, scrolling), call `self.driver.*` directly — see Section 4 for the full list. Never call `self.driver.find_element()` raw.
 - No test assertions — assertions live in the test layer only
 - No `self.logger.info(...)` calls — logging lives in the test layer only
 - No hardcoded selector strings — all selectors come from the locators class
@@ -255,6 +255,24 @@ class FormAuthenticationPage(BasePage):
       return SecureAreaPage(self.driver)
   ```
 
+- **When `BasePage` has no wrapper**: call `self.driver.*` directly for browser operations not covered by `BasePage`. This is the correct pattern, not a violation:
+
+  ```python
+  self.driver.hover(**locator)                      # mouse hover
+  self.driver.drag_and_drop(...)                    # drag-and-drop
+  self.driver.accept_alert()                        # alert accept
+  self.driver.wait_for_and_switch_to_alert()        # switch to alert
+  self.driver.execute_script("return ...")          # JavaScript execution
+  self.driver.scroll_down(pixels)                   # scrolling
+  self.driver.execute_cdp_cmd("...", {...})          # Chrome DevTools Protocol
+  self.driver.switch_to_default_content()           # exit iframe context
+
+  button = self.wait_for_visibility(locator)
+  button.click()                                    # direct WebElement click
+  ```
+
+  The last pattern — calling `.click()` on the `WebElement` returned by `wait_for_visibility` — avoids a second DOM lookup and is preferred when the click triggers an alert (calling `click_element` after the alert fires causes a stale-element exception). Never call `self.driver.find_element()` raw — always go through a `BasePage` method to obtain the element first.
+
 ---
 
 ## Section 5: `BasePage` Method Reference
@@ -289,6 +307,12 @@ def wait_for_loader(self, locator: Locator, timeout: int | float | None = None) 
 
 Waits for a loading indicator to appear then disappear. Returns `True` if loader completed, `False` on timeout.
 
+```python
+def wait_for_file_to_download(self, filename: str, timeout: int | float | None = None) -> bool:
+```
+
+Polls for `filename` in the per-worker download directory. Returns `True` when the file appears, `False` on timeout. Defaults to `short_wait`. Always call this after `download_file()` to confirm completion before asserting on the downloaded file.
+
 ### Navigation Methods
 
 ```python
@@ -308,6 +332,14 @@ def navigate_back(self) -> None:
 ```
 
 Navigates back in browser history.
+
+### Frame/Window Methods
+
+```python
+def switch_to_frame(self, locator: Locator) -> None:
+```
+
+Switches the driver context into the iframe identified by `locator`. After switching, all element interactions target the frame's DOM. To exit the frame, call `self.driver.switch_to_default_content()` directly (no `BasePage` wrapper for this).
 
 ### Interaction Methods
 
@@ -381,6 +413,12 @@ def get_element_attr(self, locator: Locator, attribute: str) -> Any | None:
 
 Returns the value of the named attribute. Returns `None` on failure.
 
+```python
+def get_base_url(self) -> str | AnyUrl:
+```
+
+Returns `settings.BASE_URL` from the project configuration. Use this in page object methods that must construct absolute URLs (e.g., credential-embedded auth URLs in `get_<feature>_page` methods). In `main_page.py`, the instance attribute `self.base_url` provides the same value.
+
 ### Utility
 
 ```python
@@ -433,7 +471,16 @@ class TestABTesting(UiBaseCase):
   3. `@allure.sub_suite("<Feature Name>")`
 - **Inherits from `UiBaseCase`**: `class TestXxx(UiBaseCase):`
 - **Class docstring**: `"""Tests <Feature Name> functionality"""`
-- **Test data constants**: defined at **module level** (above the class), never inside the class or methods
+- **Test data constants**: two accepted locations — choose based on scope:
+  - **Class-level** (inside class, above all methods): for constants used only by this test class — most common:
+    ```python
+    class TestHovers(UiBaseCase):
+        USER: str = "user"
+        FIRST_USER: int = 1
+        NUM_OF_USERS: int = 3
+    ```
+  - **Module-level** (above the class): for constants shared across multiple classes in the same file, or for large parameterized data tables referenced by `@parameterized.expand`
+  - **Never**: inside test method bodies — constants must not be local variables
 
 ### Method Level
 
@@ -496,7 +543,9 @@ Rules:
 - Always use `By.LINK_TEXT` with the **exact** `<a>` link text from the homepage
 - Entries are in **alphabetical order** by link text within the class
 
-### Navigation method
+### Navigation method — standard (`click_<feature>_link`)
+
+Use this pattern when the feature has a direct link on the homepage:
 
 ```python
 @allure.step("Navigate to {page_name} page")
@@ -519,11 +568,43 @@ Rules:
 - **Return**: `return <FeaturePage>(self.driver)`
 - Import for the new page object is added in **alphabetical order** in the import block of `main_page.py`
 
+### Navigation method — URL-based (`get_<feature>_page`)
+
+Use this pattern when the feature requires URL construction (credentials embedded in the URL, direct URL navigation without a homepage click, or no homepage link exists):
+
+```python
+@allure.step("Navigate to {page_name} page")
+def get_digest_auth_page(
+    self, username: str, password: str, page_name: str = "Digest Authentication"
+) -> DigestAuthPage:
+    self.logger.info(f"Navigating to {page_name} page.")
+    if not username or not password:
+        raise ValueError(f"Invalid credentials: username='{username}', password='{password or ''}'")
+    base_path = urljoin(str(self.base_url), "digest_auth")
+    url = base_path.replace("https://", f"https://{username}:{password}@")
+    self.navigate_to(url)
+
+    return DigestAuthPage(self.driver)
+```
+
+*(Source: `src/pages/common/main_page/main_page.py`)*
+
+Rules:
+
+- **Method name**: `get_<feature>_page(self, ...)` — never `click_*` when there is no click
+- **Decorator**: same `@allure.step("Navigate to {page_name} page")` convention
+- Use `"Returning object of {page_name} page"` as the step text when no navigation occurs at all (e.g., `get_basic_auth_page` — the page is already loaded by test setup)
+- **URL construction**: use `urljoin(str(self.base_url), "<path>")` to build paths relative to `BASE_URL`; ensure `from urllib.parse import urljoin` is at the top of `main_page.py`
+- **No `MainPageLocators` entry** required — URL-based features skip the link-click entirely
+- **Return**: `return <FeaturePage>(self.driver)` — same as standard pattern
+
 ---
 
 ## Section 8: Pytest Markers
 
 All markers registered in `pyproject.toml`. `--strict-markers` is enforced — using an unregistered marker causes a collection error.
+
+**Registered markers** (must only use these — `--strict-markers` is enforced):
 
 | Marker | Purpose |
 | --- | --- |
@@ -532,6 +613,15 @@ All markers registered in `pyproject.toml`. `--strict-markers` is enforced — u
 | `@pytest.mark.smoke` | Critical path only; added explicitly, never by default |
 | `@pytest.mark.api` | API tests only |
 | `@pytest.mark.fix` | Marks tests needing human review; added by healer, never by generator |
+
+**Standard pytest markers** (always available, no registration required):
+
+| Marker | When to use |
+| --- | --- |
+| `@pytest.mark.skip(reason="...")` | Applied at **class** level when an entire feature is not yet implemented |
+| `@pytest.mark.skipif(condition, reason="...")` | Applied at **method** level for runtime conditions (e.g., `os.getenv("BROWSER") == "firefox"`) |
+| `@pytest.mark.xfail(reason="...")` | Applied at **method** level for tests expected to fail intermittently (e.g., flaky external dependencies); the test still runs — a pass becomes `XPASS` |
+| `pytest.skip("reason")` | Called **inside** a test method body for conditional skips based on runtime state (e.g., page source check); not a decorator |
 
 ---
 
@@ -559,3 +649,94 @@ All markers registered in `pyproject.toml`. `--strict-markers` is enforced — u
 | `@pytest.mark.*` | Test methods only |
 | Page-to-page navigation (returns new page object) | Page object method |
 | `MainPage` navigation (click homepage link) | `main_page.py` nav method |
+
+---
+
+## Section 11: Advanced Page Object Patterns
+
+These patterns apply to specific feature types. Use them only when the standard pattern is insufficient.
+
+### Returning a dataclass instead of a page object
+
+When a method returns multiple values from a single interaction, define a `@dataclass` in the same page object file and return it:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class ClickResult:
+    alert_present: bool
+    alert_text: str = ""
+
+
+class ContextMenuPage(BasePage):
+    @allure.step("Perform right click outside hot spot area")
+    def right_click_outside_hot_spot(self) -> ClickResult:
+        self.perform_right_click(ContextMenuPageLocators.PAGE_LOADED_INDICATOR)
+        return ClickResult(alert_present=False)
+```
+
+*(Source: `src/pages/features/context_menu/context_menu_page.py`)*
+
+Rules:
+- Dataclass defined **in the same file** as the page object, not in a separate file
+- Dataclass placed **above** the page object class definition
+- Add `from dataclasses import dataclass` to the page object file imports
+
+### Local imports inside page object methods (circular import workaround)
+
+When two page objects reference each other, use a local import inside the method that returns the other page:
+
+```python
+@allure.step("Click login - correct")
+def click_login_correct(self) -> "SecureAreaPage":
+    self.click_element(FormAuthenticationPageLocators.LOGIN_BTN)
+    from src.pages.features.form_authentication.secure_area_page import SecureAreaPage
+    return SecureAreaPage(self.driver)
+```
+
+Only use this when a top-level import would create a circular dependency. Prefer top-level imports wherever possible.
+
+### Parameterized tests with `@parameterized.expand`
+
+Use `@parameterized.expand` for data-driven tests where the same scenario must run against multiple inputs:
+
+```python
+from parameterized import parameterized
+
+# Data table at module level (above the class):
+OPTIONS = [["Option 1"], ["Option 2"]]
+
+@allure.parent_suite("the-internet")
+@allure.suite("UI Test Suite")
+@allure.sub_suite("Dropdown List")
+class TestDropdownList(UiBaseCase):
+    @parameterized.expand(OPTIONS)
+    @pytest.mark.regression
+    @pytest.mark.ui
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_dropdown_list_functionality(self, option: str) -> None:
+        self.logger.info("Tests Dropdown List functionality.")
+        ...
+```
+
+*(Source: `tests/the_internet/ui_test_suite/test_dropdown_list.py`)*
+
+Rules:
+- `@parameterized.expand` is the **outermost** decorator — above all `@pytest.mark.*` and `@allure.*` decorators
+- The data table is defined at **module level** (above the class), not inline in the decorator
+- Test parameters are declared as explicit typed arguments after `self`
+- Include `@pytest.mark.ui` when the test navigates via `MainPage` (standard `click_*` link pattern)
+- Omit `@pytest.mark.ui` when the test uses credential-URL navigation via `get_<feature>_page()` (e.g., digest auth tests), since `setUp` auto-navigation is not needed
+
+### Multi-level navigation chaining
+
+When a feature page links to a sub-page, chain navigation calls instead of navigating via URL directly:
+
+```python
+main_page = MainPage(self)
+frames_page = main_page.click_frames_link()
+iframe_page = frames_page.click_iframe_link()
+```
+
+Each chained call returns the next page object. The test then operates on the final page object in the chain.
