@@ -2,8 +2,8 @@
 
 [![CI Status](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml/badge.svg)](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml)
 
-A modern, maintainable test automation suite using **SeleniumBase** for <https://the-internet.herokuapp.com>.  
-Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Compose orchestration**, and **CI/CD** (GitHub Actions & Jenkins).
+A modern, maintainable test automation suite using **SeleniumBase** for <https://the-internet.herokuapp.com>.
+Built with a **three-layer Page Object Model**, **pytest**, **Allure reporting**, **Docker Compose orchestration**, and **CI/CD** (GitHub Actions & Jenkins).
 
 ## Table of Contents
 
@@ -11,14 +11,18 @@ Built with **Page Object Model**, **pytest**, **Allure reporting**, **Docker Com
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables-env)
-- [Running tests](#running-tests)
+- [Running Tests](#running-tests)
+- [Architecture](#architecture)
+- [Test Suites](#test-suites)
+- [Lint and Format](#lint-and-format)
 - [Docker Support](#docker-support)
 - [Allure Reports](#allure-reports)
-- [Project structure](#project-structure)
+- [Project Structure](#project-structure)
+- [Adding a New Feature](#adding-a-new-feature)
 
 ## Features
 
-- Clean POM architecture
+- **Three-layer Page Object Model** — Locators, Page Objects, and Tests are strictly separated
 - Multi-browser support (Chrome & Firefox)
 - Headless & headed mode
 - Parallel test execution via `pytest-xdist`
@@ -146,54 +150,73 @@ TEST_PASSWORD=SuperSecretPassword!
 
 **⚠️ Note:** Never commit `.env` with real credentials. Use CI secrets for production.
 
-## Running tests
+## Running Tests
+
+### Test Markers
+
+The project uses strict markers — only registered markers are valid:
+
+| Marker | Purpose |
+| --- | --- |
+| `@pytest.mark.ui` | UI tests — auto-navigates to `BASE_URL` in setUp |
+| `@pytest.mark.regression` | Full regression suite |
+| `@pytest.mark.smoke` | Critical path tests |
+| `@pytest.mark.api` | API tests |
+| `@pytest.mark.fix` | Test needs human review |
 
 ### Locally
 
-- Run all tests (sequential):
+Run all UI-marked tests:
 
-    ```bash
-    pytest
-    ```
+```bash
+pytest -m ui
+```
 
-- Run all tests in parallel:
+Run all API tests:
 
-    ```bash
-    pytest -n auto
-    ```
+```bash
+pytest -m api
+```
 
-- Run a specific test file:
+Run a specific test file:
 
-    ```bash
-    pytest .\tests\test_test_name.py
-    ```
+```bash
+pytest tests/the_internet/ui_test_suite/test_ab_testing.py
+```
 
-- Generate Allure results (add this flag to the pytest run command):
+Run all tests in parallel:
 
-    ```bash
-    --alluredir=reports/allure-results
-    ```
+```bash
+pytest -m ui -n auto
+```
 
-- View Allure Report Locally:
+Generate Allure results (add to any pytest command):
 
-    ```bash
-    allure serve reports/allure-results
-    ```
+```bash
+pytest -m ui --alluredir=reports/allure-results
+```
 
-- Optional: generate a static HTML report (requires Allure CLI):
+View Allure report locally:
 
-    ```bash
-    allure generate reports/allure-results -o reports/allure-report
-    ```
+```bash
+allure serve reports/allure-results
+```
+
+Optional — generate a static HTML report:
+
+```bash
+allure generate reports/allure-results -o reports/allure-report
+```
 
 ### Running in GitHub Actions
 
-- GitHub Actions automatically runs tests on every push or pull request to the main branch.
-- For manual runs, go to the Actions tab, select the CI workflow, and click "Run workflow".
-  - **Browser**: Choose browser to run tests on (`both`, `chrome`, `firefox`) - default: `both`
-  - **Marker**: Select test marker (`smoke`, `regression`, `ui`, `api`) - default: `smoke`
-  - **Workers**: Number of parallel workers (e.g., `auto`, `2`, `4`) - default: `auto`
-  - **Clean History**: Clean all history and start fresh (boolean) - default: `false`
+GitHub Actions automatically runs tests on every push or pull request to the main branch.
+For manual runs, go to the Actions tab, select the CI workflow, and click "Run workflow".
+
+- **Browser**: Choose browser (`both`, `chrome`, `firefox`) — default: `both`
+- **Marker**: Select test marker (`smoke`, `regression`, `ui`, `api`) — default: `smoke`
+- **Workers**: Number of parallel workers (e.g., `auto`, `2`, `4`) — default: `auto`
+- **Clean History**: Clean all history and start fresh (boolean) — default: `false`
 
 ### Running in Jenkins
 
@@ -205,11 +228,57 @@ TEST_PASSWORD=SuperSecretPassword!
 
 #### Pipeline Parameters
 
-The Jenkinsfile supports the following parameters:
+- `BROWSER`: Browser choice (`both` / `chrome` / `firefox`)
+- `MARKER`: Test marker to run (`regression` / `smoke` / `ui`)
+- `WORKERS`: Number of parallel workers (default: `auto`)
 
-- `BROWSER`: Browser choice (both/chrome/firefox)
-- `MARKER`: Test marker to run (regression/smoke/ui)
-- `WORKERS`: Number of parallel workers (default: auto)
+## Architecture
+
+### Three-Layer Page Object Model
+
+Every feature follows a strict three-layer pattern:
+
+| Layer | Path | Class |
+| --- | --- | --- |
+| Locators | `src/pages/features/<feature>/locators.py` | `XxxLocators` |
+| Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
+| Test | `tests/the_internet/ui_test_suite/test_<feature>.py` | `TestXxx(UiBaseCase)` |
+
+### Locator Type
+
+```python
+Locator = dict[str, str]  # {"selector": "<value>", "by": By.<STRATEGY>}
+```
+
+Locators are used by unpacking: `driver.click(**locator)`.
+Strategy priority: `By.ID` → `By.CSS_SELECTOR` → `By.XPATH`. Never `By.CLASS_NAME` or `By.TAG_NAME` alone.
+
+### Base Classes
+
+- **`BasePage`** (`src/pages/base/base_page.py`): All page objects inherit this. Wraps SeleniumBase's `BaseCase` as `self.driver`. Provides methods for waiting, clicking, typing, file downloads, element state queries, and navigation.
+
+- **`UiBaseCase`** (`src/pages/base/ui_base_case.py`): All test classes inherit this (extends `BaseCase`). Its `setUp` auto-navigates to `settings.BASE_URL` when the test is marked `@pytest.mark.ui` — no explicit navigation needed in test methods. Handles per-worker download directories for parallel runs and attaches failure screenshots to Allure on teardown.
+
+### Navigation Hub
+
+`MainPage` (`src/pages/common/main_page/`) is the single entry point for all feature pages. Tests always start with `main_page = MainPage(self)` then call the appropriate nav method (e.g., `main_page.click_form_authentication_link()`).
+
+## Test Suites
+
+### UI Test Suite — `tests/the_internet/ui_test_suite/`
+
+30+ feature tests against <https://the-internet.herokuapp.com>, covering:
+
+A/B Testing, Add/Remove Elements, Basic Auth, Broken Images, Challenging DOM, Checkboxes, Context Menu, Digest Auth, Drag and Drop, Dropdown List, Dynamic Content, Dynamic Controls, Dynamic Loading, Entry Ad, Exit Intent, File Download, File Upload, Floating Menu, Form Authentication, Frames, Geolocation, Horizontal Slider, Hovers, Infinite Scroll, Inputs, JavaScript Alerts, JavaScript Onload Event Error, JQuery UI Menus, Key Presses, and more.
+
+## Lint and Format
+
+```bash
+task check   # ruff check . (lint only)
+task fix     # ruff check . --fix && ruff format . (fix + format)
+```
+
+Line length: 120 characters (configured in `pyproject.toml`).
 
 ## Docker Support
 
@@ -254,7 +323,7 @@ Reports are generated by the Jenkins pipeline, stored in the Allure server, and 
 
 > Reports update automatically after each CI run.
 
-## Project structure
+## Project Structure
 
 ```text
 seleniumbase-python/
@@ -282,11 +351,13 @@ seleniumbase-python/
 └── README.md
 ```
 
-## How to Add New Tests
+## Adding a New Feature
 
-1. Create page object in `src/pages/features/your_feature/your_page.py`
-2. Add test in `tests/x_test_suite/test_your_feature.py`
-3. (Optional) Add `@pytest.mark.regression` or other markers
+1. Create `src/pages/features/<feature>/locators.py` — `XxxLocators` class with `Locator` attributes, `PAGE_LOADED_INDICATOR` first.
+2. Create `src/pages/features/<feature>/<feature>_page.py` — `XxxPage(BasePage)`, `__init__` calls `super().__init__(driver)` then `wait_for_page_to_load(...)`, all methods decorated with `@allure.step`.
+3. Add `FEATURE_LINK: Locator` to `MainPageLocators` in `src/pages/common/main_page/locators.py`.
+4. Add import and `click_<feature>_link()` method to `src/pages/common/main_page/main_page.py`.
+5. Create `tests/the_internet/ui_test_suite/test_<feature>.py` — `TestXxx(UiBaseCase)` with Allure class decorators.
 
 ## Contributing
 
