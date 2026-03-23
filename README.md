@@ -321,15 +321,17 @@ Repair scope: locator fixes, assertion fixes, timing fixes, code/import errors, 
 
 ### MCP Servers
 
-Three MCP servers are pre-configured in `.claude/settings.json` and used by the agents:
+Five MCP servers are pre-configured in `.claude/settings.json`:
 
 | Server | Command | Used by |
 | --- | --- | --- |
 | `seleniumbase` | `python tools/seleniumbase-mcp/server.py` | All agents |
 | `playwright` | `npx playwright run-mcp-server` | `sb-planner`, `sb-healer` |
 | `context7` | `npx @upstash/context7-mcp` | `sb-generator`, `sb-healer` |
+| `fetch` | `npx @modelcontextprotocol/server-fetch` | Main session |
+| `sequential-thinking` | `npx @modelcontextprotocol/server-sequential-thinking` | Main session |
 
-`playwright` provides live browser inspection for page analysis and failure diagnosis. `context7` provides up-to-date SeleniumBase API docs. Both require Node.js.
+`playwright` provides live browser inspection for page analysis and failure diagnosis. `context7` provides up-to-date SeleniumBase API docs. `fetch` enables direct HTTP requests (useful for API test planning). `sequential-thinking` provides structured multi-step reasoning chains. All four external servers require Node.js.
 
 The custom `seleniumbase` server exposes **19 tools** across 5 groups:
 

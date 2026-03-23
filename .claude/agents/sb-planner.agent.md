@@ -10,6 +10,8 @@ tools:
   - playwright/browser_screenshot
   - write_file
   - read_file
+  - fetch/fetch
+  - sequential-thinking/sequentialthinking
 model: sonnet
 mcp-servers:
   seleniumbase:
@@ -17,6 +19,18 @@ mcp-servers:
     command: C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe
     args:
       - tools/seleniumbase-mcp/server.py
+  fetch:
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-fetch"
+  sequential-thinking:
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-sequential-thinking"
 ---
 
 # sb-planner — QA Test Design Agent
