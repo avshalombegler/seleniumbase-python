@@ -10,14 +10,10 @@ from pathlib import Path
 
 import pytest
 import structlog
-from dotenv import load_dotenv
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
 from src.config import settings
-
-load_dotenv()
-
 
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 logging.getLogger("selenium.webdriver.remote.remote_connection").setLevel(logging.WARNING)
