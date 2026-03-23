@@ -1,0 +1,9 @@
+09:37:49 | INFO | TestChallengingDom:test_challenging_dom.py:54 | Verify cell content per column.
+09:37:49 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+09:37:49 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+09:37:49 | INFO | MainPage:main_page.py:79 | Navigating to Challenging DOM page.
+09:37:49 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+09:37:49 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+09:37:49 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
+09:37:49 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
+09:37:49 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Definiebas' text under column 'Sit'.
