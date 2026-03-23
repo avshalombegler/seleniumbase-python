@@ -359,10 +359,6 @@ Full CRUD + model validation + negative tests against the [JSONPlaceholder API](
 
 Each resource has typed Pydantic models in `tests/jsonplaceholder/models/` and shared helpers in `tests/jsonplaceholder/helpers.py`.
 
-### Demo — `tests/demo/`
-
-Scratch/exploratory tests, not part of the regression or UI suites.
-
 ## Lint and Format
 
 ```bash
