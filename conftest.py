@@ -116,12 +116,29 @@ def _write_allure_env_properties(config: pytest.Config) -> None:
             f.write(f"Jenkins_Build_Number={os.environ.get('BUILD_NUMBER', 'N/A')}\n")
 
 
+def _setup_logs_directory() -> None:
+    is_ci_environment = os.environ.get("JENKINS_HOME") or os.environ.get("GITHUB_ACTIONS")
+    is_xdist_worker = os.environ.get("PYTEST_XDIST_WORKER")
+
+    logs_path = Path("logs")
+
+    if not is_xdist_worker and not is_ci_environment:
+        if logs_path.exists():
+            logging.info(f"Cleaning logs directory: {logs_path}")
+            shutil.rmtree(logs_path, ignore_errors=True)
+        logs_path.mkdir(parents=True, exist_ok=True)
+        logging.info(f"Created fresh logs directory: {logs_path}")
+    else:
+        logs_path.mkdir(parents=True, exist_ok=True)
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
     Configure pytest settings for browser testing with Allure reporting.
     Sets up logging, browser options, Allure results directory, and environment metadata.
     """
+    _setup_logs_directory()
     _setup_logging(config)
     _configure_browser(config)
     _setup_allure_directory(config)
