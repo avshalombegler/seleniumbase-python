@@ -9,7 +9,6 @@ import shutil
 from pathlib import Path
 
 import pytest
-import structlog
 from filelock import FileLock
 from seleniumbase.fixtures import constants
 
@@ -160,8 +159,3 @@ def clean_directories_at_start() -> None:
     downloads_dir = Path(constants.Files.DOWNLOADS_FOLDER) / worker_id
     clean_directory(downloads_dir, worker_id)
 
-
-@pytest.fixture(autouse=True)
-def bind_test_context(request: pytest.FixtureRequest) -> None:
-    """Binds test context variables for structured logging."""
-    structlog.contextvars.bind_contextvars(test_name=request.node.name, browser=settings.BROWSER)
