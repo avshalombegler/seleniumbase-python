@@ -56,6 +56,7 @@ Built with a **three-layer Page Object Model**, **AI-powered test generation and
 
 - **Python:** 3.10 or higher
 - **Conda:** Anaconda or Miniconda (recommended — the project uses a conda environment)
+- **Node.js:** Latest LTS (required for AI agent MCP servers — Playwright MCP and Context7)
 - **Git:** Latest version
 - **Browsers:**
   - Chrome 120+ / ChromeDriver (auto-managed)
@@ -318,9 +319,19 @@ Diagnoses and fixes failing tests. Runs failing tests, parses errors, applies fi
 
 Repair scope: locator fixes, assertion fixes, timing fixes, code/import errors, incomplete page object completion.
 
-### MCP Server
+### MCP Servers
 
-A custom MCP server (`tools/seleniumbase-mcp/server.py`) exposes **19 tools** across 5 groups to the agents:
+Three MCP servers are pre-configured in `.claude/settings.json` and used by the agents:
+
+| Server | Command | Used by |
+| --- | --- | --- |
+| `seleniumbase` | `python tools/seleniumbase-mcp/server.py` | All agents |
+| `playwright` | `npx playwright run-mcp-server` | `sb-planner`, `sb-healer` |
+| `context7` | `npx @upstash/context7-mcp` | `sb-generator`, `sb-healer` |
+
+`playwright` provides live browser inspection for page analysis and failure diagnosis. `context7` provides up-to-date SeleniumBase API docs. Both require Node.js.
+
+The custom `seleniumbase` server exposes **19 tools** across 5 groups:
 
 | Group | Tools |
 | --- | --- |
