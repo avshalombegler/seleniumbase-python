@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-**Run tests (UI marker is the default in `pyproject.toml`):**
+**Run tests (`-m regression` is the default in `pyproject.toml`; use `-m ui` for UI tests):**
 
 ```bash
 # Run all ui-marked tests
-pytest
+pytest -m ui
 
 # Run a specific test file
 pytest tests/the_internet/ui_test_suite/test_ab_testing.py
@@ -52,9 +52,9 @@ Every feature follows this strict three-layer pattern:
 | --- | --- | --- |
 | Locators | `src/pages/features/<feature>/locators.py` | `XxxLocators` |
 | Page Object | `src/pages/features/<feature>/<feature>_page.py` | `XxxPage(BasePage)` |
-| Test | `tests/the_internet/ui_test_suite/test_<feature>.py` | `TestXxx(UiBaseCase)` |
+| Test | `tests/the_internet/ui_test_suite/test_<feature>.py` (or `test_<feature>/test_<feature>.py` for multi-page features) | `TestXxx(UiBaseCase)` |
 
-**Navigation hub:** `MainPage` (`src/pages/common/main_page/`) acts as the single entry point for all feature pages. Every feature has a `click_<feature>_link()` method in `MainPage` that clicks the homepage link and returns the feature's page object. Tests always start with `main_page = MainPage(self)` then call the nav method.
+**Navigation hub:** `MainPage` (`src/pages/common/main_page/`) acts as the single entry point for all feature pages. Most features have a `click_<feature>_link()` method that clicks the homepage link and returns the page object. Features requiring special navigation (e.g. URL-embedded credentials, no homepage link) use a `get_<feature>_page()` method instead. Tests always start with `main_page = MainPage(self)` then call the nav method.
 
 ### Locator Type
 
@@ -66,7 +66,7 @@ Defined in `src/pages/base/base_page.py` (TYPE_CHECKING only). Used by unpacking
 
 ### Base Classes
 
-- **`BasePage`** (`src/pages/base/base_page.py`): All page objects inherit this. Wraps SeleniumBase's `BaseCase` as `self.driver`. Key methods: `wait_for_page_to_load`, `wait_for_visibility`, `wait_for_invisibility`, `click_element`, `send_keys_to_element`, `is_element_visible`, `get_dynamic_element_text`, `format_locator`, `get_all_elements`.
+- **`BasePage`** (`src/pages/base/base_page.py`): All page objects inherit this. Wraps SeleniumBase's `BaseCase` as `self.driver`. Key methods: `wait_for_page_to_load`, `wait_for_visibility`, `wait_for_invisibility`, `wait_for_loader`, `wait_for_file_to_download`, `click_element`, `send_keys_to_element`, `perform_right_click`, `download_file`, `is_element_visible`, `is_element_selected`, `is_element_enabled`, `get_dynamic_element_text`, `get_all_elements`, `get_number_of_elements`, `get_element_attr`, `get_base_url`, `navigate_to`, `refresh_page`, `navigate_back`, `switch_to_frame`, `format_locator`.
 
 - **`UiBaseCase`** (`src/pages/base/ui_base_case.py`): All test classes inherit this (which extends `BaseCase`). Its `setUp` automatically navigates to `settings.BASE_URL` when the test is marked `@pytest.mark.ui` — **do not add explicit navigation in test methods for ui-marked tests**. Attaches failure screenshots to Allure on teardown. Handles per-worker download directories for parallel runs.
 
