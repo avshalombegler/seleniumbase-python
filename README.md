@@ -411,7 +411,7 @@ Reports generated from Jenkins pipeline runs are hosted locally and can be acces
 
 📊 **Local Access:** [View Report](http://localhost:8080) (via Nginx reverse proxy to Allure UI)
 
-📊 **Public Access:** [View Report](https://unpleated-braxton-nondynastical.ngrok-free.dev) (static tunnel URL provided by ngrok)
+📊 **Public Access:** [View Live Report](https://unpleated-braxton-nondynastical.ngrok-free.dev) *(live demo — kept running for review)*
 
 > Reports update automatically after each CI run.
 
