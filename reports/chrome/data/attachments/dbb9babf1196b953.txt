@@ -1,0 +1,13 @@
+09:42:56 | INFO | TestChallengingDom:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0
+09:42:56 | INFO | TestChallengingDom:test_challenging_dom.py:69 | Verify edit and delete buttons per row are clickable.
+09:42:56 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+09:42:56 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+09:42:56 | INFO | MainPage:main_page.py:79 | Navigating to Challenging DOM page.
+09:42:56 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+09:42:56 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+09:42:56 | INFO | TestChallengingDom:test_challenging_dom.py:74 | Clicking edit button in row 0.
+09:42:56 | INFO | TestChallengingDom:test_challenging_dom.py:84 | Click delete button in row 0.
+09:42:57 | INFO | TestChallengingDom:test_challenging_dom.py:74 | Clicking edit button in row 1.
+09:42:57 | INFO | TestChallengingDom:test_challenging_dom.py:84 | Click delete button in row 1.
+09:42:57 | INFO | TestChallengingDom:test_challenging_dom.py:74 | Clicking edit button in row 2.
+09:42:57 | INFO | TestChallengingDom:test_challenging_dom.py:84 | Click delete button in row 2.
