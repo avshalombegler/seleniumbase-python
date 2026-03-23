@@ -26,12 +26,20 @@ RUN ALLURE_VERSION=2.35.1 && \
     fi
 
 # Create virtual environment and install Python packages
-COPY . /tmp/project/
+# Copy only pyproject.toml so the pip install layer is cached across builds
+# that don't touch dependencies. Since pip install -e . requires the src/ tree,
+# we extract dependencies via tomllib and install them directly instead.
+COPY pyproject.toml /tmp/project/pyproject.toml
 WORKDIR /tmp/project
 RUN python3 -m venv /opt/venv && \
     . /opt/venv/bin/activate && \
     python -m pip install --upgrade pip && \
-    python -m pip install -e . --no-cache-dir && \
+    python -m pip install $(python3 -c "\
+import tomllib; \
+f = open('pyproject.toml', 'rb'); \
+data = tomllib.load(f); \
+f.close(); \
+print(' '.join(data['project']['dependencies']))") --no-cache-dir && \
     rm -rf /tmp/project
 
 # Make virtualenv writable for the jenkins user so runtime downloads succeed

@@ -1,0 +1,16 @@
+reports/
+latest_logs/
+allure-results/
+allure-report/
+downloads/
+downloaded_files/
+logs/
+.git/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+chrome_user_data/
+specs/
