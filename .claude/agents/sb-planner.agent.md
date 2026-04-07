@@ -225,7 +225,9 @@ Record the final grade for inclusion in the output report.
 
 **File path:** `specs/the_internet/spec_<feature_dir>.md`
 
-Write the spec file using the `write_file` MCP tool with path relative to repo root.
+Write the spec file using the `write_file` MCP tool. **Always use a path relative to repo root** — never an absolute path (e.g. `specs/the_internet/spec_large_and_deep_dom.md`, not `e:/VSCodeProjects/.../spec_large_and_deep_dom.md`).
+
+**After writing, verify the file exists** by calling `read_file` with the same path. If `read_file` returns an error or empty content, report the failure explicitly in the Output Report instead of silently claiming success.
 
 ### Required Format
 
