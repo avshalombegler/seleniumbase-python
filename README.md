@@ -271,6 +271,14 @@ Strategy priority: `By.ID` → `By.CSS_SELECTOR` → `By.XPATH`. Never `By.CLASS
 
 A/B Testing, Add/Remove Elements, Basic Auth, Broken Images, Challenging DOM, Checkboxes, Context Menu, Digest Auth, Drag and Drop, Dropdown List, Dynamic Content, Dynamic Controls, Dynamic Loading, Entry Ad, Exit Intent, File Download, File Upload, Floating Menu, Form Authentication, Frames, Geolocation, Horizontal Slider, Hovers, Infinite Scroll, Inputs, JavaScript Alerts, JavaScript Onload Event Error, JQuery UI Menus, Key Presses, and more.
 
+### API Test Suite — `tests/jsonplaceholder/api_test_suite/`
+
+Full CRUD + model validation + negative tests against the [JSONPlaceholder API](https://jsonplaceholder.typicode.com), covering 6 resources:
+
+`albums`, `comments`, `photos`, `posts`, `todos`, `users`
+
+Each resource has typed Pydantic models in `tests/jsonplaceholder/models/` and shared helpers in `tests/jsonplaceholder/helpers.py`.
+
 ## Lint and Format
 
 ```bash
