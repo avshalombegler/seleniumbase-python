@@ -13,7 +13,7 @@ from src.pages.common.main_page.main_page import MainPage
 class TestFilesDownload(UiBaseCase):
     """Tests Files Download functionality"""
 
-    # @pytest.mark.xfail(reason="One file link is broken")
+    @pytest.mark.xfail(reason="Some file links on the server may be broken")
     @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
