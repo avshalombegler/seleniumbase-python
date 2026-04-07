@@ -41,10 +41,6 @@ dev = [
 ]
 
 
-[project.scripts]
-test = "pytest:main"
-
-
 [tool.setuptools.packages.find]
 where = ["src"]
 
@@ -77,6 +73,7 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
+    # "-m regression",
     # "-m regression or smoke",
     # "-m smoke",
     # "-m ui",
@@ -84,12 +81,15 @@ addopts = [
     # "-m current",
     # enforce marker validation
     "--strict-markers",
+    # Skip tests marked @pytest.mark.fix (healer marks these as needing human review)
+    # Uncomment the line below to activate automatic skipping:
+    # "-m not fix",
 
     # Chrome-Headless-Shell:
     # "--chs",
 
-    # Undetected-Chromedriver Mode:
-    # "--uc",
+    # Code Coverage
+    # "--cov=src/pages --cov-report=html",
 ]
 
 
@@ -98,7 +98,7 @@ markers = [
     "smoke: critical tests",
     "ui: user interface interactions - auto-navigate to base url",
     "api: ",
-    "fix: test need to be fixed",
+    "fix: test needs human review (healer could not auto-resolve); add '-m not fix' to addopts to skip",
     # "flaky: tests that may fail intermittently",
     # "slow: tests that take more than 10 seconds",
 ]
