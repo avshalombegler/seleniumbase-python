@@ -699,6 +699,10 @@ Only use this when a top-level import would create a circular dependency. Prefer
 
 ### Parameterized tests with `@parameterized.expand`
 
+**Always use `@parameterized.expand` — never `@pytest.mark.parametrize`.**
+
+`@pytest.mark.parametrize` does not work with `unittest.TestCase`-based classes. SeleniumBase's `BaseCase` extends `unittest.TestCase`, so `@pytest.mark.parametrize` silently skips or errors on these tests. `@parameterized.expand` generates real test methods at class-definition time and is fully compatible.
+
 Use `@parameterized.expand` for data-driven tests where the same scenario must run against multiple inputs:
 
 ```python

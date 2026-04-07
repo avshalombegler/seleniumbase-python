@@ -264,6 +264,7 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
    | T10 | Assertions use `self.assert_*` methods — no bare Python `assert` |
    | T11 | One scenario per test method — no merged scenarios |
    | T12 | Test method count matches spec's Test Scenarios section exactly |
+   | T13 | If the spec uses `@parameterized.expand`: decorator is outermost (above all `@pytest.mark.*` and `@allure.*`), data table is at module level, `from parameterized import parameterized` is imported — **never use `@pytest.mark.parametrize`** (incompatible with `unittest.TestCase`-based classes) |
 
    **Grade:** A (all pass) → proceed. B (T3/T5/T6/T7 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 

@@ -356,6 +356,21 @@ See SKILL.md Section 8 for all registered markers. Apply to every scenario:
 - `@pytest.mark.ui` — always (triggers BASE_URL navigation in setUp)
 - `@pytest.mark.smoke` — only when explicitly designated as a smoke test
 
+## Parameterization Convention
+
+When multiple scenarios share the same steps and assertions but differ only in input values
+(e.g. multiple dropdown options, multiple file types, multiple credential pairs), consolidate
+them into a single parameterized test using `@parameterized.expand`.
+
+**Always use `@parameterized.expand` — never `@pytest.mark.parametrize`.** SeleniumBase's
+`BaseCase` extends `unittest.TestCase`; `@pytest.mark.parametrize` is incompatible with
+`unittest.TestCase`-based classes and will not work.
+
+When parameterization applies:
+- Define a single scenario in the spec (e.g. `test_dropdown_list_functionality`)
+- List all input values as a module-level data table constant in the Test Data section
+- Add a Generator Note: "Use `@parameterized.expand(<CONSTANT>)` on `test_<method_name>`"
+
 ---
 
 ## Scope Boundaries
