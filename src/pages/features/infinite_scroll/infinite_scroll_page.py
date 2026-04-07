@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from time import sleep
 from typing import TYPE_CHECKING
 
 import allure
@@ -25,5 +24,19 @@ class InfiniteScrollPage(BasePage):
 
     @allure.step("Scroll to bottom of page")
     def scroll_to_bottom_of_page(self) -> None:
+        old_height = self.driver.execute_script("return document.body.scrollHeight")
         self.driver.scroll_down(100)
-        sleep(1)
+        self.driver.execute_async_script(
+            """
+            var callback = arguments[arguments.length - 1];
+            var old_height = arguments[0];
+            var start = Date.now();
+            var interval = setInterval(function() {
+                if (document.body.scrollHeight > old_height || Date.now() - start > 10000) {
+                    clearInterval(interval);
+                    callback();
+                }
+            }, 200);
+            """,
+            old_height,
+        )

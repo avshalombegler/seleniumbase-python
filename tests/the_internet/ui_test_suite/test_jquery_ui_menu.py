@@ -20,7 +20,6 @@ class TestJQueryUIMenus(UiBaseCase):
     EXPECTED_DOWNLOADED_FILES_COUNT = 1
 
     @parameterized.expand(zip(LINK_MENU_ITEMS, FILES_EXTENSIONS))
-    @pytest.mark.skip(reason="Test is not yet complete")
     @pytest.mark.regression
     @pytest.mark.ui
     @allure.severity(allure.severity_level.NORMAL)
@@ -31,13 +30,16 @@ class TestJQueryUIMenus(UiBaseCase):
 
         self.logger.info(".")
         page.hover_menu_item(self.ENABLED)
+
         self.sleep(1)
         page.hover_menu_item(self.DOWNLOADS)
+
         self.sleep(1)
         page.hover_menu_item(link_menu_item)
+
         self.sleep(1)
-        # page.hover_and_click_menu_item(link_menu_item)
-        # page.js_open_menu_and_click(link_menu_item)
+        page.hover_and_click_menu_item(link_menu_item)
+
         page.wait_for_file_to_download(f"{self.FILE_NAME}.{file_extension}")
 
         actual_downloaded_files_count = len(page.driver.get_downloaded_files())
