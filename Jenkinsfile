@@ -166,8 +166,21 @@ def uploadToAllure(browser) {
         # echo "\$RESPONSE"
         HTTP_CODE=\$(echo "\$RESPONSE" | tail -n 1 | grep -oP '\\d+')
         if [ "\$HTTP_CODE" = "200" ]; then
-            echo "✓ ${browser} report uploaded successfully!"
-            echo "View report at: http://localhost:5050/allure-docker-service/projects/${projectId}/reports/latest/index.html"
+            echo "✓ ${browser} results uploaded. Generating report..."
+            GEN_RESPONSE=\$(curl -X GET \
+                "${allureUrl}/allure-docker-service/generate-report?project_id=${projectId}" \
+                -H "Content-Type: application/json" \
+                -w "\\nHTTP Status: %{http_code}\\n" \
+                -s)
+            GEN_CODE=\$(echo "\$GEN_RESPONSE" | tail -n 1 | grep -oP '\\d+')
+            if [ "\$GEN_CODE" = "200" ]; then
+                echo "✓ ${browser} report generated successfully!"
+                echo "View report at: http://localhost:5050/allure-docker-service/projects/${projectId}/reports/latest/index.html"
+            else
+                echo "✗ Report generation failed with status: \$GEN_CODE"
+                echo "Full response: \$GEN_RESPONSE"
+                exit 1
+            fi
         else
             echo "✗ Upload failed with status: \$HTTP_CODE"
             echo "Full response: \$RESPONSE"
