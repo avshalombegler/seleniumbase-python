@@ -398,7 +398,7 @@ jobs:
           # Copy index.html and inject values
           if [ -f ".github/pages/index.html" ]; then
             # Generate timestamp
-            export TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S')
+            export TIMESTAMP=$(TZ=Asia/Jerusalem date '+%d/%m/%Y %H:%M')
             
             # Replace environment variables
             envsubst < .github/pages/index.html > reports/index.html
