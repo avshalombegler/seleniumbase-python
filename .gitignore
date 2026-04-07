@@ -57,3 +57,7 @@ logs/
 
 # Chrome
 chrome_user_data/
+
+# Demo / scratch (local only)
+tests/demo/
+src/pages/features/demo_login/
