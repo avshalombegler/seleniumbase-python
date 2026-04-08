@@ -875,6 +875,17 @@ def parse_pytest_failure(longrepr: str) -> dict[str, Any]:
 # ===========================================================================
 
 
+def _to_relative(path: str) -> str:
+    """Normalize path to repo-relative. Strips REPO_ROOT prefix if absolute."""
+    p = Path(path)
+    if p.is_absolute():
+        try:
+            return str(p.relative_to(REPO_ROOT)).replace("\\", "/")
+        except ValueError:
+            pass
+    return path.replace("\\", "/")
+
+
 @mcp.tool()
 def create_test_file(path: str, content: str) -> dict[str, Any]:
     """Create a new test file in the tests/ directory.
@@ -884,6 +895,7 @@ def create_test_file(path: str, content: str) -> dict[str, Any]:
 
     Args:
         path: Destination path relative to repo root (must start with 'tests/' and end with '.py').
+              Absolute paths rooted at the repo root are also accepted.
         content: Full Python source code for the test file.
 
     Returns:
@@ -893,14 +905,20 @@ def create_test_file(path: str, content: str) -> dict[str, Any]:
         ValueError: If path does not start with 'tests/' or does not end with '.py'.
     """
     _record_tool_call()
-    norm = path.replace("\\", "/")
+    norm = _to_relative(path)
     if not norm.startswith("tests/"):
         raise ValueError(f"Test file path must start with 'tests/', got: {path}")
     if not norm.endswith(".py"):
         raise ValueError(f"Test file path must end with '.py', got: {path}")
 
-    abs_path = REPO_ROOT / path
-    abs_path.parent.mkdir(parents=True, exist_ok=True)
+    abs_path = REPO_ROOT / norm
+    if abs_path.exists():
+        return {
+            "success": False,
+            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "path": norm,
+        }
+
     result = write_file(norm, content)
     if not result.get("success"):
         return {"success": False, "path": norm, "error": result.get("error", "Write failed")}
@@ -916,6 +934,7 @@ def create_page_object_file(path: str, content: str) -> dict[str, Any]:
 
     Args:
         path: Destination path relative to repo root (must start with 'src/pages/' and end with '.py').
+              Absolute paths rooted at the repo root are also accepted.
         content: Full Python source code for the page object.
 
     Returns:
@@ -925,14 +944,20 @@ def create_page_object_file(path: str, content: str) -> dict[str, Any]:
         ValueError: If path validation fails.
     """
     _record_tool_call()
-    norm = path.replace("\\", "/")
+    norm = _to_relative(path)
     if not norm.startswith("src/pages/"):
         raise ValueError(f"Page object path must start with 'src/pages/', got: {path}")
     if not norm.endswith(".py"):
         raise ValueError(f"Page object path must end with '.py', got: {path}")
 
-    abs_path = REPO_ROOT / path
-    abs_path.parent.mkdir(parents=True, exist_ok=True)
+    abs_path = REPO_ROOT / norm
+    if abs_path.exists():
+        return {
+            "success": False,
+            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "path": norm,
+        }
+
     result = write_file(norm, content)
     if not result.get("success"):
         return {"success": False, "path": norm, "error": result.get("error", "Write failed")}
@@ -949,6 +974,7 @@ def create_locators_file(path: str, content: str) -> dict[str, Any]:
     Args:
         path: Destination path relative to repo root
               (must start with 'src/pages/' and end with 'locators.py').
+              Absolute paths rooted at the repo root are also accepted.
         content: Full Python source code for the locators file.
 
     Returns:
@@ -958,14 +984,20 @@ def create_locators_file(path: str, content: str) -> dict[str, Any]:
         ValueError: If path validation fails.
     """
     _record_tool_call()
-    norm = path.replace("\\", "/")
+    norm = _to_relative(path)
     if not norm.startswith("src/pages/"):
         raise ValueError(f"Locators file path must start with 'src/pages/', got: {path}")
     if not norm.endswith("locators.py"):
         raise ValueError(f"Locators file path must end with 'locators.py', got: {path}")
 
-    abs_path = REPO_ROOT / path
-    abs_path.parent.mkdir(parents=True, exist_ok=True)
+    abs_path = REPO_ROOT / norm
+    if abs_path.exists():
+        return {
+            "success": False,
+            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "path": norm,
+        }
+
     result = write_file(norm, content)
     if not result.get("success"):
         return {"success": False, "path": norm, "error": result.get("error", "Write failed")}

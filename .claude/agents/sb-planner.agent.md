@@ -18,7 +18,7 @@ mcp-servers:
     type: stdio
     command: C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe
     args:
-      - tools/seleniumbase-mcp/server.py
+      - E:/VSCodeProjects/seleniumbase-python/tools/seleniumbase-mcp/server.py
   fetch:
     type: stdio
     command: npx

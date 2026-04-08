@@ -27,7 +27,7 @@ mcp-servers:
     type: stdio
     command: C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe
     args:
-      - tools/seleniumbase-mcp/server.py
+      - E:/VSCodeProjects/seleniumbase-python/tools/seleniumbase-mcp/server.py
   context7:
     type: stdio
     command: npx
@@ -118,18 +118,44 @@ the gap** to the developer:
 - **Test Data block:** Extract the Python constants verbatim.
 - **Generator Notes:** Read all notes — they contain implementation requirements.
 
+### Step 1b — Spec Extraction (mandatory before any code generation)
+
+After parsing the spec in Step 1, output an explicit extraction block in your response
+before proceeding to Step 2. This block is a contract — every name, strategy, and
+signature must match the spec exactly:
+
+```
+**Locators to generate** (from Page Elements table):
+- `<LOCATOR_NAME>`: `By.<STRATEGY>`, `"<selector>"`   ← one line per row
+
+**Page object methods to generate** (from Page Object Methods table):
+- `<method_name>(<signature>) -> <return_type>`        ← one line per row
+
+**Test methods to generate** (from Test Scenarios):
+- `test_<name>` — markers: <list>                      ← one line per scenario
+```
+
+Do **not** proceed to Step 2 until this block is written. If a required section of the
+spec is missing or ambiguous, stop and report it to the developer instead.
+
+---
+
 ### Step 2 — Collision Detection
 
-Call `get_project_structure()`. Check whether:
+Call `list_files("src/pages/features/<feature_directory>")` using the feature directory
+name from the spec's Feature Metadata table.
 
-1. A feature directory `src/pages/features/<feature_directory>/` already exists
-2. A test file at the spec's test file path already exists
-3. The `MainPageLocators` class already contains the feature's `LINK` locator
-4. The `MainPage` class already contains the feature's navigation method
+- **Empty list `[]`** → no collision, proceed to Step 3.
+- **Non-empty list** → the feature directory already exists; report the collision to the
+  developer and **stop**. Do not overwrite existing code.
 
-**If any of these exist**, report the collision to the developer and **stop**. Do not
-overwrite existing code. The developer must either delete the existing files or provide
-a different spec.
+Then read `src/pages/common/main_page/locators.py` (you will read this again in Step 3;
+use cached content if available) and check whether the `LINK` locator for this feature
+is already present. If it is, report the collision and stop.
+
+> **Note:** The scaffold tools (`create_locators_file`, `create_page_object_file`,
+> `create_test_file`) will also return `{"success": false}` if a target file already
+> exists — this is the secondary safety net if collision detection is bypassed.
 
 ### Step 3 — Read Reference Files for Style Matching
 
@@ -165,6 +191,10 @@ Before writing any code, confirm the SeleniumBase methods you will use:
 This step prevents generating code that calls methods with wrong signatures or that
 do not exist.
 
+### Path Rule (applies to Steps 5–9)
+
+**Always pass paths exactly as they appear in the spec's Feature Metadata table — they are already repo-relative** (e.g. `src/pages/features/large_and_deep_dom/locators.py`). Do **not** prepend the repo root or construct absolute paths. The scaffold tools (`create_locators_file`, `create_page_object_file`, `create_test_file`, `insert_into_file`) expect repo-relative paths.
+
 ### Step 5 — Generate the Locators File
 
 Construct the locators file content following the **exact style** of the reference locators
@@ -193,6 +223,10 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
    **Grade:** A (all pass) → proceed. B (L5/L10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_locators_file(path=<spec's locators file path>, content=<reviewed content>)`.
+5. **Post-write verification:** Call `read_file(<spec's locators file path>)` immediately
+   after. If it returns an error, the file was not written — report to the developer and stop.
+   You MUST quote the `class <LocatorsClass>:` line from the returned content in your response.
+   If you cannot show it, treat the write as failed — do NOT proceed.
 
 ### Step 6 — Generate the Page Object File
 
@@ -223,6 +257,10 @@ object file you read in Step 3. The spec's Page Object Methods table is the sour
    **Grade:** A (all pass) → proceed. B (P5/P10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_page_object_file(path=<spec's page object file path>, content=<reviewed content>)`.
+5. **Post-write verification:** Call `read_file(<spec's page object file path>)` immediately
+   after. If it returns an error, the file was not written — report to the developer and stop.
+   You MUST quote the `class <PageClass>(BasePage):` line from the returned content in your response.
+   If you cannot show it, treat the write as failed — do NOT proceed.
 
 ### Step 7 — Generate the Test File
 
@@ -269,6 +307,10 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
    **Grade:** A (all pass) → proceed. B (T3/T5/T6/T7 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
 4. Call `create_test_file(path=<spec's test file path>, content=<reviewed content>)`.
+5. **Post-write verification:** Call `read_file(<spec's test file path>)` immediately
+   after. If it returns an error, the file was not written — report to the developer and stop.
+   You MUST quote the `class <TestClass>(UiBaseCase):` line from the returned content in your response.
+   If you cannot show it, treat the write as failed — do NOT proceed.
 
 ### Step 8 — Create `__init__.py` in the Feature Directory
 
