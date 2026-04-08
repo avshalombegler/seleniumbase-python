@@ -3,7 +3,7 @@
     "seleniumbase": {
       "type": "stdio",
       "command": "C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe",
-      "args": ["tools/seleniumbase-mcp/server.py"]
+      "args": ["E:/VSCodeProjects/seleniumbase-python/tools/seleniumbase-mcp/server.py"]
     },
     "context7": {
       "type": "stdio",
