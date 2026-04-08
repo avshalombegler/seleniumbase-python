@@ -38,6 +38,7 @@ from src.pages.features.javascript_onload_event_error.javascript_onload_event_er
 )
 from src.pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenusPage
 from src.pages.features.key_presses.key_presses_page import KeyPressesPage
+from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage
 
 
 class MainPage(BasePage):
@@ -262,3 +263,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.KEY_PRESSES_LINK)
 
         return KeyPressesPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_large_and_deep_dom_link(self, page_name: str = "Large and Deep DOM") -> LargeAndDeepDomPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.LARGE_AND_DEEP_DOM_LINK)
+
+        return LargeAndDeepDomPage(self.driver)
