@@ -64,6 +64,16 @@ You are the **first stage** of the `Plan → Generate → Heal` pipeline. Your s
    - Never use auto-generated/hash-based class names
    - Prefer `data-testid` or `aria-*` attributes — treat as Priority 1
    - If no reliable locator exists: flag as `LOCATOR_UNRESOLVED`
+4a. **Large DOM check:** If the page contains a table with more than ~10 rows, a long list,
+    or any repeating element structure:
+    - Call `fetch/fetch` on the page URL to retrieve the raw HTML source.
+    - Search the raw HTML for `id=` attributes on the repeating elements (rows, cells,
+      list items) before declaring any `By.ID` locator.
+    - If repeating elements have no `id` attributes, use `By.CSS_SELECTOR` with structural
+      selectors (`:first-child`, `:last-child`, `:nth-child`) and flag the absence in
+      Generator Notes.
+    - Do not infer ID patterns (e.g. `row-N`, `c{row}-{col}`) from naming conventions —
+      only use IDs that appear verbatim in the raw HTML.
 5. Observe dynamic behavior: what changes after interaction? What error states exist?
 6. Identify form validation rules: required fields, format constraints, length limits
 7. Note JavaScript alerts, modals, or overlays
@@ -183,10 +193,11 @@ violations are resolved.
 | L1 | No `By.CLASS_NAME` alone in any Page Element strategy |
 | L2 | No `By.TAG_NAME` alone in any Page Element strategy |
 | L3 | No positional XPath (e.g., `//div[3]`, `//span[2]`) in any selector |
-| L4 | Strategy priority respected: `By.ID` when element has stable `id`; `By.CSS_SELECTOR` preferred; `By.XPATH` only as last resort |
+| L4 | Strategy priority respected: `By.ID` only when the element's `id` attribute was directly observed in raw HTML source or an untruncated snapshot — never inferred from naming conventions. `By.CSS_SELECTOR` preferred for all other cases. `By.XPATH` only as last resort. |
 | L5 | Every `LOCATOR_UNRESOLVED` flag has a corresponding entry in Generator Notes |
 | L6 | All locator names in Page Elements table are `SCREAMING_SNAKE_CASE` |
 | L7 | No auto-generated or hash-based class names used in selectors |
+| L8 | For any `By.ID` locator on a table row, table cell, or repeating list item: raw page source (via `fetch/fetch`) confirms the `id` attribute exists on that specific element type. |
 
 ### T — Test Design Checks
 

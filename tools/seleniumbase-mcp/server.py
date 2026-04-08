@@ -38,6 +38,9 @@ from mcp.server.fastmcp import FastMCP
 # REPO_ROOT is three levels up: tools/seleniumbase-mcp -> tools -> repo_root
 REPO_ROOT = Path(__file__).parent.parent.parent.resolve()
 REPORT_PATH = REPO_ROOT / ".pytest_mcp_report.json"
+# Startup probe — written at module load so we can confirm the server actually started.
+# Delete .mcp_server_started after MCP connectivity is confirmed.
+(REPO_ROOT / ".mcp_server_started").write_text(f"started from {__file__}\nREPO_ROOT={REPO_ROOT}\n")
 
 # ---------------------------------------------------------------------------
 # Session Budget System
