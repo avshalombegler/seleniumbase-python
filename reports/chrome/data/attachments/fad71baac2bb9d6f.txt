@@ -1,0 +1,16 @@
+21:47:50 | INFO | root:conftest.py:92 | Running in CI environment - preserving existing results in: reports/allure-results
+21:47:51 | INFO | root:conftest.py:163 | Directory cleaned and recreated at: downloaded_files/gw1.
+21:47:56 | INFO | TestAddRemoveElements:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+21:47:56 | INFO | TestAddRemoveElements:test_add_remove_elements.py:22 | Tests for add elements.
+21:47:56 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:47:56 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:47:56 | INFO | MainPage:main_page.py:64 | Navigating to Add/Remove Elements page.
+21:47:56 | INFO | AddRemoveElementsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div#content h3', 'by': 'css selector'}' for 10s.
+21:47:56 | INFO | AddRemoveElementsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div#content h3', 'by': 'css selector'}'.
+21:47:56 | INFO | TestAddRemoveElements:test_add_remove_elements.py:26 | Add two elements.
+21:47:56 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+21:47:56 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+21:47:56 | INFO | TestAddRemoveElements:test_add_remove_elements.py:29 | Getting delete buttons count.
+21:47:56 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+21:47:56 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+21:47:57 | INFO | TestAddRemoveElements:test_add_remove_elements.py:32 | Verifying delete buttons count.
