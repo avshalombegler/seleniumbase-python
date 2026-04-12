@@ -40,3 +40,4 @@ class MainPageLocators:
     LARGE_AND_DEEP_DOM_LINK: Locator = {"selector": "Large & Deep DOM", "by": By.LINK_TEXT}
     MULTIPLE_WINDOWS_LINK: Locator = {"selector": "Multiple Windows", "by": By.LINK_TEXT}
     NOTIFICATION_MESSAGES_LINK: Locator = {"selector": "Notification Messages", "by": By.LINK_TEXT}
+    REDIRECT_LINK_LINK: Locator = {"selector": "Redirect Link", "by": By.LINK_TEXT}

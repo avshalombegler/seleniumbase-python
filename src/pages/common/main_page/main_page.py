@@ -41,6 +41,7 @@ from src.pages.features.key_presses.key_presses_page import KeyPressesPage
 from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage
 from src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage
 from src.pages.features.notification_messages.notification_messages_page import NotificationMessagesPage
+from src.pages.features.redirect_link.redirect_link_page import RedirectLinkPage
 
 
 class MainPage(BasePage):
@@ -286,3 +287,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.NOTIFICATION_MESSAGES_LINK)
 
         return NotificationMessagesPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_redirect_link_link(self, page_name: str = "Redirect Link") -> RedirectLinkPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.REDIRECT_LINK_LINK)
+
+        return RedirectLinkPage(self.driver)
