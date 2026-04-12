@@ -1,0 +1,9 @@
+21:55:57 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:25 | Tests for Digest Authentication scenarios.
+21:55:57 | INFO | MainPage:main_page.py:107 | Navigating to Digest Authentication page.
+21:55:57 | INFO | MainPage:base_page.py:183 | Navigating to url: https://admin:wrong@the-internet.herokuapp.com/digest_auth.
+21:55:58 | INFO | MainPage:base_page.py:185 | Navigation completed.
+21:55:58 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:29 | Check if login succeeded.
+21:56:08 | ERROR | DigestAuthPage:base_page.py:421 | Failed to get text for '{'selector': 'div#content p', 'by': 'css selector'}': Message: 
+ Element {div#content p} was not present after 10 seconds!
+
+21:56:08 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:31 | Login denied

@@ -1,0 +1,6 @@
+21:57:42 | INFO | TestRedirectLink:test_redirect_link.py:35 | Tests that the redirect link page loads with the correct heading.
+21:57:42 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:57:42 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:57:42 | INFO | MainPage:main_page.py:294 | Navigating to Redirect Link page.
+21:57:43 | INFO | RedirectLinkPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:57:43 | INFO | RedirectLinkPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.

@@ -1,0 +1,14 @@
+21:54:32 | INFO | TestFormAuthentication:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+21:54:33 | INFO | TestFormAuthentication:test_form_authentication.py:34 | Tests Form Authentication.
+21:54:33 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:33 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:33 | INFO | MainPage:main_page.py:194 | Navigating to Form Authentication page.
+21:54:34 | INFO | FormAuthenticationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+21:54:34 | INFO | FormAuthenticationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+21:54:34 | INFO | TestFormAuthentication:test_form_authentication.py:38 | Entering username 'tomsmith'.
+21:54:34 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'tomsmith' to element '{'selector': 'username', 'by': 'id'}'.
+21:54:34 | INFO | TestFormAuthentication:test_form_authentication.py:41 | Entering password 'wrong!'.
+21:54:34 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'wrong!' to element '{'selector': 'password', 'by': 'id'}'.
+21:54:34 | INFO | TestFormAuthentication:test_form_authentication.py:72 | Clicking login button.
+21:54:35 | INFO | TestFormAuthentication:test_form_authentication.py:75 | Getting flash message.
+21:54:35 | INFO | TestFormAuthentication:test_form_authentication.py:78 | Verifying flash message after unsuccessfull login.

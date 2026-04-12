@@ -1,0 +1,6 @@
+21:56:39 | INFO | TestShadowDom:test_shadow_dom.py:22 | Test Shadow DOM page loads with correct heading.
+21:56:39 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:56:39 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:56:39 | INFO | MainPage:main_page.py:301 | Navigating to Shadow DOM page.
+21:56:41 | INFO | ShadowDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'my-paragraph', 'by': 'css selector'}' for 10s.
+21:56:41 | INFO | ShadowDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'my-paragraph', 'by': 'css selector'}'.

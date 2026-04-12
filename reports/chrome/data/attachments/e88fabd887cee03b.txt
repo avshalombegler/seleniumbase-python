@@ -1,0 +1,13 @@
+21:54:56 | INFO | TestDynamicLoading:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0
+21:54:57 | INFO | TestDynamicLoading:test_dynamic_loading.py:18 | Tests Dynamic Loading - Example 1.
+21:54:57 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:57 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:57 | INFO | MainPage:main_page.py:152 | Navigating to Dynamic Loading page.
+21:54:58 | INFO | DynamicLoadingPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:54:58 | INFO | DynamicLoadingPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:54:58 | INFO | DynamicLoadingPage:dynamic_loading_page.py:25 | Navigating to Example 1: Element on page that is hidden page.
+21:54:58 | INFO | Example1Page:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.
+21:54:58 | INFO | Example1Page:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.
+21:54:58 | INFO | TestDynamicLoading:test_dynamic_loading.py:22 | Clicking start button.
+21:54:58 | INFO | Example1Page:base_page.py:132 | Waiting for loader to complete.
+21:55:03 | INFO | TestDynamicLoading:test_dynamic_loading.py:25 | Verifying success message.

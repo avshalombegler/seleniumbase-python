@@ -1,0 +1,10 @@
+21:55:15 | INFO | TestIframe:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+21:55:16 | INFO | TestIframe:test_iframe.py:20 | Tests iframe.
+21:55:16 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:55:16 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:55:16 | INFO | MainPage:main_page.py:201 | Navigating to Frames page.
+21:55:17 | INFO | FramesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:55:17 | INFO | FramesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:55:17 | INFO | TestIframe:test_iframe.py:24 | Clicking iframe link.
+21:55:18 | INFO | TestIframe:test_iframe.py:27 | Checking if herokuapp blocked – TinyMCE read-only mode.
+21:55:19 | INFO | TestIframe:test_iframe.py:29 | Skipping test: herokuapp blocked – TinyMCE read-only mode.

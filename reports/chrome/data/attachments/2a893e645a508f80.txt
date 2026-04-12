@@ -1,0 +1,15 @@
+21:54:35 | INFO | TestJavaScriptAlerts:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+21:54:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:48 | Tests JS Confirm.
+21:54:36 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:36 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:36 | INFO | MainPage:main_page.py:250 | Navigating to JavaScript Alerts page.
+21:54:37 | INFO | JavaScriptAlertsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+21:54:37 | INFO | JavaScriptAlertsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:52 | Clicking JS Confirm button.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:55 | Wait for and accept alert.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:58 | Getting result text.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:61 | Verifying result text.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:68 | Clicking JS Confirm button.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:71 | Wait for and dismiss alert.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:74 | Getting result text.
+21:54:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:77 | Verifying result text.

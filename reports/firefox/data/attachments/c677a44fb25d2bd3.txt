@@ -1,0 +1,6 @@
+21:55:33 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:25 | Tests for Digest Authentication scenarios.
+21:55:33 | INFO | MainPage:main_page.py:107 | Navigating to Digest Authentication page.
+21:55:33 | INFO | MainPage:base_page.py:183 | Navigating to url: https://admin:admin@the-internet.herokuapp.com/digest_auth.
+21:55:34 | INFO | MainPage:base_page.py:185 | Navigation completed.
+21:55:34 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:29 | Check if login succeeded.
+21:55:35 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:31 | Login succeeded

@@ -1,0 +1,39 @@
+21:57:48 | INFO | TestHovers:test_hovers.py:23 | Tests Hovers.
+21:57:48 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:57:48 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:57:48 | INFO | MainPage:main_page.py:222 | Navigating to Hovers page.
+21:57:49 | INFO | HoversPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:57:49 | INFO | HoversPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:57:49 | INFO | TestHovers:test_hovers.py:28 | Hovering mouse over profile image.
+21:57:49 | INFO | TestHovers:test_hovers.py:31 | Getting user name text.
+21:57:50 | INFO | TestHovers:test_hovers.py:34 | Verifying user name text.
+21:57:50 | INFO | TestHovers:test_hovers.py:41 | Clicking view profile link.
+21:57:50 | INFO | HoversUserPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.
+21:57:50 | INFO | HoversUserPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.
+21:57:50 | INFO | TestHovers:test_hovers.py:44 | Getting current browser url.
+21:57:50 | INFO | TestHovers:test_hovers.py:47 | Verifying user name in current url.
+21:57:50 | INFO | TestHovers:test_hovers.py:54 | Navigating back page.
+21:57:50 | INFO | HoversUserPage:base_page.py:195 | Navigating back.
+21:57:50 | INFO | HoversUserPage:base_page.py:197 | Navigation completed.
+21:57:50 | INFO | TestHovers:test_hovers.py:28 | Hovering mouse over profile image.
+21:57:50 | INFO | TestHovers:test_hovers.py:31 | Getting user name text.
+21:57:50 | INFO | TestHovers:test_hovers.py:34 | Verifying user name text.
+21:57:50 | INFO | TestHovers:test_hovers.py:41 | Clicking view profile link.
+21:57:51 | INFO | HoversUserPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.
+21:57:51 | INFO | HoversUserPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.
+21:57:51 | INFO | TestHovers:test_hovers.py:44 | Getting current browser url.
+21:57:51 | INFO | TestHovers:test_hovers.py:47 | Verifying user name in current url.
+21:57:51 | INFO | TestHovers:test_hovers.py:54 | Navigating back page.
+21:57:51 | INFO | HoversUserPage:base_page.py:195 | Navigating back.
+21:57:51 | INFO | HoversUserPage:base_page.py:197 | Navigation completed.
+21:57:51 | INFO | TestHovers:test_hovers.py:28 | Hovering mouse over profile image.
+21:57:51 | INFO | TestHovers:test_hovers.py:31 | Getting user name text.
+21:57:51 | INFO | TestHovers:test_hovers.py:34 | Verifying user name text.
+21:57:51 | INFO | TestHovers:test_hovers.py:41 | Clicking view profile link.
+21:57:51 | INFO | HoversUserPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1', 'by': 'css selector'}' for 10s.
+21:57:51 | INFO | HoversUserPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1', 'by': 'css selector'}'.
+21:57:51 | INFO | TestHovers:test_hovers.py:44 | Getting current browser url.
+21:57:51 | INFO | TestHovers:test_hovers.py:47 | Verifying user name in current url.
+21:57:51 | INFO | TestHovers:test_hovers.py:54 | Navigating back page.
+21:57:51 | INFO | HoversUserPage:base_page.py:195 | Navigating back.
+21:57:51 | INFO | HoversUserPage:base_page.py:197 | Navigation completed.

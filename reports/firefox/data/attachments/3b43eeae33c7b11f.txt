@@ -1,0 +1,7 @@
+21:54:18 | INFO | TestLargeAndDeepDom:test_large_and_deep_dom.py:63 | Test that header cells header-1 through header-50 are present.
+21:54:18 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:19 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:19 | INFO | MainPage:main_page.py:273 | Navigating to Large and Deep DOM page.
+21:54:22 | INFO | LargeAndDeepDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'large-table', 'by': 'id'}' for 10s.
+21:54:22 | INFO | LargeAndDeepDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'large-table', 'by': 'id'}'.
+21:54:22 | INFO | LargeAndDeepDomPage:base_page.py:451 | Counting elements with locator: '{'selector': 'table#large-table thead th', 'by': 'css selector'}'.

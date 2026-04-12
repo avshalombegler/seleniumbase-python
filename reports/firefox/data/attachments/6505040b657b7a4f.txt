@@ -1,0 +1,7 @@
+21:58:49 | INFO | TestJavaScriptOnloadRventError:test_javascript_onload_event_error.py:20 | Tests JavaScript onload event error.
+21:58:49 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:58:49 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:58:49 | INFO | MainPage:main_page.py:259 | Navigating to JavaScript Alerts page.
+21:58:49 | INFO | JavaScriptOnloadRventErrorPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'p', 'by': 'css selector'}' for 10s.
+21:58:49 | INFO | JavaScriptOnloadRventErrorPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'p', 'by': 'css selector'}'.
+21:58:49 | INFO | TestJavaScriptOnloadRventError:test_javascript_onload_event_error.py:24 | Getting driver log errors.

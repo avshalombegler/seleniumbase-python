@@ -1,0 +1,14 @@
+21:53:53 | INFO | root:conftest.py:92 | Running in CI environment - preserving existing results in: reports/allure-results
+21:53:54 | INFO | root:conftest.py:163 | Directory cleaned and recreated at: downloaded_files/gw3.
+21:54:11 | INFO | TestFilesUpload:test_files_upload.py:33 | Tests Files Upload.
+21:54:11 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:12 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:12 | INFO | MainPage:main_page.py:180 | Navigating to File Upload page.
+21:54:14 | INFO | FileUploadPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:54:14 | INFO | FileUploadPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:54:14 | INFO | TestFilesUpload:test_files_upload.py:39 | Upload file using the Upload button.
+21:54:14 | INFO | FileUploadPage:base_page.py:254 | Sending keys '/home/runner/work/seleniumbase-python/seleniumbase-python/tests/the_internet/ui_test_suite/test_files_upload/files/audio-first.mp3' to element '{'selector': 'file-upload', 'by': 'id'}'.
+21:54:15 | INFO | FileUploadedPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:54:15 | INFO | FileUploadedPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:54:15 | INFO | TestFilesUpload:test_files_upload.py:43 | Fetting uploaded filename.
+21:54:16 | INFO | TestFilesUpload:test_files_upload.py:46 | Verifying file uploaded sucessfully.

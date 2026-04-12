@@ -1,0 +1,9 @@
+21:54:53 | INFO | TestDropdownList:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+21:54:54 | INFO | TestDropdownList:test_dropdown_list.py:22 | Tests Dropdown List functionality.
+21:54:54 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:54 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:54 | INFO | MainPage:main_page.py:125 | Navigating to Dropdown List page.
+21:54:55 | INFO | DropdownListPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+21:54:55 | INFO | DropdownListPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+21:54:55 | INFO | TestDropdownList:test_dropdown_list.py:26 | Selecting option 'Option 1' from dropdown.
+21:54:55 | INFO | TestDropdownList:test_dropdown_list.py:29 | Verifying option 'Option 1' selected.

@@ -1,0 +1,11 @@
+21:56:49 | INFO | TestJQueryUIMenus:ui_base_case.py:116 | Test failed - screenshot attached from: latest_logs/tests.the_internet.ui_test_suite.test_jquery_ui_menu.TestJQueryUIMenus.test_jquery_ui_menus_functionality_0_PDF/screenshot.png
+21:56:56 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:27 | Tests JQueryUI - Menus.
+21:56:56 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:56:57 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:56:57 | INFO | MainPage:main_page.py:243 | Navigating to JQuery UI Menus page.
+21:56:59 | INFO | JQueryUIMenusPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+21:56:59 | INFO | JQueryUIMenusPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+21:56:59 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:31 | .
+21:57:04 | INFO | JQueryUIMenusPage:base_page.py:158 | Waiting for file 'menu.pdf' to download (timeout: 3s).
+21:57:07 | WARNING | JQueryUIMenusPage:base_page.py:171 | File 'menu.pdf' not found after 3s timeout.
+21:57:07 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:47 | Verifying input number value.

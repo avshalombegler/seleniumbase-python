@@ -1,0 +1,17 @@
+21:56:56 | INFO | TestDynamicControls:test_dynamic_controls.py:19 | Test Remove/add checkbox area.
+21:56:56 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:56:56 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:56:56 | INFO | MainPage:main_page.py:145 | Navigating to Dynamic Controls page.
+21:56:57 | INFO | DynamicControlsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.
+21:56:57 | INFO | DynamicControlsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.
+21:56:57 | INFO | TestDynamicControls:test_dynamic_controls.py:23 | Checking if checkbox is present.
+21:56:57 | INFO | TestDynamicControls:test_dynamic_controls.py:26 | Clicking remove button.
+21:56:57 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+21:57:00 | INFO | TestDynamicControls:test_dynamic_controls.py:29 | Checking if checkbox absent.
+21:57:10 | INFO | TestDynamicControls:test_dynamic_controls.py:32 | Getting remove message text.
+21:57:10 | INFO | TestDynamicControls:test_dynamic_controls.py:35 | Verifying remove message text.
+21:57:10 | INFO | TestDynamicControls:test_dynamic_controls.py:38 | Clicking add button.
+21:57:10 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+21:57:13 | INFO | TestDynamicControls:test_dynamic_controls.py:41 | Checking if checkbox is present.
+21:57:13 | INFO | TestDynamicControls:test_dynamic_controls.py:44 | Getting add message text.
+21:57:13 | INFO | TestDynamicControls:test_dynamic_controls.py:47 | Verifying add message text.

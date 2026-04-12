@@ -1,0 +1,13 @@
+21:56:08 | INFO | TestJQueryUIMenus:ui_base_case.py:116 | Test failed - screenshot attached from: latest_logs/tests.the_internet.ui_test_suite.test_jquery_ui_menu.TestJQueryUIMenus.test_jquery_ui_menus_functionality_2_Excel/screenshot.png
+21:56:09 | INFO | TestDynamicContent:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw2
+21:56:10 | INFO | TestDynamicContent:test_dynamic_content.py:18 | Test that content changes after page refresh.
+21:56:10 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:56:10 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:56:10 | INFO | MainPage:main_page.py:132 | Navigating to Dynamic Content page.
+21:56:10 | INFO | DynamicContentPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+21:56:10 | INFO | DynamicContentPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+21:56:11 | INFO | DynamicContentPage:base_page.py:189 | Refreshing page.
+21:56:11 | INFO | DynamicContentPage:base_page.py:191 | Page refreshed.
+21:56:11 | INFO | TestDynamicContent:test_dynamic_content.py:27 | Validating initial content blocks structure and count.
+21:56:11 | INFO | TestDynamicContent:test_dynamic_content.py:31 | Validating refreshed content blocks structure and count.
+21:56:11 | INFO | TestDynamicContent:test_dynamic_content.py:35 | Comparing content changes after refresh.

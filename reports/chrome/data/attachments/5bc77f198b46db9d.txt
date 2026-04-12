@@ -1,0 +1,9 @@
+21:54:23 | INFO | TestNotificationMessages:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+21:54:24 | INFO | TestNotificationMessages:test_notification_messages.py:24 | Test that a flash message is rendered after clicking the 'Click here' link.
+21:54:24 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:24 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:24 | INFO | MainPage:main_page.py:287 | Navigating to Notification Messages page.
+21:54:25 | INFO | NotificationMessagesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:54:25 | INFO | NotificationMessagesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:54:25 | INFO | NotificationMessageRenderedPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:54:26 | INFO | NotificationMessageRenderedPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.

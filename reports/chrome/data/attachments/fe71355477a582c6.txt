@@ -1,0 +1,13 @@
+21:54:50 | INFO | TestBrokenImages:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+21:54:51 | INFO | TestBrokenImages:test_broken_images.py:38 | Verify valid images count.
+21:54:51 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:54:51 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:54:51 | INFO | MainPage:main_page.py:77 | Navigating to Broken Images page.
+21:54:52 | INFO | BrokenImagesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+21:54:52 | INFO | BrokenImagesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+21:54:52 | INFO | TestBrokenImages:test_broken_images.py:42 | Getting valid images count.
+21:54:52 | INFO | BrokenImagesPage:broken_images_page.py:25 | Get all image elements.
+21:54:52 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+21:54:52 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+21:54:52 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+21:54:52 | INFO | TestBrokenImages:test_broken_images.py:44 | Found 1 valid images.

@@ -1,0 +1,26 @@
+21:57:53 | INFO | TestInfiniteScroll:test_infinite_scroll.py:18 | Tests Infinite Scroll.
+21:57:53 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+21:57:54 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+21:57:54 | INFO | MainPage:main_page.py:229 | Navigating to Infinite Scroll page.
+21:57:55 | INFO | InfiniteScrollPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+21:57:55 | INFO | InfiniteScrollPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+21:57:55 | INFO | TestInfiniteScroll:test_infinite_scroll.py:23 | Getting old page height.
+21:57:55 | INFO | TestInfiniteScroll:test_infinite_scroll.py:26 | Scrolling to bottom of page.
+21:58:05 | INFO | TestInfiniteScroll:test_infinite_scroll.py:29 | Getting new page height.
+21:58:05 | INFO | TestInfiniteScroll:test_infinite_scroll.py:32 | Verifying new page height is bigger than old page height.
+21:58:05 | INFO | TestInfiniteScroll:test_infinite_scroll.py:23 | Getting old page height.
+21:58:05 | INFO | TestInfiniteScroll:test_infinite_scroll.py:26 | Scrolling to bottom of page.
+21:58:15 | INFO | TestInfiniteScroll:test_infinite_scroll.py:29 | Getting new page height.
+21:58:15 | INFO | TestInfiniteScroll:test_infinite_scroll.py:32 | Verifying new page height is bigger than old page height.
+21:58:15 | INFO | TestInfiniteScroll:test_infinite_scroll.py:23 | Getting old page height.
+21:58:15 | INFO | TestInfiniteScroll:test_infinite_scroll.py:26 | Scrolling to bottom of page.
+21:58:25 | INFO | TestInfiniteScroll:test_infinite_scroll.py:29 | Getting new page height.
+21:58:25 | INFO | TestInfiniteScroll:test_infinite_scroll.py:32 | Verifying new page height is bigger than old page height.
+21:58:25 | INFO | TestInfiniteScroll:test_infinite_scroll.py:23 | Getting old page height.
+21:58:25 | INFO | TestInfiniteScroll:test_infinite_scroll.py:26 | Scrolling to bottom of page.
+21:58:35 | INFO | TestInfiniteScroll:test_infinite_scroll.py:29 | Getting new page height.
+21:58:35 | INFO | TestInfiniteScroll:test_infinite_scroll.py:32 | Verifying new page height is bigger than old page height.
+21:58:35 | INFO | TestInfiniteScroll:test_infinite_scroll.py:23 | Getting old page height.
+21:58:35 | INFO | TestInfiniteScroll:test_infinite_scroll.py:26 | Scrolling to bottom of page.
+21:58:45 | INFO | TestInfiniteScroll:test_infinite_scroll.py:29 | Getting new page height.
+21:58:45 | INFO | TestInfiniteScroll:test_infinite_scroll.py:32 | Verifying new page height is bigger than old page height.
