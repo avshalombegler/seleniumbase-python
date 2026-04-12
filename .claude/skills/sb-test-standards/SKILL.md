@@ -1,3 +1,8 @@
+---
+name: sb-test-standards
+description: Use when writing or reviewing locator, page object, or test files in the seleniumbase-python project — authoritative reference for the three-layer POM conventions.
+---
+
 # SeleniumBase Python — Test Coding Standards
 
 > Single source of truth for the three-layer coding conventions used in `seleniumbase-python`.
