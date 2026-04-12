@@ -14,6 +14,7 @@ class TestNestedFrames(UiBaseCase):
 
     TOP_FRAME = "top"
     BOTTOM_FRAME = "bottom"
+    BOTTOM_FRAME_EXPECTED_TEXT = "BOTTOM"
     NESTED_FRAMES = [["left"], ["middle"], ["right"]]
 
     @parameterized.expand(NESTED_FRAMES)
@@ -63,7 +64,7 @@ class TestNestedFrames(UiBaseCase):
 
         self.logger.info("Verifying frame text.")
         self.assert_equal(
-            self.BOTTOM_FRAME.upper(),
+            self.BOTTOM_FRAME_EXPECTED_TEXT,
             frame_text,
-            f"Expected frame text '{self.BOTTOM_FRAME.upper()}', got '{frame_text}'",
+            f"Expected frame text '{self.BOTTOM_FRAME_EXPECTED_TEXT}', got '{frame_text}'",
         )

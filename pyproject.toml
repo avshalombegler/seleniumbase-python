@@ -61,6 +61,8 @@ addopts = [
     # suppress warnings
     "--disable-warnings",
     "--show-capture=no",
+    # Disable pytest's built-in log capture so allure-pytest does not add a duplicate "log" section
+    "-p no:logging",
 
     # Screenshot of test failure:
     "--screenshot",
