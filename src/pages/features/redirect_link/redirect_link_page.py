@@ -12,7 +12,9 @@ if TYPE_CHECKING:
 
 
 class RedirectLinkPage(BasePage):
-    """Page object for the Redirect Link page containing methods to interact with and validate redirect functionality."""
+    """
+    Page object for the Redirect Link page containing methods to interact with and validate redirect functionality.
+    """
 
     def __init__(self, driver: BaseCase) -> None:
         super().__init__(driver)
