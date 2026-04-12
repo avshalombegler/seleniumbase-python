@@ -918,7 +918,9 @@ def create_test_file(path: str, content: str) -> dict[str, Any]:
     if abs_path.exists():
         return {
             "success": False,
-            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "error": (
+                f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally."
+            ),
             "path": norm,
         }
 
@@ -957,7 +959,9 @@ def create_page_object_file(path: str, content: str) -> dict[str, Any]:
     if abs_path.exists():
         return {
             "success": False,
-            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "error": (
+                f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally."
+            ),
             "path": norm,
         }
 
@@ -997,7 +1001,9 @@ def create_locators_file(path: str, content: str) -> dict[str, Any]:
     if abs_path.exists():
         return {
             "success": False,
-            "error": f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally.",
+            "error": (
+                f"File already exists at '{norm}'. Delete it first or use write_file() to overwrite intentionally."
+            ),
             "path": norm,
         }
 
