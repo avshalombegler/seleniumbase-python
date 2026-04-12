@@ -76,7 +76,22 @@ You are the **first stage** of the `Plan → Generate → Heal` pipeline. Your s
       Generator Notes.
     - Do not infer ID patterns (e.g. `row-N`, `c{row}-{col}`) from naming conventions —
       only use IDs that appear verbatim in the raw HTML.
-5. Observe dynamic behavior: what changes after interaction? What error states exist?
+   **Attribute value rule:** When constructing a CSS selector that includes an attribute
+   value — `a[href='...']`, `input[name='...']`, `button[value='...']`, etc. — the value
+   MUST be copied verbatim from the Playwright snapshot or raw HTML source. Never derive
+   it from the page URL, link text, feature name, or any other contextual inference. If
+   the snapshot does not expose the attribute value, call `fetch/fetch` on the page URL
+   to retrieve the raw HTML and read it from there.
+5. **Observe dynamic behavior by performing interactions:**
+   - For every primary interactive element found in Step 4 (the main button, submit link,
+     primary action), use `playwright/browser_click` to perform the action, then call
+     `playwright/browser_snapshot` to observe what changed.
+   - Record: does the URL change? Do new elements appear or disappear? Does a
+     flash/notification render?
+   - If an element navigates away from the page, navigate back and repeat for the next
+     element.
+   - Never describe post-interaction behavior from static inference alone — if you did not
+     click it and observe the result, do not include it as a "known" behavior in the spec.
 6. Identify form validation rules: required fields, format constraints, length limits
 7. Note JavaScript alerts, modals, or overlays
 8. Record elements in DOM but not visible/interactable — flag explicitly
@@ -200,6 +215,7 @@ violations are resolved.
 | L6 | All locator names in Page Elements table are `SCREAMING_SNAKE_CASE` |
 | L7 | No auto-generated or hash-based class names used in selectors |
 | L8 | For any `By.ID` locator on a table row, table cell, or repeating list item: raw page source (via `fetch/fetch`) confirms the `id` attribute exists on that specific element type. |
+| L9 | For every CSS selector that includes an attribute value (href=, name=, value=, type=, etc.): the attribute value is copied verbatim from the Playwright snapshot or raw HTML source — not derived from the URL path, feature name, link text, or assumed from naming conventions |
 
 ### T — Test Design Checks
 
@@ -213,6 +229,7 @@ violations are resolved.
 | T6 | At least one happy-path scenario exists (typically severity `CRITICAL`) |
 | T7 | Every scenario has at least one `expect:` step annotation and one Assertions block |
 | T8 | `@pytest.mark.smoke` only present when explicitly designated — not added by default |
+| T9 | Every scenario that describes post-interaction behavior (flash message appears, URL changes, element becomes visible/hidden): the behavior was directly observed in Phase 1 by performing the interaction with `playwright/browser_click` and capturing the resulting snapshot — not inferred from element names, URL patterns, or common conventions |
 
 ### D — Data Checks
 

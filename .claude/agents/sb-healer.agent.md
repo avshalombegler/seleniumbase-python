@@ -282,6 +282,18 @@ Also attempt to read the failure screenshot:
 
 ### Step 5 — Live Browser Inspection (Stale Locator Failures Only)
 
+**MANDATORY GATE — No locator fix may be written without live inspection evidence.**
+
+Before calling `Edit` or `write_file` to update a selector value, confirm you have a
+Playwright snapshot from this session that shows the target element with its correct
+selector. If no such snapshot exists for the target URL, perform the inspection (Steps
+5.1–5.5 below) before writing anything.
+
+"Prior knowledge of the site" and "known URL patterns" are NOT valid substitutes for live
+inspection. The-internet is a live external site — selectors may differ from what training
+data suggests. Even if you believe you know the correct href or id value, you must verify
+it in the browser before writing it.
+
 **Browser Inspection Caching Rule:**
 
 Before calling `playwright/browser_navigate`, check if you have already inspected this exact URL during this session.
@@ -460,6 +472,7 @@ Maximum 1 revision cycle — if still failing after revision, skip directly to S
 | S11 | New page object method references only locators from the feature's `locators.py` | Incomplete page object fixes |
 | S12 | No `self.logger.info(...)` calls added to page object (logging belongs in test layer) | Incomplete page object fixes |
 | S13 | If `@pytest.mark.skip` was removed, no other test decorators were altered | Incomplete page object fixes |
+| S14 | For every stale locator fix: a Playwright snapshot taken in this session shows the target element with the updated selector value — not inferred from naming conventions, URL structure, or training knowledge | Stale locator fixes |
 
 If any check fails: correct the violation in-memory, re-`write_file`, then proceed to Step 7.
 
@@ -537,6 +550,10 @@ These are hard rules — never violate them:
 - **Consult SKILL.md before applying any fix.** The standards file defines what post-fix code must look like.
 - **The locators file is the first place to look.** When a test fails on element interaction,
   `locators.py` is almost always where the fix belongs.
+- **Training knowledge about site structure is not live evidence.** For stale locator failures,
+  never write a selector value you did not read from a Playwright snapshot or raw HTML obtained
+  in this session. Guessing the href from the feature name, or the id from the element label,
+  is a bug waiting to happen. The browser is always the source of truth.
 - **Fix forward, but verify intent first.** Before changing an assertion expected value,
   confirm the app's new behavior is intentional — not a regression. Read the test's
   `self.logger.info(...)` lines and docstring to understand the original intent. If the
