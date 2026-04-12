@@ -60,6 +60,13 @@ You are the **first stage** of the `Plan → Generate → Heal` pipeline. Your s
 
 1. Navigate to the target URL and wait for full load
 2. Capture page title and top-level heading
+2a. **Verify PAGE_LOADED_INDICATOR candidate:** After capturing the page heading, scan
+    the Playwright snapshot for the element you intend to use as `PAGE_LOADED_INDICATOR`.
+    If it is not visible in the snapshot output, select a different stable, unambiguous
+    element (prefer a unique structural element such as a custom element tag, a stable
+    `id`, or a container that exists only on this page). **Never default to `.example h3`
+    without confirming it is present in the snapshot** — many the-internet pages do not
+    follow this pattern.
 3. Enumerate ALL interactive elements: inputs, buttons, links, dropdowns, checkboxes, alerts, iframes
 4. For each element, resolve locators in priority order: `id` → `CSS` → `XPath`
    - Never use positional XPath (`//div[3]`) — too brittle
@@ -128,8 +135,16 @@ Use these rules to derive the Feature Metadata table from the observed URL and p
 
 ```
 Given:
-  - feature_name:  Human-readable name from the page's <h1>/<h2> heading
+  - feature_name:  The exact <a> link text on the-internet homepage.
+                   Navigate to https://the-internet.herokuapp.com if not already there;
+                   never infer it from the URL path.
                    e.g. "Form Authentication"
+
+  - page_heading:  The exact text of the page's primary heading element (<h1> or <h2>),
+                   copied verbatim from the Playwright snapshot.
+                   This is NOT the same as feature_name.
+                   Used as EXPECTED_HEADING in Test Data — never derive it from the
+                   feature_name, URL path, or homepage link text.
 
 Derive:
   - feature_dir:        feature_name → lowercase, spaces→underscore, hyphens→underscore
@@ -216,6 +231,7 @@ violations are resolved.
 | L7 | No auto-generated or hash-based class names used in selectors |
 | L8 | For any `By.ID` locator on a table row, table cell, or repeating list item: raw page source (via `fetch/fetch`) confirms the `id` attribute exists on that specific element type. |
 | L9 | For every CSS selector that includes an attribute value (href=, name=, value=, type=, etc.): the attribute value is copied verbatim from the Playwright snapshot or raw HTML source — not derived from the URL path, feature name, link text, or assumed from naming conventions |
+| L10 | `PAGE_LOADED_INDICATOR` selector confirmed present in the Playwright snapshot — not assumed from the standard `.example h3` pattern. If `.example h3` is not visible in the snapshot output, a different selector must be chosen and recorded. |
 
 ### T — Test Design Checks
 
@@ -238,6 +254,7 @@ violations are resolved.
 | D1 | Every literal string referenced in Assertions blocks is defined as a Test Data constant |
 | D2 | All Test Data constant names are `SCREAMING_SNAKE_CASE` |
 | D3 | Test Data section present when assertions reference literal values; if no inputs or expected text values exist, Generator Notes states "No test data constants required — page has no form inputs" |
+| D4 | `EXPECTED_HEADING` value (if present) is copied verbatim from the live Playwright snapshot — not derived from `feature_name`, the URL path, or any assumption. |
 
 ### Grading
 
