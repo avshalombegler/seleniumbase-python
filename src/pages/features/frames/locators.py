@@ -16,7 +16,7 @@ class FramesPageLocators:
 class NestedFramesPageLocators:
     PAGE_LOADED_INDICATOR: Locator = {"selector": "frameset", "by": By.CSS_SELECTOR}
     NESTED_FRAME: Locator = {"selector": "frame[name='frame-{value}']", "by": By.CSS_SELECTOR}
-    NESTED_FRAME_BODY: Locator = {"selector": "body", "by": By.TAG_NAME}
+    NESTED_FRAME_BODY: Locator = {"selector": "body", "by": By.CSS_SELECTOR}
 
 
 class IframesPageLocators:
