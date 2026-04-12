@@ -2,6 +2,10 @@
 name: 🩺 sb-healer
 description: "Use this agent when you need to debug and fix failing SeleniumBase pytest tests. Triggered by: 'fix failing tests', 'heal tests', 'tests are broken', or when pointed at a specific test file or directory with failing tests."
 tools:
+  - Read
+  - Write
+  - Edit
+  - Glob
   - read_file
   - write_file
   - validate_python
@@ -245,13 +249,16 @@ Confirm the correct method signature for `seleniumbase==4.44.20` before writing 
 
 For each failure:
 
-1. `read_file` the **test file** — derive path from `nodeid` (e.g.
-   `tests/the_internet/ui_test_suite/test_login.py`)
+1. Use the native **`Read`** tool to read the **test file** — absolute path
+   `E:/VSCodeProjects/seleniumbase-python/<nodeid-derived path>` (e.g.
+   `E:/VSCodeProjects/seleniumbase-python/tests/the_internet/ui_test_suite/test_login.py`)
 2. **Discover the feature directory (MANDATORY — never skip):**
-   Call `list_files("src/pages/features/", "*.py")`. Scan the returned paths to find the
-   directory whose name best matches the feature under test. **Do not infer the directory
-   name from the test filename** — they frequently differ (e.g. `test_jquery_ui_menu.py`
-   targets `jquery_ui_menus/`, not `jquery_ui_menu/`).
+   Use the native **`Glob`** tool with pattern `src/pages/features/**/*.py` to list all
+   feature Python files. Scan the returned paths to find the directory whose name best
+   matches the feature under test. **Do not infer the directory name from the test filename**
+   — they frequently differ (e.g. `test_jquery_ui_menu.py` targets `jquery_ui_menus/`, not
+   `jquery_ui_menu/`). If `Glob` returns no results, fall back to
+   `list_files("src/pages/features/", "*.py")`.
 
    - If exactly one directory matches: use it.
    - If zero directories match: the page object may not exist. Mark the test with
@@ -262,13 +269,16 @@ For each failure:
    Store the discovered directory path and reuse it for all subsequent reads in this
    feature (page object, locators).
 
-3. `read_file` the **page object file** using the path discovered in step 2
-4. `read_file` the **locators file** — same discovered directory, filename `locators.py`
+3. Use the native **`Read`** tool to read the **page object file** — absolute path using
+   the directory discovered in step 2
+4. Use the native **`Read`** tool to read the **locators file** — absolute path using same
+   discovered directory, filename `locators.py`
 
 Also attempt to read the failure screenshot:
 - Convert `nodeid` like `tests/the_internet/ui_test_suite/test_login.py::TestLogin::test_valid`
   to `the_internet/ui_test_suite/test_login.TestLogin.test_valid`
 - Call `read_file("latest_logs/<converted_path>/screenshot.png")` — continue if not found
+  (keep using MCP `read_file` for screenshot/binary reads)
 
 ### Step 5 — Live Browser Inspection (Stale Locator Failures Only)
 
@@ -368,7 +378,7 @@ For all other fix types, skip to Step 6.
    `execute_script`, or `wait_for_and_accept_alert`.
 
 5. **Apply the fix.** Follow the standard fix procedure from Step 6:
-   `read_file` → `backup_file` → modify → `write_file` → verify syntax → run pytest.
+   native `Read` → `backup_file` → modify → `Edit` (surgical) or `write_file` (full rewrite) → verify syntax → run pytest.
 
 6. **If the test also has `@pytest.mark.skip`:** Remove the skip decorator as part of the same
    `write_file` call on the test file. This is NOT changing test logic — it is removing a
@@ -382,11 +392,11 @@ For all other fix types, skip to Step 6.
 
 **File Read Caching Rule:**
 
-Before calling `read_file` on a file, check if you have already read this exact file during this session and no `write_file` has been called on it since.
+Before using the native `Read` tool on a file, check if you have already read this exact file during this session and no write has been applied to it since.
 
 - **Already read, not modified since:** Use the content you already have.
-- **Already read, but modified since last read:** Call `read_file` again to get the updated version.
-- **Not yet read:** Call `read_file` as normal.
+- **Already read, but modified since last read:** Use native `Read` again to get the updated version.
+- **Not yet read:** Use native `Read` as normal.
 
 This is especially important for `locators.py` files that may be read repeatedly when fixing multiple tests in the same feature.
 
@@ -401,13 +411,21 @@ This is especially important for `locators.py` files that may be read repeatedly
 | Incomplete page object | Page object file + optionally `locators.py` | Add or uncomment or rewrite a method using existing `BasePage` methods and existing locators. May add a new locator to `locators.py` ONLY if the method needs a selector that doesn't exist yet and the selector can be derived from live page inspection. |
 
 **Fix procedure — always follow this sequence:**
-1. `read_file` the target file to get current content
+1. Use the native **`Read`** tool to read the target file (absolute path). This is always
+   available regardless of MCP server state.
 2. `backup_file` the target file to preserve the original
 3. Identify the minimal change needed
-4. Modify the content string in memory
-5. `write_file` the complete updated file content
-6. If `write_file` returns `success: False` (syntax error), the file was NOT written —
-   fix the syntax error and retry before running pytest
+4. **Choose the write strategy:**
+   - **Small, targeted change** (single locator value, one import line, one decorator,
+     `@pytest.mark.fix` addition): use the native **`Edit`** tool for a surgical
+     string replacement — faster and less error-prone than a full rewrite.
+   - **Larger change** (multiple sections, full method body rewrite, structural
+     restructuring): use `write_file` with the complete updated content — it validates
+     Python syntax before writing.
+5. If using `write_file` and it returns `success: False` (syntax error), the file was NOT
+   written — fix the syntax error and retry before running pytest.
+6. If using native `Write` for a complete rewrite (fallback if MCP unavailable): validate
+   syntax first with `validate_python` before calling `Write`.
 
 **Hard constraints — never violate these:**
 - Never hardcode a selector in a test file or page object method body — locators live in
@@ -494,11 +512,11 @@ still failing or marked for review — the backups may be needed for rollback.
 If a test fails after **three distinct fix attempts** and the failure cannot be resolved through
 static file analysis and live HTML inspection alone:
 
-1. `read_file` the test file
+1. Use the native **`Read`** tool to read the test file (absolute path)
 2. Add `@pytest.mark.fix` to the failing test method
 3. Add a comment on the line directly above the failing step:
    `# HEALER: <YYYY-MM-DD> — <what is failing and why it could not be auto-resolved>`
-4. `write_file` the updated test file
+4. Use the native **`Edit`** tool to insert the decorator and comment (surgical change)
 5. Do **not** use `@pytest.mark.xfail` — that signals a known, expected, permanent failure.
    `@pytest.mark.fix` signals "a human needs to look at this."
 6. Document in the output report exactly what was attempted and what the app currently returns
@@ -526,24 +544,29 @@ These are hard rules — never violate them:
   If the page now shows an error message, the app may be broken — mark with
   `@pytest.mark.fix` and document the discrepancy instead of silently accepting the
   new behavior.
-- **If `read_file` returns "file not found", STOP and re-derive the path.** Do not retry
-  the same path. Call `list_files` on the parent directory to discover the correct path.
-  If `list_files` also returns nothing, the file does not exist — mark the test with
-  `@pytest.mark.fix`. Maximum 1 retry after path correction; if the corrected path also
-  fails, mark and move on.
+- **If native `Read` returns "file not found", STOP and re-derive the path.** Do not retry
+  the same path. Use the native `Glob` tool (or `list_files` as fallback) on the parent
+  directory to discover the correct path. If both return nothing, the file does not exist —
+  mark the test with `@pytest.mark.fix`. Maximum 1 retry after path correction; if the
+  corrected path also fails, mark and move on.
 - **If `run_pytest` returns "no tests collected" or a collection error,** the nodeid is
   wrong. Re-run with `--collect-only -q` on the file path (without nodeid) to discover
   the actual nodeids. Do not retry the same nodeid.
-- **`write_file` requires complete content.** Always `read_file` first, never write partial files.
+- **Native tools for file I/O.** Use the native `Read`, `Write`, and `Edit` tools for all
+  source file reads and surgical edits — these are always available regardless of MCP server
+  state. Use `write_file` (MCP) for full rewrites because it validates Python syntax before
+  writing. Use `backup_file` and `validate_python` for their specialty functions (no native
+  equivalent). Never use `read_file` for source files — use native `Read` instead.
+- **`Write`/`write_file` require complete content.** Always use native `Read` first when
+  rewriting an entire file. Prefer native `Edit` for surgical changes to avoid full rewrites.
 - **Never read the same file more than twice without an intervening write.** If you have
   already read a file and have not written to it since, use the content you already have.
-  The only exception is if another tool has modified the file (e.g. `insert_into_file`).
   Reading the test file 18 times or the `.bak` file 8 times is a budget-destroying
   anti-pattern — catch yourself if you are re-reading a file you already have in context.
 - **Loop detection:** If you are about to call the same tool with the same arguments for
   a third time in this session, STOP. This is a loop signal. Do not make the call. Instead:
   (a) re-examine your assumptions about file paths and nodeids,
-  (b) call `list_files` or `run_pytest --collect-only` to get ground truth, or
+  (b) use the native `Glob` tool or `run_pytest --collect-only` to get ground truth, or
   (c) if stuck, mark the test with `@pytest.mark.fix` and move to the next failure.
 - **Never create new files.** Creating new test files, page object files, or locator files
   from scratch is the generator agent's responsibility. If a test fails because a required

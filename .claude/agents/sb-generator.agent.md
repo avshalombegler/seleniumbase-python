@@ -2,18 +2,11 @@
 name: 🏗️ sb-generator
 description: "Use this agent when you need to generate SeleniumBase test code from a spec file. Triggered by: 'generate tests from spec', 'implement spec', or when pointed at a specific spec file path in specs/the_internet/. Always invoked with an explicit spec file path."
 tools:
-  - read_file
-  - write_file
-  - list_files
-  - get_project_structure
-  - get_code_template
+  - Write
+  - Read
+  - Edit
+  - Glob
   - validate_python
-  - create_test_file
-  - create_page_object_file
-  - create_locators_file
-  - insert_into_file
-  - backup_file
-  - cleanup_backups
   - run_pytest
   - get_test_results
   - parse_pytest_failure
@@ -104,8 +97,9 @@ Call `reset_session_stats()` to start a clean session budget.
 
 ### Step 1 — Read the Spec
 
-Call `read_file(<spec_path>)` where `<spec_path>` is the path provided by the developer
-(e.g. `specs/the_internet/form_authentication_plan.md`).
+Use the native **`Read`** tool with the absolute path
+`E:/VSCodeProjects/seleniumbase-python/<spec_path>` where `<spec_path>` is the path provided
+by the developer (e.g. `specs/the_internet/spec_form_authentication.md`).
 
 Parse the following from the spec — if any required section is missing, **stop and report
 the gap** to the developer:
@@ -142,37 +136,34 @@ spec is missing or ambiguous, stop and report it to the developer instead.
 
 ### Step 2 — Collision Detection
 
-Call `list_files("src/pages/features/<feature_directory>")` using the feature directory
-name from the spec's Feature Metadata table.
+Use the native **`Glob`** tool with pattern `src/pages/features/<feature_directory>/**` to
+check whether the feature directory already exists.
 
-- **Empty list `[]`** → no collision, proceed to Step 3.
-- **Non-empty list** → the feature directory already exists; report the collision to the
+- **No matches** → no collision, proceed to Step 3.
+- **Any matches** → the feature directory already exists; report the collision to the
   developer and **stop**. Do not overwrite existing code.
 
-Then read `src/pages/common/main_page/locators.py` (you will read this again in Step 3;
-use cached content if available) and check whether the `LINK` locator for this feature
-is already present. If it is, report the collision and stop.
-
-> **Note:** The scaffold tools (`create_locators_file`, `create_page_object_file`,
-> `create_test_file`) will also return `{"success": false}` if a target file already
-> exists — this is the secondary safety net if collision detection is bypassed.
+Then use native **`Read`** on `E:/VSCodeProjects/seleniumbase-python/src/pages/common/main_page/locators.py`
+(you will read this again in Step 3; use cached content if available) and check whether the
+`LINK` locator for this feature is already present. If it is, report the collision and stop.
 
 ### Step 3 — Read Reference Files for Style Matching
 
-Before reading reference files, load `.claude/skills/sb-test-standards/SKILL.md` — it defines the project's coding standards. The reference file reads in Step 3 verify that your code matches the living codebase; the standards file defines what correct looks like.
+Before reading reference files, use the native **`Read`** tool to load `E:/VSCodeProjects/seleniumbase-python/.claude/skills/sb-test-standards/SKILL.md` — it defines the project's coding standards. The reference file reads in Step 3 verify that your code matches the living codebase; the standards file defines what correct looks like.
 
 Before generating any code, read **existing reference files** to absorb the exact coding
-style. These reads are mandatory — never rely on memory or templates alone.
+style. These reads are mandatory — never rely on memory or templates alone. Use the native
+**`Read`** tool with absolute paths (`E:/VSCodeProjects/seleniumbase-python/<path>`) for all reads.
 
-1. Call `read_file("src/pages/common/main_page/main_page.py")` — study the import block
+1. Read `src/pages/common/main_page/main_page.py` — study the import block
    structure, method ordering, and the exact pattern of navigation methods.
-2. Call `read_file("src/pages/common/main_page/locators.py")` — study the locator naming
+2. Read `src/pages/common/main_page/locators.py` — study the locator naming
    convention and ordering.
 3. Pick **one existing feature** that is similar in complexity to the spec's feature. Read
    all three of its files:
-   - `read_file("src/pages/features/<reference>/locators.py")`
-   - `read_file("src/pages/features/<reference>/<reference>_page.py")`
-   - `read_file("tests/the_internet/ui_test_suite/test_<reference>.py")`
+   - `src/pages/features/<reference>/locators.py`
+   - `src/pages/features/<reference>/<reference>_page.py`
+   - `tests/the_internet/ui_test_suite/test_<reference>.py`
 
    Good reference candidates by complexity:
    - Simple (few locators, simple interactions): `checkboxes`, `ab_testing`
@@ -193,7 +184,9 @@ do not exist.
 
 ### Path Rule (applies to Steps 5–9)
 
-**Always pass paths exactly as they appear in the spec's Feature Metadata table — they are already repo-relative** (e.g. `src/pages/features/large_and_deep_dom/locators.py`). Do **not** prepend the repo root or construct absolute paths. The scaffold tools (`create_locators_file`, `create_page_object_file`, `create_test_file`, `insert_into_file`) expect repo-relative paths.
+**Always use absolute paths with the native `Write`, `Read`, and `Edit` tools.** Prepend
+`E:/VSCodeProjects/seleniumbase-python/` to every repo-relative path from the spec's Feature
+Metadata table (e.g. `E:/VSCodeProjects/seleniumbase-python/src/pages/features/large_and_deep_dom/locators.py`).
 
 ### Step 5 — Generate the Locators File
 
@@ -222,11 +215,13 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
 
    **Grade:** A (all pass) → proceed. B (L5/L10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
-4. Call `create_locators_file(path=<spec's locators file path>, content=<reviewed content>)`.
-5. **Post-write verification:** Call `read_file(<spec's locators file path>)` immediately
-   after. If it returns an error, the file was not written — report to the developer and stop.
-   You MUST quote the `class <LocatorsClass>:` line from the returned content in your response.
-   If you cannot show it, treat the write as failed — do NOT proceed.
+4. Write the file using the **native `Write` tool** with the absolute path
+   `E:/VSCodeProjects/seleniumbase-python/<spec's locators file path>`.
+5. **Post-write verification:** Use the native **`Read`** tool at the same absolute path
+   immediately after. If `Read` returns an error or empty content, the file was not written —
+   report to the developer and stop. You MUST quote the `class <LocatorsClass>:` line from
+   the returned content in your response. If you cannot show it, treat the write as failed —
+   do NOT proceed.
 
 ### Step 6 — Generate the Page Object File
 
@@ -256,11 +251,13 @@ object file you read in Step 3. The spec's Page Object Methods table is the sour
 
    **Grade:** A (all pass) → proceed. B (P5/P10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
-4. Call `create_page_object_file(path=<spec's page object file path>, content=<reviewed content>)`.
-5. **Post-write verification:** Call `read_file(<spec's page object file path>)` immediately
-   after. If it returns an error, the file was not written — report to the developer and stop.
-   You MUST quote the `class <PageClass>(BasePage):` line from the returned content in your response.
-   If you cannot show it, treat the write as failed — do NOT proceed.
+4. Write the file using the **native `Write` tool** with the absolute path
+   `E:/VSCodeProjects/seleniumbase-python/<spec's page object file path>`.
+5. **Post-write verification:** Use the native **`Read`** tool at the same absolute path
+   immediately after. If `Read` returns an error or empty content, the file was not written —
+   report to the developer and stop. You MUST quote the `class <PageClass>(BasePage):` line
+   from the returned content in your response. If you cannot show it, treat the write as
+   failed — do NOT proceed.
 
 ### Step 7 — Generate the Test File
 
@@ -306,16 +303,19 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
 
    **Grade:** A (all pass) → proceed. B (T3/T5/T6/T7 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
-4. Call `create_test_file(path=<spec's test file path>, content=<reviewed content>)`.
-5. **Post-write verification:** Call `read_file(<spec's test file path>)` immediately
-   after. If it returns an error, the file was not written — report to the developer and stop.
-   You MUST quote the `class <TestClass>(UiBaseCase):` line from the returned content in your response.
-   If you cannot show it, treat the write as failed — do NOT proceed.
+4. Write the file using the **native `Write` tool** with the absolute path
+   `E:/VSCodeProjects/seleniumbase-python/<spec's test file path>`.
+5. **Post-write verification:** Use the native **`Read`** tool at the same absolute path
+   immediately after. If `Read` returns an error or empty content, the file was not written —
+   report to the developer and stop. You MUST quote the `class <TestClass>(UiBaseCase):` line
+   from the returned content in your response. If you cannot show it, treat the write as
+   failed — do NOT proceed.
 
 ### Step 8 — Create `__init__.py` in the Feature Directory
 
-Call `write_file(path="src/pages/features/<feature_directory>/__init__.py", content="")` to
-ensure the new feature directory is a proper Python package.
+Use the **native `Write` tool** with the absolute path
+`E:/VSCodeProjects/seleniumbase-python/src/pages/features/<feature_directory>/__init__.py`
+and empty string content (`""`) to ensure the new feature directory is a proper Python package.
 
 ### Step 9 — Register Navigation in MainPage
 
@@ -323,44 +323,40 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
 
 **9a. Add the locator to `MainPageLocators`:**
 
-1. Call `read_file("src/pages/common/main_page/locators.py")` (use cached content from Step 3
-   if unmodified).
+1. Use the native **`Read`** tool on `E:/VSCodeProjects/seleniumbase-python/src/pages/common/main_page/locators.py`
+   (use cached content from Step 3 if unmodified).
 2. Identify the correct insertion point: the locator entries are in alphabetical order by
    link text. Find the locator that should precede the new one alphabetically.
-3. Call `backup_file("src/pages/common/main_page/locators.py")`.
-4. Call `insert_into_file` with:
-   - `path`: `"src/pages/common/main_page/locators.py"`
-   - `anchor`: The full line of the preceding locator (must be unique)
-   - `content`: The new locator line, e.g.
-     `    FORM_AUTH_LINK: Locator = {"selector": "Form Authentication", "by": By.LINK_TEXT}`
-   - `position`: `"after"`
+3. Use the native **`Edit`** tool to insert the new locator line immediately after the
+   preceding locator line. Use the full preceding locator line as `old_string` and append
+   the new locator line after it as `new_string`. Example:
+   ```
+   old_string: '    LARGE_DEEP_DOM_LINK: Locator = {"selector": "Large & Deep DOM", "by": By.LINK_TEXT}'
+   new_string:  '    LARGE_DEEP_DOM_LINK: Locator = {"selector": "Large & Deep DOM", "by": By.LINK_TEXT}\n    MULTIPLE_WINDOWS_LINK: Locator = {"selector": "Multiple Windows", "by": By.LINK_TEXT}'
+   ```
 
 **9b. Add the import to `main_page.py`:**
 
-1. Call `read_file("src/pages/common/main_page/main_page.py")` (use cached content from Step 3
-   if unmodified).
+1. Use the native **`Read`** tool on `E:/VSCodeProjects/seleniumbase-python/src/pages/common/main_page/main_page.py`
+   (use cached content from Step 3 if unmodified).
 2. Identify the correct insertion point in the import block. Imports are grouped by feature,
    roughly alphabetical. Find the import line that should precede the new one.
-3. Call `backup_file("src/pages/common/main_page/main_page.py")`.
-4. Call `insert_into_file` with:
-   - `path`: `"src/pages/common/main_page/main_page.py"`
-   - `anchor`: The preceding import line (must be unique)
-   - `content`: The new import line, e.g.
-     `from src.pages.features.form_authentication.form_authentication_page import FormAuthenticationPage`
-   - `position`: `"after"`
+3. Use the native **`Edit`** tool to insert the new import line after the preceding import.
+   Example:
+   ```
+   old_string: 'from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage'
+   new_string:  'from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage\nfrom src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage'
+   ```
 
 **9c. Add the navigation method to `main_page.py`:**
 
 1. Identify the correct insertion point for the new method. Navigation methods are roughly
    alphabetical. Find the method that should precede the new one.
-2. Call `insert_into_file` with:
-   - `path`: `"src/pages/common/main_page/main_page.py"`
-   - `anchor`: The `return` statement of the preceding navigation method (must be unique —
-     use the full `return XxxPage(self.driver)` line)
-   - `content`: A blank line followed by the complete method definition, matching the
-     MainPage Registration Standards in SKILL.md Section 7 exactly (blank line between
-     `click_element` and `return`).
-   - `position`: `"after"`
+2. Use the native **`Edit`** tool: use the `return` statement of the preceding navigation
+   method as the anchor (must be unique — use the full `return XxxPage(self.driver)` line)
+   and append a blank line followed by the complete new method definition. Match the
+   MainPage Registration Standards in SKILL.md Section 7 exactly (blank line between
+   `click_element` and `return`).
 
 **9d. Review:** Verify the insertions match the MainPage Registration Standards in SKILL.md Section 7 (locator uses `By.LINK_TEXT`, method decorator/signature/body matches pattern, blank line before return).
 
@@ -384,16 +380,15 @@ Run the generated tests to confirm they compile and pass:
      | Assertion mismatch | Verify spec accuracy, adjust assertion if spec is correct |
      | Page object method error | Fix the method implementation in the page object |
 
-   - Apply the fix using `write_file` (always `read_file` first, then write the complete
-     updated content).
+   - Apply the fix using the native **`Read`** tool to get current content, then the native
+     **`Write`** tool to overwrite with the corrected complete content (absolute path).
    - Re-run `run_pytest` on the failing nodeid.
    - **Maximum 3 fix iterations.** If tests still fail after 3 attempts, do NOT delete or
      mark the generated code. Report the failures to the developer and stop.
 
 ### Step 11 — Cleanup and Report
 
-1. Call `cleanup_backups(".")` to remove `.bak` files created during `main_page.py` modifications.
-2. Produce the generation report.
+1. Produce the generation report.
 
 ---
 
@@ -458,11 +453,17 @@ These are hard rules — never violate them:
   and substitute the feature-specific values.
 - **Always use Context7 before writing code.** Confirm every SeleniumBase method you call
   against current documentation — never rely on training memory for API details.
-- **Always `validate_python` before writing.** Never call `create_*_file` or `write_file`
-  with content that has not passed syntax validation.
-- **Always `backup_file` before `insert_into_file`.** Shared files in `common/main_page/` — protect them.
-- **`write_file` requires complete content.** Always `read_file` first when modifying existing
-  files. For new files, `create_*_file` is preferred because it includes path validation.
+- **Always `validate_python` before writing.** Attempt MCP `validate_python` on generated
+  content before calling the native `Write` tool. If the MCP server is unavailable, review
+  the code carefully and proceed — do not block on validation.
+- **Native tools for all file I/O.** Use the native `Write`, `Read`, and `Edit` tools for
+  all file creation and modification. These are always available regardless of MCP server
+  state. MCP tools are used only for test execution and Python syntax validation.
+- **`Write` requires complete content.** Always use native `Read` first when re-writing an
+  existing file. For new files, compose the complete content and pass it directly to `Write`.
+- **`Edit` for surgical insertions.** Use the native `Edit` tool (not `insert_into_file`)
+  when adding a locator line or import to an existing shared file. Use the surrounding unique
+  line as the anchor in `old_string` and include the new line in `new_string`.
 - **One spec = one run.** The generator processes exactly one spec file per invocation. If the
   developer provides multiple spec paths, process only the first and ask them to invoke the
   agent again for the rest.
