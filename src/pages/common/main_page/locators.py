@@ -41,3 +41,4 @@ class MainPageLocators:
     MULTIPLE_WINDOWS_LINK: Locator = {"selector": "Multiple Windows", "by": By.LINK_TEXT}
     NOTIFICATION_MESSAGES_LINK: Locator = {"selector": "Notification Messages", "by": By.LINK_TEXT}
     REDIRECT_LINK_LINK: Locator = {"selector": "Redirect Link", "by": By.LINK_TEXT}
+    SHADOW_DOM_LINK: Locator = {"selector": "Shadow DOM", "by": By.LINK_TEXT}
