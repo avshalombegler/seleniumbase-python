@@ -38,3 +38,4 @@ class MainPageLocators:
     JAVASCRIPT_ONLOAD_EVENT_ERROR_LINK: Locator = {"selector": "JavaScript onload event error", "by": By.LINK_TEXT}
     KEY_PRESSES_LINK: Locator = {"selector": "Key Presses", "by": By.LINK_TEXT}
     LARGE_AND_DEEP_DOM_LINK: Locator = {"selector": "Large & Deep DOM", "by": By.LINK_TEXT}
+    MULTIPLE_WINDOWS_LINK: Locator = {"selector": "Multiple Windows", "by": By.LINK_TEXT}
