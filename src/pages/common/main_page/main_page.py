@@ -40,6 +40,9 @@ from src.pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenu
 from src.pages.features.key_presses.key_presses_page import KeyPressesPage
 from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage
 from src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage
+from src.pages.features.notification_messages.notification_messages_page import NotificationMessagesPage
+from src.pages.features.redirect_link.redirect_link_page import RedirectLinkPage
+from src.pages.features.shadow_dom.shadow_dom_page import ShadowDomPage
 
 
 class MainPage(BasePage):
@@ -278,3 +281,24 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.MULTIPLE_WINDOWS_LINK)
 
         return MultipleWindowsPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_notification_messages_link(self, page_name: str = "Notification Messages") -> NotificationMessagesPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.NOTIFICATION_MESSAGES_LINK)
+
+        return NotificationMessagesPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_redirect_link_link(self, page_name: str = "Redirect Link") -> RedirectLinkPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.REDIRECT_LINK_LINK)
+
+        return RedirectLinkPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_shadow_dom_link(self, page_name: str = "Shadow DOM") -> ShadowDomPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.SHADOW_DOM_LINK)
+
+        return ShadowDomPage(self.driver)

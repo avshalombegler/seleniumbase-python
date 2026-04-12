@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from io import StringIO
 
 import colorama
 import structlog
@@ -14,7 +15,7 @@ def remove_context_vars(logger, method_name, event_dict):
 
 
 def custom_console_renderer(logger, method_name, event_dict):
-    """Format logs as: timestamp | LEVEL | logger:file:line | message"""
+    """Format logs as: timestamp | LEVEL | logger:file:line | message (with ANSI colors)"""
     timestamp = event_dict.pop("timestamp", "")
     level = event_dict.pop("level", "").upper()
     logger_name = event_dict.pop("logger", "")
@@ -39,7 +40,66 @@ def custom_console_renderer(logger, method_name, event_dict):
     return f"{timestamp} | {colored_level} | {location} | {full_message}"
 
 
+def allure_log_renderer(logger, method_name, event_dict):
+    """Format logs for Allure (without ANSI color codes)."""
+    timestamp = event_dict.pop("timestamp", "")
+    level = event_dict.pop("level", "").upper()
+    logger_name = event_dict.pop("logger", "")
+    filename = event_dict.pop("filename", "")
+    lineno = event_dict.pop("lineno", "")
+
+    location = f"{logger_name}:{filename}:{lineno}" if filename and lineno else logger_name
+
+    event = event_dict.pop("event", "")
+    extras = " ".join(f"{k}={v}" for k, v in event_dict.items())
+    full_message = f"{event} {extras}".strip() if extras else event
+
+    # No ANSI color codes for Allure
+    return f"{timestamp} | {level:4s} | {location} | {full_message}"
+
+
+class AllureStringHandler(logging.Handler):
+    """Custom handler that accumulates formatted logs in memory for Allure attachment."""
+
+    def __init__(self):
+        super().__init__()
+        self.log_buffer = StringIO()
+
+    def emit(self, record):
+        """Append formatted log record to buffer."""
+        try:
+            formatted_message = self.format(record)
+            self.log_buffer.write(formatted_message + "\n")
+        except Exception:
+            self.handleError(record)
+
+    def get_logs(self) -> str:
+        """Get accumulated logs as string."""
+        return self.log_buffer.getvalue()
+
+    def clear(self) -> None:
+        """Clear the buffer."""
+        self.log_buffer = StringIO()
+
+
+# Global handler instance for access in conftest
+_allure_handler = None
+
+
+def get_allure_handler() -> AllureStringHandler:
+    """Get the global Allure handler instance."""
+    return _allure_handler
+
+
 def configure_logging(log_level: str = "INFO") -> None:
+    """
+    Configure structured logging with console, file, and Allure handlers.
+
+    Args:
+        log_level: Logging level (default: "INFO")
+    """
+    global _allure_handler
+
     colorama.init()
     enable_console_logs = os.environ.get("SHOW_LOGS", "false").lower() == "true"
 
@@ -93,6 +153,20 @@ def configure_logging(log_level: str = "INFO") -> None:
         )
     )
     root.addHandler(file_handler)
+
+    # Allure handler — accumulate logs in memory for single attachment after test
+    _allure_handler = AllureStringHandler()
+    _allure_handler.setFormatter(
+        structlog.stdlib.ProcessorFormatter(
+            processors=[
+                structlog.stdlib.ProcessorFormatter.remove_processors_meta,
+                remove_context_vars,
+                allure_log_renderer,
+            ],
+            foreign_pre_chain=shared_processors,
+        )
+    )
+    root.addHandler(_allure_handler)
 
     root.setLevel(log_level)
 

@@ -177,7 +177,6 @@ def clean_directories_at_start() -> None:
     clean_directory(downloads_dir, worker_id)
 
 
-
 @pytest.fixture(autouse=True)
 def bind_test_context(request: pytest.FixtureRequest) -> None:
     """Bind per-test context for structured JSON logging (test_name, browser)."""
