@@ -500,6 +500,15 @@ class TestABTesting(UiBaseCase):
 
 - **Never call** `self.navigate_to()` or `self.open()` directly in `@pytest.mark.ui` tests — `setUp` navigates to `BASE_URL` automatically
 
+### `self.driver` in tests vs. page objects
+
+| Context | `self.driver` refers to | Raw WebDriver access |
+|---|---|---|
+| Page object (`BasePage` subclass) | `BaseCase` instance | `self.driver.driver` |
+| Test (`UiBaseCase` subclass) | Selenium `WebDriver` directly | `self.driver` — no extra `.driver` |
+
+**Never use `self.driver.driver` in a test file.** The extra `.driver` attribute does not exist in the test context and will raise `AttributeError` at runtime. When a test needs direct WebDriver access (e.g. `current_window_handle`, `window_handles`), use `self.driver.<attribute>` directly.
+
 ### Assertion Rules
 
 - Use only: `self.assert_equal`, `self.assert_in`, `self.assert_true`, `self.assert_false`
@@ -567,6 +576,7 @@ Rules:
 - **Blank line** between `click_element` and `return` — part of the style
 - **Return**: `return <FeaturePage>(self.driver)`
 - Import for the new page object is added in **alphabetical order** in the import block of `main_page.py`
+- **Required:** After inserting the import, re-read the import block with the Read tool to confirm the line is present before proceeding to add the navigation method. A missing import will silently break every test for this feature at runtime.
 
 ### Navigation method — URL-based (`get_<feature>_page`)
 
