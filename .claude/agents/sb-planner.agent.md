@@ -8,6 +8,8 @@ tools:
   - playwright/browser_click
   - playwright/browser_type
   - playwright/browser_screenshot
+  - Write
+  - Read
   - write_file
   - read_file
   - fetch/fetch
@@ -236,9 +238,9 @@ Record the final grade for inclusion in the output report.
 
 **File path:** `specs/the_internet/spec_<feature_dir>.md`
 
-Write the spec file using the `write_file` MCP tool. **Always use a path relative to repo root** — never an absolute path (e.g. `specs/the_internet/spec_large_and_deep_dom.md`, not `e:/VSCodeProjects/.../spec_large_and_deep_dom.md`).
+Write the spec file using the **native `Write` tool** (not the MCP `write_file`). The native Write tool is always available and does not depend on the MCP server. **Always use an absolute path**: `E:/VSCodeProjects/seleniumbase-python/specs/the_internet/spec_<feature_dir>.md`.
 
-**After writing, verify the file exists** by calling `read_file` with the same path. If `read_file` returns an error or empty content, report the failure explicitly in the Output Report instead of silently claiming success.
+**After writing, verify the file exists** by calling the native `Read` tool with the same absolute path. If `Read` returns an error or empty content, report the failure explicitly in the Output Report instead of silently claiming success.
 
 ### Required Format
 
