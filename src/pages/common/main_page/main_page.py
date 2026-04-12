@@ -40,6 +40,7 @@ from src.pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenu
 from src.pages.features.key_presses.key_presses_page import KeyPressesPage
 from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage
 from src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage
+from src.pages.features.notification_messages.notification_messages_page import NotificationMessagesPage
 
 
 class MainPage(BasePage):
@@ -278,3 +279,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.MULTIPLE_WINDOWS_LINK)
 
         return MultipleWindowsPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_notification_messages_link(self, page_name: str = "Notification Messages") -> NotificationMessagesPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.NOTIFICATION_MESSAGES_LINK)
+
+        return NotificationMessagesPage(self.driver)
