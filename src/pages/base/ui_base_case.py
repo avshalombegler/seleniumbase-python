@@ -68,23 +68,40 @@ class UiBaseCase(BaseCase):
     def tearDown(self) -> None:
         """
         Clean up after each test method.
-        Calls the parent class's tearDown method to perform standard cleanup.
-        If the test failed (indicated by errors in _outcome), attempts to attach
-        a screenshot from the 'latest_logs' directory to the Allure report.
-        The screenshot path is derived from the test node ID, and if it exists,
-        it is attached as a PNG file with a descriptive name. Logs success or
-        failure of the attachment process.
+
+        Performs the following:
+        1. Calls parent class's tearDown method for standard cleanup
+        2. Attaches accumulated test logs to Allure report (formatted, without ANSI codes)
+        3. On test failure, attaches screenshot from 'latest_logs' directory to Allure report
+
+        The logs are accumulated in memory during test execution and attached as a single
+        text block. The buffer is cleared after attachment to prevent duplication in
+        subsequent tests.
         """
         super().tearDown()
+
+        # Attach accumulated test logs to Allure
+        try:
+            from src.config.logging_config import get_allure_handler
+
+            handler = get_allure_handler()
+            if handler:
+                logs_content = handler.get_logs()
+                if logs_content.strip():
+                    allure.attach(
+                        logs_content,
+                        name="Test Logs",
+                        attachment_type=allure.attachment_type.TEXT,
+                    )
+                    handler.clear()
+        except Exception as e:
+            self.logger.error(f"Failed to attach test logs to Allure: {e}")
 
         # Attach screenshot to Allure Report on failure
         if hasattr(self, "request") and hasattr(self, "_outcome") and self._outcome.errors:
             try:
                 nodeid = self.request.node.nodeid
                 test_path = nodeid.replace(".py::", ".").replace("::", ".").replace("/", ".").replace("\\", ".")
-                # Strip leading "tests." to match actual directory structure
-                if test_path.startswith("tests."):
-                    test_path = test_path[6:]  # Remove "tests." (6 characters)
 
                 screenshot_dir = Path("latest_logs") / test_path
                 screenshot_filename = "screenshot.png"
