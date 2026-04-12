@@ -12,7 +12,9 @@ if TYPE_CHECKING:
 
 
 class NotificationMessagesPage(BasePage):
-    """Page object for the Notification Messages landing page containing methods to navigate and check flash visibility."""
+    """
+    Page object for the Notification Messages landing page containing methods to navigate and check flash visibility.
+    """
 
     def __init__(self, driver: BaseCase) -> None:
         super().__init__(driver)
