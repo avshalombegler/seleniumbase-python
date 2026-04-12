@@ -5,14 +5,16 @@ from typing import TYPE_CHECKING
 import allure
 
 from src.pages.base.base_page import BaseCase, BasePage
-from src.pages.features.windows.locators import MultipleWindowsLocators
+from src.pages.features.multiple_windows.locators import MultipleWindowsLocators
 
 if TYPE_CHECKING:
     pass
 
 
 class MultipleWindowsPage(BasePage):
-    """Page object for the Multiple Windows page containing methods to interact with and validate window functionality."""
+    """
+    Page object for the Multiple Windows page containing methods to interact with and validate window functionality.
+    """
 
     def __init__(self, driver: BaseCase) -> None:
         super().__init__(driver)

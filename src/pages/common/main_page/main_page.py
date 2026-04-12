@@ -39,7 +39,7 @@ from src.pages.features.javascript_onload_event_error.javascript_onload_event_er
 from src.pages.features.jquery_ui_menus.jquery_ui_menus_page import JQueryUIMenusPage
 from src.pages.features.key_presses.key_presses_page import KeyPressesPage
 from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage
-from src.pages.features.windows.windows_page import MultipleWindowsPage
+from src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage
 
 
 class MainPage(BasePage):
