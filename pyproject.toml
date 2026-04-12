@@ -48,16 +48,19 @@ where = ["src"]
 [tool.pytest.ini_options]
 addopts = [
     # Log output:
-    # show summary of all test results
-    "-v",
-    "-ra",
-    # use short traceback format
-    "--tb=short",
-    # durations description
-    # "--durations=0",
-    # suppress warnings
-    "--disable-warnings",
-    "--show-capture=no",
+        # show summary of all test results
+        "-v",
+        "-ra",
+        # use short traceback format
+        "--tb=short",
+        # durations description
+        # "--durations=0",
+        # suppress warnings
+        "--disable-warnings",
+        # disable internal capturing of stdout and stderr
+        # "--show-capture=no",
+        # Disable pytest's built-in log capture so allure-pytest does not add a duplicate "log" section
+        "-p no:logging",
 
     # Screenshot of test failure:
     "--screenshot",
@@ -73,11 +76,11 @@ addopts = [
     # "--alluredir=reports/allure-results",
 
     # Markers:
-    # "-m regression",
+    "-m regression",
     # "-m regression or smoke",
     # "-m smoke",
     # "-m ui",
-    "-m api",
+    # "-m api",
     # "-m current",
     # enforce marker validation
     "--strict-markers",
