@@ -7,6 +7,7 @@ tools:
   - Edit
   - Glob
   - validate_python
+  - get_page_source
   - run_pytest
   - get_test_results
   - parse_pytest_failure
@@ -131,6 +132,24 @@ signature must match the spec exactly:
 
 Do **not** proceed to Step 2 until this block is written. If a required section of the
 spec is missing or ambiguous, stop and report it to the developer instead.
+
+### Step 1c — Execute Generator Notes Verifications
+
+Scan the Generator Notes for any instruction containing `verify`, `confirm`, `check live`,
+or `get_page_source`. For each such instruction:
+
+1. Call `get_page_source(url=<Full URL from Feature Metadata>)` to retrieve the raw HTML.
+2. Search the HTML for each selector or string value flagged for verification.
+3. If a selector from the Page Elements table is **not found** in the raw HTML, do not
+   proceed — report the discrepancy to the developer and stop. The spec must be corrected
+   before generation can continue.
+4. If a Test Data constant value (e.g. `EXPECTED_HEADING`, `EXPECTED_SLOT_TEXT`) is flagged
+   for verification, locate the element in the raw HTML and confirm the text matches. If it
+   differs, **use the value from the live HTML** and note the correction in the Generation
+   Report under a "Spec Corrections" subsection.
+
+This step converts Generator Notes from advisory hints into hard verification gates. If no
+Generator Notes require live verification, skip this step and proceed to Step 2.
 
 ---
 
@@ -376,8 +395,9 @@ Run the generated tests to confirm they compile and pass:
      |---|---|
      | Import error | Fix the import path in the failing file |
      | Syntax error | Fix the syntax in the failing file |
+     | Element not found / timeout | Call `get_page_source(url=<Full URL>)` to fetch live HTML. Search for the selector. If absent, identify the correct selector from the raw HTML and update `locators.py`. Re-run the failing test. |
      | Locator not found | Fix the selector in `locators.py` |
-     | Assertion mismatch | Verify spec accuracy, adjust assertion if spec is correct |
+     | Assertion mismatch | Call `get_page_source(url=<Full URL>)`, find the element's actual text in the raw HTML, and update the Test Data constant in the test file to match. |
      | Page object method error | Fix the method implementation in the page object |
 
    - Apply the fix using the native **`Read`** tool to get current content, then the native
@@ -417,6 +437,9 @@ After completing all generation work, produce this report for the developer:
 - Page object: <A|B|C>
 - Test file: <A|B|C>
 - MainPage registration: <A|B|C>
+
+### Spec Corrections
+<list any values that differed from the spec after Step 1c live verification, or "None">
 
 ### Verification
 All <n> tests passing ✅
