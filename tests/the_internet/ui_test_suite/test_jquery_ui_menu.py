@@ -17,7 +17,6 @@ class TestJQueryUIMenus(UiBaseCase):
     FILE_NAME = "menu"
     LINK_MENU_ITEMS = ["PDF", "CSV", "Excel"]
     FILES_EXTENSIONS = ["pdf", "csv", "xls"]
-    EXPECTED_DOWNLOADED_FILES_COUNT = 1
 
     @parameterized.expand(zip(LINK_MENU_ITEMS, FILES_EXTENSIONS))
     @pytest.mark.regression
@@ -28,25 +27,13 @@ class TestJQueryUIMenus(UiBaseCase):
         main_page = MainPage(self)
         page = main_page.click_jquery_ui_menus_link()
 
+        expected_file = f"{self.FILE_NAME}.{file_extension}"
+        self.delete_downloaded_file_if_present(expected_file)
+
         self.logger.info(".")
-        page.hover_menu_item(self.ENABLED)
+        page.navigate_and_click_menu_item(self.ENABLED, self.DOWNLOADS, link_menu_item)
 
-        self.sleep(1)
-        page.hover_menu_item(self.DOWNLOADS)
+        page.wait_for_file_to_download(expected_file, timeout=page.long_wait)
 
-        self.sleep(1)
-        page.hover_menu_item(link_menu_item)
-
-        self.sleep(1)
-        page.hover_and_click_menu_item(link_menu_item)
-
-        page.wait_for_file_to_download(f"{self.FILE_NAME}.{file_extension}")
-
-        actual_downloaded_files_count = len(page.driver.get_downloaded_files())
-
-        self.logger.info("Verifying input number value.")
-        self.assert_equal(
-            self.EXPECTED_DOWNLOADED_FILES_COUNT,
-            actual_downloaded_files_count,
-            f"Expected '{self.EXPECTED_DOWNLOADED_FILES_COUNT}', but got '{actual_downloaded_files_count}'",
-        )
+        self.logger.info("Verifying downloaded file.")
+        self.assert_downloaded_file(expected_file)
