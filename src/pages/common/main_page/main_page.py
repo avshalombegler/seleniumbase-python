@@ -43,6 +43,7 @@ from src.pages.features.multiple_windows.multiple_windows_page import MultipleWi
 from src.pages.features.notification_messages.notification_messages_page import NotificationMessagesPage
 from src.pages.features.redirect_link.redirect_link_page import RedirectLinkPage
 from src.pages.features.shadow_dom.shadow_dom_page import ShadowDomPage
+from src.pages.features.shifting_content.shifting_content_page import ShiftingContentPage
 
 
 class MainPage(BasePage):
@@ -302,3 +303,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.SHADOW_DOM_LINK)
 
         return ShadowDomPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_shifting_content_link(self, page_name: str = "Shifting Content") -> ShiftingContentPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.SHIFTING_CONTENT_LINK)
+
+        return ShiftingContentPage(self.driver)

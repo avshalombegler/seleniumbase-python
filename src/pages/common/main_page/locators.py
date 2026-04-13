@@ -42,3 +42,4 @@ class MainPageLocators:
     NOTIFICATION_MESSAGES_LINK: Locator = {"selector": "Notification Messages", "by": By.LINK_TEXT}
     REDIRECT_LINK_LINK: Locator = {"selector": "Redirect Link", "by": By.LINK_TEXT}
     SHADOW_DOM_LINK: Locator = {"selector": "Shadow DOM", "by": By.LINK_TEXT}
+    SHIFTING_CONTENT_LINK: Locator = {"selector": "Shifting Content", "by": By.LINK_TEXT}
