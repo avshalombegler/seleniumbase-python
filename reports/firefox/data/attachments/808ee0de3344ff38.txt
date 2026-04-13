@@ -1,0 +1,8 @@
+15:58:35 | INFO | TestDropdownList:test_dropdown_list.py:22 | Tests Dropdown List functionality.
+15:58:36 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:58:36 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:58:36 | INFO | MainPage:main_page.py:126 | Navigating to Dropdown List page.
+15:58:36 | INFO | DropdownListPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+15:58:36 | INFO | DropdownListPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+15:58:36 | INFO | TestDropdownList:test_dropdown_list.py:26 | Selecting option 'Option 2' from dropdown.
+15:58:36 | INFO | TestDropdownList:test_dropdown_list.py:29 | Verifying option 'Option 2' selected.

@@ -1,0 +1,9 @@
+15:59:10 | INFO | TestDragAndDrop:test_drag_and_drop.py:21 | Tests Drag and Drop functionality.
+15:59:10 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:59:11 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:59:11 | INFO | MainPage:main_page.py:119 | Navigating to Drag and Drop page.
+15:59:12 | INFO | DragAndDropPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+15:59:12 | INFO | DragAndDropPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+15:59:12 | INFO | TestDragAndDrop:test_drag_and_drop.py:25 | Performing drag and drop on box element.
+15:59:12 | INFO | DragAndDropPage:drag_and_drop_page.py:103 | Drag and drop completed using JS simulation.
+15:59:12 | INFO | TestDragAndDrop:test_drag_and_drop.py:28 | Verifying drag and drop action succeeded.

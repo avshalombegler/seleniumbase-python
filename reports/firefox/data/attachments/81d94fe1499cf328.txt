@@ -1,0 +1,13 @@
+15:56:32 | INFO | TestNestedFrames:test_nested_frames.py:25 | Tests Nested Frames.
+15:56:32 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:56:32 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:56:32 | INFO | MainPage:main_page.py:202 | Navigating to Frames page.
+15:56:33 | INFO | FramesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:56:33 | INFO | FramesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:56:33 | INFO | TestNestedFrames:test_nested_frames.py:29 | Clicking Nested Frames link.
+15:56:34 | INFO | NestedFramesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'frameset', 'by': 'css selector'}' for 10s.
+15:56:34 | INFO | NestedFramesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'frameset', 'by': 'css selector'}'.
+15:56:34 | INFO | TestNestedFrames:test_nested_frames.py:32 | Switching to frame 'top'.
+15:56:34 | INFO | TestNestedFrames:test_nested_frames.py:35 | Switching to nested frame 'left'.
+15:56:34 | INFO | TestNestedFrames:test_nested_frames.py:38 | Getting frame text.
+15:56:34 | INFO | TestNestedFrames:test_nested_frames.py:41 | Verifying frame text.

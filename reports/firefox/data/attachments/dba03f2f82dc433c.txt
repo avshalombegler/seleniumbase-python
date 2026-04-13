@@ -1,0 +1,6 @@
+15:58:11 | INFO | TestMultipleWindows:test_multiple_windows.py:64 | Test switching back and forth between two window handles.
+15:58:11 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:58:11 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:58:11 | INFO | MainPage:main_page.py:281 | Navigating to Multiple Windows page.
+15:58:13 | INFO | MultipleWindowsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': "a[href='/windows/new']", 'by': 'css selector'}' for 10s.
+15:58:13 | INFO | MultipleWindowsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': "a[href='/windows/new']", 'by': 'css selector'}'.

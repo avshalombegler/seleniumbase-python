@@ -1,0 +1,8 @@
+15:55:33 | INFO | TestLargeAndDeepDom:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+15:55:34 | INFO | TestLargeAndDeepDom:test_large_and_deep_dom.py:63 | Test that header cells header-1 through header-50 are present.
+15:55:34 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:55:34 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:55:34 | INFO | MainPage:main_page.py:274 | Navigating to Large and Deep DOM page.
+15:55:34 | INFO | LargeAndDeepDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'large-table', 'by': 'id'}' for 10s.
+15:55:34 | INFO | LargeAndDeepDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'large-table', 'by': 'id'}'.
+15:55:34 | INFO | LargeAndDeepDomPage:base_page.py:451 | Counting elements with locator: '{'selector': 'table#large-table thead th', 'by': 'css selector'}'.

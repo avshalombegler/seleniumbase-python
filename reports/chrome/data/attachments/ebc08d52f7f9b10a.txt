@@ -1,0 +1,7 @@
+15:56:06 | INFO | TestMultipleWindows:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+15:56:06 | INFO | TestMultipleWindows:test_multiple_windows.py:41 | Test that the original window remains intact after a new window opens.
+15:56:06 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:56:06 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:56:06 | INFO | MainPage:main_page.py:281 | Navigating to Multiple Windows page.
+15:56:07 | INFO | MultipleWindowsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': "a[href='/windows/new']", 'by': 'css selector'}' for 10s.
+15:56:07 | INFO | MultipleWindowsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': "a[href='/windows/new']", 'by': 'css selector'}'.

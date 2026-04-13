@@ -1,0 +1,11 @@
+15:59:32 | INFO | TestExitIntent:test_exit_intent.py:18 | Tests Exit Intent.
+15:59:32 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:59:32 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:59:32 | INFO | MainPage:main_page.py:167 | Navigating to Exit Intent page.
+15:59:33 | INFO | ExitIntentPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:59:33 | INFO | ExitIntentPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:59:33 | INFO | TestExitIntent:test_exit_intent.py:22 | Maximize broser window for better stability.
+15:59:39 | INFO | TestExitIntent:test_exit_intent.py:26 | Moving mouse out of the viewport pane.
+15:59:39 | INFO | TestExitIntent:test_exit_intent.py:29 | Verifying modal display.
+15:59:39 | INFO | TestExitIntent:test_exit_intent.py:32 | Clicking close button.
+15:59:39 | INFO | TestExitIntent:test_exit_intent.py:35 | Verifying modal close.

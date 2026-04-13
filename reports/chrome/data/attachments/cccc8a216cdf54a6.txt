@@ -1,0 +1,9 @@
+15:55:26 | INFO | root:conftest.py:92 | Running in CI environment - preserving existing results in: reports/allure-results
+15:55:27 | INFO | root:conftest.py:163 | Directory cleaned and recreated at: downloaded_files/gw1.
+15:55:31 | INFO | TestLargeAndDeepDom:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+15:55:32 | INFO | TestLargeAndDeepDom:test_large_and_deep_dom.py:79 | Test that the first data row and first cell are accessible.
+15:55:32 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:55:32 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:55:32 | INFO | MainPage:main_page.py:274 | Navigating to Large and Deep DOM page.
+15:55:32 | INFO | LargeAndDeepDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'large-table', 'by': 'id'}' for 10s.
+15:55:32 | INFO | LargeAndDeepDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'large-table', 'by': 'id'}'.

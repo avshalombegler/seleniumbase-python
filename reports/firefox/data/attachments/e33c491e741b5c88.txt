@@ -1,0 +1,12 @@
+15:55:48 | INFO | TestFilesUpload:test_files_upload.py:33 | Tests Files Upload.
+15:55:48 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:55:48 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:55:48 | INFO | MainPage:main_page.py:181 | Navigating to File Upload page.
+15:55:50 | INFO | FileUploadPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:55:50 | INFO | FileUploadPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:55:50 | INFO | TestFilesUpload:test_files_upload.py:39 | Upload file using the Upload button.
+15:55:50 | INFO | FileUploadPage:base_page.py:254 | Sending keys '/home/runner/work/seleniumbase-python/seleniumbase-python/tests/the_internet/ui_test_suite/test_files_upload/files/CATE-CHAPTER_1-QUALITY.ppt' to element '{'selector': 'file-upload', 'by': 'id'}'.
+15:55:51 | INFO | FileUploadedPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:55:51 | INFO | FileUploadedPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:55:51 | INFO | TestFilesUpload:test_files_upload.py:43 | Fetting uploaded filename.
+15:55:51 | INFO | TestFilesUpload:test_files_upload.py:46 | Verifying file uploaded sucessfully.

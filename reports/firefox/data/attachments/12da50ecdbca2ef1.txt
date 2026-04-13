@@ -1,0 +1,14 @@
+15:57:34 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:48 | Tests JS Confirm.
+15:57:35 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:57:35 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:57:35 | INFO | MainPage:main_page.py:251 | Navigating to JavaScript Alerts page.
+15:57:36 | INFO | JavaScriptAlertsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+15:57:36 | INFO | JavaScriptAlertsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:52 | Clicking JS Confirm button.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:55 | Wait for and accept alert.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:58 | Getting result text.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:61 | Verifying result text.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:68 | Clicking JS Confirm button.
+15:57:36 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:71 | Wait for and dismiss alert.
+15:57:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:74 | Getting result text.
+15:57:37 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:77 | Verifying result text.

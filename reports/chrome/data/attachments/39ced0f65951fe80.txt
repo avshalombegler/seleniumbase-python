@@ -1,0 +1,21 @@
+15:56:33 | INFO | TestDynamicControls:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+15:56:34 | INFO | TestDynamicControls:test_dynamic_controls.py:55 | Test Enable/disable textbox area.
+15:56:34 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:56:34 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:56:34 | INFO | MainPage:main_page.py:146 | Navigating to Dynamic Controls page.
+15:56:34 | INFO | DynamicControlsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.
+15:56:34 | INFO | DynamicControlsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.
+15:56:34 | INFO | TestDynamicControls:test_dynamic_controls.py:59 | Checking if textbox is disabled.
+15:56:34 | INFO | DynamicControlsPage:base_page.py:375 | Checking enabled state for element '{'selector': 'input[type=text]', 'by': 'css selector'}'.
+15:56:34 | INFO | TestDynamicControls:test_dynamic_controls.py:62 | Clicking enable button.
+15:56:34 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+15:56:37 | INFO | TestDynamicControls:test_dynamic_controls.py:65 | Checking if textbox is enabled.
+15:56:37 | INFO | DynamicControlsPage:base_page.py:375 | Checking enabled state for element '{'selector': 'input[type=text]', 'by': 'css selector'}'.
+15:56:37 | INFO | TestDynamicControls:test_dynamic_controls.py:68 | Getting enable message text.
+15:56:37 | INFO | TestDynamicControls:test_dynamic_controls.py:71 | Verifying enable message text.
+15:56:37 | INFO | TestDynamicControls:test_dynamic_controls.py:74 | Clicking disable button.
+15:56:37 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+15:56:40 | INFO | TestDynamicControls:test_dynamic_controls.py:77 | Checking if textbox is disabled.
+15:56:40 | INFO | DynamicControlsPage:base_page.py:375 | Checking enabled state for element '{'selector': 'input[type=text]', 'by': 'css selector'}'.
+15:56:40 | INFO | TestDynamicControls:test_dynamic_controls.py:80 | Getting disable message text.
+15:56:40 | INFO | TestDynamicControls:test_dynamic_controls.py:83 | Verifying disable message text.

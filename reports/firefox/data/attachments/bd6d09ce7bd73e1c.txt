@@ -1,0 +1,11 @@
+16:02:59 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:26 | Tests JQueryUI - Menus.
+16:02:59 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+16:02:59 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+16:02:59 | INFO | MainPage:main_page.py:244 | Navigating to JQuery UI Menus page.
+16:02:59 | INFO | JQueryUIMenusPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+16:02:59 | INFO | JQueryUIMenusPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+16:02:59 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:33 | .
+16:03:01 | INFO | JQueryUIMenusPage:base_page.py:158 | Waiting for file 'menu.xls' to download (timeout: 10s).
+16:03:11 | WARNING | JQueryUIMenusPage:base_page.py:171 | File 'menu.xls' not found after 10s timeout.
+16:03:11 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:38 | Verifying downloaded file.
+16:03:21 | INFO | TestJQueryUIMenus:ui_base_case.py:89 | Test failed - screenshot attached for: test_jquery_ui_menus_functionality_2_Excel

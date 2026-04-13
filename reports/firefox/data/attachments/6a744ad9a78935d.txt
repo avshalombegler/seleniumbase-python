@@ -1,0 +1,10 @@
+15:56:11 | INFO | TestFloatingMenu:test_floating_menu.py:27 | Tests Files Download.
+15:56:11 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:56:11 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:56:11 | INFO | MainPage:main_page.py:188 | Navigating to Floating Menu page.
+15:56:12 | INFO | FloatingMenuPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:56:12 | INFO | FloatingMenuPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:56:12 | INFO | TestFloatingMenu:test_floating_menu.py:31 | Scrolling down.
+15:56:12 | INFO | TestFloatingMenu:test_floating_menu.py:34 | Clicking floating menu item 'About'.
+15:56:13 | INFO | TestFloatingMenu:test_floating_menu.py:37 | Getting current URL.
+15:56:13 | INFO | TestFloatingMenu:test_floating_menu.py:40 | Verifying url updated after click on menu item.

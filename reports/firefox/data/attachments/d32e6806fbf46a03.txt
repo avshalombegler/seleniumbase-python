@@ -1,0 +1,10 @@
+15:58:49 | INFO | TestHorizontalSlider:test_horizontal_slider.py:25 | Tests Horizontal Slider.
+15:58:49 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+15:58:49 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+15:58:49 | INFO | MainPage:main_page.py:216 | Navigating to Horizontal Slider page.
+15:58:49 | INFO | HorizontalSliderPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+15:58:49 | INFO | HorizontalSliderPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+15:58:49 | INFO | TestHorizontalSlider:test_horizontal_slider.py:29 | Setting horizontal slider value using mouse.
+15:58:51 | INFO | TestHorizontalSlider:test_horizontal_slider.py:32 | Verifying horizontal slider new value.
+15:58:51 | INFO | TestHorizontalSlider:test_horizontal_slider.py:40 | Setting horizontal slider value using drag and drop.
+15:58:52 | INFO | TestHorizontalSlider:test_horizontal_slider.py:43 | Verifying horizontal slider new value.
