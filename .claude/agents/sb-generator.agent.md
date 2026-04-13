@@ -133,23 +133,33 @@ signature must match the spec exactly:
 Do **not** proceed to Step 2 until this block is written. If a required section of the
 spec is missing or ambiguous, stop and report it to the developer instead.
 
-### Step 1c — Execute Generator Notes Verifications
+### Step 1c — Live HTML Verification
 
-Scan the Generator Notes for any instruction containing `verify`, `confirm`, `check live`,
-or `get_page_source`. For each such instruction:
+If the spec has a Generator Notes section with any content, you MUST execute this step —
+there is no skip condition.
 
 1. Call `get_page_source(url=<Full URL from Feature Metadata>)` to retrieve the raw HTML.
-2. Search the HTML for each selector or string value flagged for verification.
-3. If a selector from the Page Elements table is **not found** in the raw HTML, do not
-   proceed — report the discrepancy to the developer and stop. The spec must be corrected
-   before generation can continue.
-4. If a Test Data constant value (e.g. `EXPECTED_HEADING`, `EXPECTED_SLOT_TEXT`) is flagged
-   for verification, locate the element in the raw HTML and confirm the text matches. If it
-   differs, **use the value from the live HTML** and note the correction in the Generation
-   Report under a "Spec Corrections" subsection.
+2. For every selector in the Page Elements table, search the raw HTML and record whether
+   it is present. Then output a mandatory verification table before proceeding:
 
-This step converts Generator Notes from advisory hints into hard verification gates. If no
-Generator Notes require live verification, skip this step and proceed to Step 2.
+   | Locator name | Selector | Found in HTML? | Notes |
+   |---|---|---|---|
+   | PAGE_LOADED_INDICATOR | .example h3 | ✅ / ❌ | … |
+   | … | … | … | … |
+
+3. If a Generator Notes instruction mentions a sub-page URL (e.g. `/shifting_content/menu`),
+   call `get_page_source` for that sub-page URL as well and verify any selectors scoped to it.
+4. If a selector is **not found** in the raw HTML, STOP and report the discrepancy to the
+   developer. Do not proceed until the spec is corrected.
+5. If a Test Data constant value (e.g. `EXPECTED_HEADING`, `EXPECTED_SLOT_TEXT`) is flagged
+   for verification, locate the element's text in the raw HTML. If it differs from the spec
+   value, **use the live value** and record the correction in the Generation Report under a
+   "Spec Corrections" subsection.
+
+**There is no "skip if no keywords" escape.** This step is mandatory whenever Generator Notes
+are present. Reasoning such as "the selectors follow the established pattern" or "I can infer
+from the codebase" does NOT satisfy this step — only raw HTML evidence does. If the Generator
+Notes section is absent from the spec entirely, skip this step and proceed to Step 2.
 
 ---
 
@@ -383,6 +393,11 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
 
 ### Step 10 — Verification Run
 
+**Manual code review does NOT substitute for `run_pytest`.** Never write "tests passing" in
+the report without `run_pytest` output confirming `exit_code == 0`, `failed == 0`, and
+`errors == 0`. If `run_pytest` cannot be called for any reason, report that explicitly —
+do not claim success.
+
 Run the generated tests to confirm they compile and pass:
 
 1. Call `run_pytest(test_path=<spec's test file path>, headless=True, browser="chrome")`.
@@ -441,8 +456,12 @@ After completing all generation work, produce this report for the developer:
 ### Spec Corrections
 <list any values that differed from the spec after Step 1c live verification, or "None">
 
+### Live Verification (Step 1c)
+<paste the verification table from Step 1c, or "Generator Notes section was absent — Step 1c skipped">
+
 ### Verification
-All <n> tests passing ✅
+pytest exit_code: <0|non-zero>
+Passed: <n> / <total>   Failed: <n>   Errors: <n>
 
 ### Session Stats
 **Total tool calls:** <n>
