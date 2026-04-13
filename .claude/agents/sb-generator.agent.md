@@ -317,11 +317,6 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
   from `UiBaseCase` → `BaseCase`)
 - When assertions reference page object methods, call them on the `page` variable
 
-**Inline interactions:**
-- If the spec's Generator Notes say an interaction should happen inline in the test body
-  (not via a page object method), write it as `page.click_element(<Locators>.<NAME>)` in
-  the test method. Import the locators class in the test file for this purpose.
-
 **Validation and Review:**
 1. Call `validate_python(content)` on the generated content.
 2. If invalid, fix the syntax error and re-validate.
@@ -342,6 +337,7 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
    | T11 | One scenario per test method — no merged scenarios |
    | T12 | Test method count matches spec's Test Scenarios section exactly |
    | T13 | If the spec uses `@parameterized.expand`: decorator is outermost (above all `@pytest.mark.*` and `@allure.*`), data table is at module level, `from parameterized import parameterized` is imported — **never use `@pytest.mark.parametrize`** (incompatible with `unittest.TestCase`-based classes) |
+   | T14 | No locators class imported in the test file — all interactions route through page object methods; `<Locators>.<NAME>` never appears directly in test method bodies |
 
    **Grade:** A (all pass) → proceed. B (T3/T5/T6/T7 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
@@ -389,6 +385,9 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
    old_string: 'from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage'
    new_string:  'from src.pages.features.large_and_deep_dom.large_and_deep_dom_page import LargeAndDeepDomPage\nfrom src.pages.features.multiple_windows.multiple_windows_page import MultipleWindowsPage'
    ```
+4. **Post-edit verification:** Use the native **`Read`** tool on `main_page.py` immediately
+   after. Find the import block and confirm the new import line is present. If absent, the
+   Edit did not match — re-apply using the correct anchor string before proceeding to Step 9c.
 
 **9c. Add the navigation method to `main_page.py`:**
 
