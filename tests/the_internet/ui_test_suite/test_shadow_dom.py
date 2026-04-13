@@ -3,7 +3,6 @@ import pytest
 
 from src.pages.base.ui_base_case import UiBaseCase
 from src.pages.common.main_page.main_page import MainPage
-from src.pages.features.shadow_dom.locators import ShadowDomLocators
 
 EXPECTED_HEADING = "Simple template"
 EXPECTED_SLOT_TEXT = "Let's have some different text!"
@@ -48,6 +47,6 @@ class TestShadowDom(UiBaseCase):
         page = main_page.click_shadow_dom_link()
 
         self.assert_true(
-            page.is_element_visible(ShadowDomLocators.SHADOW_HOST),
+            page.is_shadow_host_visible(),
             "Expected shadow host element (my-paragraph) to be visible",
         )

@@ -29,6 +29,10 @@ class ShadowDomPage(BasePage):
             "shadowRoot.querySelector('slot').assignedNodes()[0].textContent.trim();"
         )
 
+    @allure.step("Check shadow host element is visible")
+    def is_shadow_host_visible(self) -> bool:
+        return self.is_element_visible(ShadowDomLocators.PAGE_LOADED_INDICATOR, timeout=0)
+
     @allure.step("Get shadow default text")
     def get_shadow_default_text(self) -> str:
         return self.driver.execute_script(
