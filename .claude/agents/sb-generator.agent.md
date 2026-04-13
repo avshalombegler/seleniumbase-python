@@ -133,10 +133,22 @@ signature must match the spec exactly:
 Do **not** proceed to Step 2 until this block is written. If a required section of the
 spec is missing or ambiguous, stop and report it to the developer instead.
 
-### Step 1c — Live HTML Verification
+### Step 1c — MANDATORY Live HTML Verification (always — no skip condition)
 
-If the spec has a Generator Notes section with any content, you MUST execute this step —
-there is no skip condition.
+**This step is UNCONDITIONAL.** The spec was produced by sb-planner, which may have made
+errors. Spec selectors are proposals — live HTML is the only authority. Run this step on
+every invocation, regardless of whether Generator Notes is present, empty, or absent.
+
+The following are **NOT** valid reasons to skip or abbreviate this step:
+
+- *"The spec was already verified by sb-planner"*
+- *"These selectors follow a standard pattern I recognize"*
+- *"Generator Notes is absent, so the planner was confident in the selectors"*
+- *"I can infer from similar locators in other feature files whether this selector is correct"*
+- *"The selectors look reasonable and match the pattern I'd expect"*
+- *"I already fetched this page's HTML earlier in this session, so I do not need to call `get_page_source` again"*
+
+None of these are valid substitutes for calling `get_page_source` and searching the raw HTML.
 
 1. Call `get_page_source(url=<Full URL from Feature Metadata>)` to retrieve the raw HTML.
 2. For every selector in the Page Elements table, search the raw HTML and record whether
@@ -147,19 +159,26 @@ there is no skip condition.
    | PAGE_LOADED_INDICATOR | .example h3 | ✅ / ❌ | … |
    | … | … | … | … |
 
-3. If a Generator Notes instruction mentions a sub-page URL (e.g. `/shifting_content/menu`),
-   call `get_page_source` for that sub-page URL as well and verify any selectors scoped to it.
-4. If a selector is **not found** in the raw HTML, STOP and report the discrepancy to the
-   developer. Do not proceed until the spec is corrected.
+3. If any selector in the Page Elements table appears scoped to a URL other than the Full URL
+   in Feature Metadata (e.g. a sub-page like `/shifting_content/menu`), call `get_page_source`
+   for that sub-page URL as well and verify those selectors — regardless of whether Generator
+   Notes mentions it. When in doubt, also check Generator Notes for explicit sub-page URLs.
+4. If a selector is **NOT FOUND** in the raw HTML:
+   - **STOP immediately. Do NOT fall through to code generation.**
+   - Do NOT attempt to infer the correct selector from the feature name, URL, or naming patterns.
+   - Do NOT use the spec's selector as a fallback "to be fixed in Step 10."
+   - Report the exact selector that failed verification and what the raw HTML shows instead.
+   - Code generation does **NOT** resume until the developer corrects the spec and you re-run this step.
 5. If a Test Data constant value (e.g. `EXPECTED_HEADING`, `EXPECTED_SLOT_TEXT`) is flagged
    for verification, locate the element's text in the raw HTML. If it differs from the spec
    value, **use the live value** and record the correction in the Generation Report under a
    "Spec Corrections" subsection.
 
-**There is no "skip if no keywords" escape.** This step is mandatory whenever Generator Notes
-are present. Reasoning such as "the selectors follow the established pattern" or "I can infer
-from the codebase" does NOT satisfy this step — only raw HTML evidence does. If the Generator
-Notes section is absent from the spec entirely, skip this step and proceed to Step 2.
+**There is no skip condition.** Reasoning such as "the selectors follow the established
+pattern" or "I can infer from the codebase" does NOT satisfy this step — only raw HTML
+evidence does. Generator Notes absent means the planner found no known ambiguities — it
+does NOT mean the selectors are correct. Absent Generator Notes is not a skip condition.
+Verify all selectors in the Page Elements table regardless.
 
 ---
 
@@ -457,7 +476,7 @@ After completing all generation work, produce this report for the developer:
 <list any values that differed from the spec after Step 1c live verification, or "None">
 
 ### Live Verification (Step 1c)
-<paste the verification table from Step 1c, or "Generator Notes section was absent — Step 1c skipped">
+<paste the verification table from Step 1c — this field is always required; Step 1c has no skip condition>
 
 ### Verification
 pytest exit_code: <0|non-zero>
