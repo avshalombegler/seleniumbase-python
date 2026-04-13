@@ -77,6 +77,19 @@ class UiBaseCase(BaseCase):
         text block. The buffer is cleared after attachment to prevent duplication in
         subsequent tests.
         """
+        # Capture screenshot before super().tearDown() closes the browser
+        if hasattr(self, "request") and hasattr(self, "_outcome") and self._outcome.errors:
+            try:
+                screenshot = self.driver.get_screenshot_as_png()
+                allure.attach(
+                    screenshot,
+                    name=f"Failed Screenshot - {self.request.node.name}",
+                    attachment_type=allure.attachment_type.PNG,
+                )
+                self.logger.info(f"Test failed - screenshot attached for: {self.request.node.name}")
+            except Exception as e:
+                self.logger.error(f"Failed to attach screenshot: {e}")
+
         super().tearDown()
 
         # Attach accumulated test logs to Allure
@@ -95,16 +108,3 @@ class UiBaseCase(BaseCase):
                     handler.clear()
         except Exception as e:
             self.logger.error(f"Failed to attach test logs to Allure: {e}")
-
-        # Attach screenshot to Allure Report on failure
-        if hasattr(self, "request") and hasattr(self, "_outcome") and self._outcome.errors:
-            try:
-                screenshot = self.driver.get_screenshot_as_png()
-                allure.attach(
-                    screenshot,
-                    name=f"Failed Screenshot - {self.request.node.name}",
-                    attachment_type=allure.attachment_type.PNG,
-                )
-                self.logger.info(f"Test failed - screenshot attached for: {self.request.node.name}")
-            except Exception as e:
-                self.logger.error(f"Failed to attach screenshot: {e}")
