@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import allure
@@ -100,19 +99,12 @@ class UiBaseCase(BaseCase):
         # Attach screenshot to Allure Report on failure
         if hasattr(self, "request") and hasattr(self, "_outcome") and self._outcome.errors:
             try:
-                nodeid = self.request.node.nodeid
-                test_path = nodeid.replace(".py::", ".").replace("::", ".").replace("/", ".").replace("\\", ".")
-
-                screenshot_dir = Path("latest_logs") / test_path
-                screenshot_filename = "screenshot.png"
-                screenshot_path = screenshot_dir / screenshot_filename
-
-                if os.path.exists(screenshot_path):
-                    allure.attach.file(
-                        screenshot_path,
-                        name=f"Failed Screenshot - {self.request.node.name}",
-                        attachment_type=allure.attachment_type.PNG,
-                    )
-                    self.logger.info(f"Test failed - screenshot attached from: {screenshot_path}")
+                screenshot = self.driver.get_screenshot_as_png()
+                allure.attach(
+                    screenshot,
+                    name=f"Failed Screenshot - {self.request.node.name}",
+                    attachment_type=allure.attachment_type.PNG,
+                )
+                self.logger.info(f"Test failed - screenshot attached for: {self.request.node.name}")
             except Exception as e:
                 self.logger.error(f"Failed to attach screenshot: {e}")
