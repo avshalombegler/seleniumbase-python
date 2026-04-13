@@ -1,0 +1,13 @@
+12:17:38 | ERROR | TestJQueryUIMenus:ui_base_case.py:110 | Failed to attach screenshot: 'NoneType' object has no attribute 'get_screenshot_as_png'
+12:17:39 | INFO | TestFilesDownload:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+12:17:39 | INFO | TestFilesDownload:test_files_download.py:25 | Tests Files Download.
+12:17:39 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+12:17:39 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+12:17:39 | INFO | MainPage:main_page.py:174 | Navigating to File Download page.
+12:17:39 | INFO | FilesDownloadPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+12:17:39 | INFO | FilesDownloadPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+12:17:39 | INFO | TestFilesDownload:test_files_download.py:30 | Getting list of downloadable files.
+12:17:39 | INFO | TestFilesDownload:test_files_download.py:33 | Downloading all files in page.
+12:17:41 | INFO | TestFilesDownload:test_files_download.py:38 | Verifying downloaded files count equals to files in page.
+12:17:41 | INFO | TestFilesDownload:test_files_download.py:41 | Expected count: 12
+12:17:41 | INFO | TestFilesDownload:test_files_download.py:42 | Downloaded count: 15

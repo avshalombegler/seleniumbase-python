@@ -1,0 +1,9 @@
+12:16:43 | INFO | TestABTesting:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+12:16:43 | INFO | TestABTesting:test_ab_testing.py:18 | Tests for verifying title and paragraph content of page
+12:16:43 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+12:16:43 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+12:16:43 | INFO | MainPage:main_page.py:58 | Navigating to A/B Testing page.
+12:16:43 | INFO | ABTestingPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+12:16:43 | INFO | ABTestingPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+12:16:43 | INFO | TestABTesting:test_ab_testing.py:23 | Retrieved title: A/B Test Control.
+12:16:43 | INFO | TestABTesting:test_ab_testing.py:28 | Retrieved paragraph: Also known as split testing. This is a way in which businesses are able to simultaneously test and learn different versions of a page to see which text and/or functionality works best towards a desired outcome (e.g. a user action such as a click-through)..

@@ -1,0 +1,26 @@
+12:16:09 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+12:16:09 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+12:16:09 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+12:16:09 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+12:16:09 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+12:16:10 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+12:16:10 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+12:16:10 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+12:16:10 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+12:16:10 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+12:16:10 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+12:16:11 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+12:16:11 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+12:16:11 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+12:16:11 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+12:16:11 | INFO | TestJavaScriptAlerts:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw2
+12:16:12 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:24 | Tests JS Alert.
+12:16:12 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+12:16:12 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+12:16:12 | INFO | MainPage:main_page.py:251 | Navigating to JavaScript Alerts page.
+12:16:12 | INFO | JavaScriptAlertsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+12:16:12 | INFO | JavaScriptAlertsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+12:16:12 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:28 | Clicking JS Alert button.
+12:16:12 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:31 | Wait for and accept alert.
+12:16:12 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:34 | Getting result text.
+12:16:13 | INFO | TestJavaScriptAlerts:test_javascript_alerts.py:37 | Verifying result text.

@@ -1,0 +1,10 @@
+12:16:24 | INFO | TestDigestAuth:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw1
+12:16:24 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:25 | Tests for Digest Authentication scenarios.
+12:16:24 | INFO | MainPage:main_page.py:108 | Navigating to Digest Authentication page.
+12:16:24 | INFO | MainPage:base_page.py:183 | Navigating to url: https://admin:wrong@the-internet.herokuapp.com/digest_auth.
+12:16:24 | INFO | MainPage:base_page.py:185 | Navigation completed.
+12:16:24 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:29 | Check if login succeeded.
+12:16:34 | ERROR | DigestAuthPage:base_page.py:421 | Failed to get text for '{'selector': 'div#content p', 'by': 'css selector'}': Message: 
+ Element {div#content p} was not present after 10 seconds!
+
+12:16:34 | INFO | TestDigestAuth:test_digest_auth_login_scenarios.py:31 | Login denied
