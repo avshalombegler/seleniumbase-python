@@ -1,0 +1,17 @@
+11:56:32 | INFO | TestCheckboxes:test_checkboxes.py:21 | Test for verifying checkbox functionality.
+11:56:32 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:56:33 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:56:33 | INFO | MainPage:main_page.py:92 | Navigating to Checkboxes page.
+11:56:33 | INFO | CheckboxesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+11:56:33 | INFO | CheckboxesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+11:56:33 | INFO | TestCheckboxes:test_checkboxes.py:25 | Check checkboxes initial state.
+11:56:33 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(1)', 'by': 'css selector'}'.
+11:56:33 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(2)', 'by': 'css selector'}'.
+11:56:33 | INFO | TestCheckboxes:test_checkboxes.py:35 | Set checkboxes new state.
+11:56:33 | INFO | CheckboxesPage:checkboxes_page.py:54 | Set checkbox '0' to 'True'.
+11:56:33 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(1)', 'by': 'css selector'}'.
+11:56:33 | INFO | CheckboxesPage:checkboxes_page.py:54 | Set checkbox '1' to 'False'.
+11:56:33 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(2)', 'by': 'css selector'}'.
+11:56:34 | INFO | TestCheckboxes:test_checkboxes.py:39 | Check checkboxes new state.
+11:56:34 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(1)', 'by': 'css selector'}'.
+11:56:34 | INFO | CheckboxesPage:base_page.py:348 | Checking selected state for element '{'selector': 'form#checkboxes input[type=checkbox]:nth-of-type(2)', 'by': 'css selector'}'.

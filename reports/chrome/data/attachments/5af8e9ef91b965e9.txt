@@ -1,0 +1,36 @@
+11:53:15 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+11:53:15 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+11:53:15 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+11:53:15 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+11:53:15 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+11:53:16 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+11:53:16 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+11:53:16 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+11:53:16 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+11:53:16 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+11:53:17 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:37 | Tests basic autorization login scenatios.
+11:53:17 | INFO | MainPage:main_page.py:72 | Returning object of Basic Auth page.
+11:53:17 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:41 | Initialize URL based on username and password.
+11:53:17 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:44 | Get status code and authorization message.
+11:53:17 | INFO | tests.the_internet.ui_test_suite.test_basic_auth_login_scenarios:test_basic_auth_login_scenarios.py:47 | Validate status code and authorization message.
+11:53:18 | INFO | TestFormAuthentication:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+11:53:19 | INFO | TestFormAuthentication:test_form_authentication.py:34 | Tests Form Authentication.
+11:53:19 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:53:19 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:53:19 | INFO | MainPage:main_page.py:195 | Navigating to Form Authentication page.
+11:53:20 | INFO | FormAuthenticationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:53:20 | INFO | FormAuthenticationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:53:20 | INFO | TestFormAuthentication:test_form_authentication.py:38 | Entering username 'tomsmith'.
+11:53:20 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'tomsmith' to element '{'selector': 'username', 'by': 'id'}'.
+11:53:20 | INFO | TestFormAuthentication:test_form_authentication.py:41 | Entering password 'SuperSecretPassword!'.
+11:53:20 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'SuperSecretPassword!' to element '{'selector': 'password', 'by': 'id'}'.
+11:53:20 | INFO | TestFormAuthentication:test_form_authentication.py:45 | Clicking login button.
+11:53:21 | INFO | SecureAreaPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:53:21 | INFO | SecureAreaPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:53:21 | INFO | TestFormAuthentication:test_form_authentication.py:48 | Getting flash message.
+11:53:21 | INFO | TestFormAuthentication:test_form_authentication.py:51 | Verifying flash message after successfull login.
+11:53:21 | INFO | TestFormAuthentication:test_form_authentication.py:58 | Clicking logout button.
+11:53:21 | INFO | FormAuthenticationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:53:21 | INFO | FormAuthenticationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:53:21 | INFO | TestFormAuthentication:test_form_authentication.py:61 | Getting flash message.
+11:53:21 | INFO | TestFormAuthentication:test_form_authentication.py:64 | Verifying flash message after successfull login.

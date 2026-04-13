@@ -1,0 +1,12 @@
+11:55:46 | INFO | TestBrokenImages:test_broken_images.py:21 | Verify broken images count.
+11:55:46 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:55:46 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:55:46 | INFO | MainPage:main_page.py:78 | Navigating to Broken Images page.
+11:55:46 | INFO | BrokenImagesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+11:55:46 | INFO | BrokenImagesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+11:55:46 | INFO | TestBrokenImages:test_broken_images.py:25 | Getting broken images count.
+11:55:46 | INFO | BrokenImagesPage:broken_images_page.py:25 | Get all image elements.
+11:55:46 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+11:55:46 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+11:55:47 | INFO | BrokenImagesPage:broken_images_page.py:39 | Check if image is broken.
+11:55:47 | INFO | TestBrokenImages:test_broken_images.py:27 | Found 2 broken images.

@@ -1,0 +1,11 @@
+11:58:21 | INFO | TestJQueryUIMenus:ui_base_case.py:116 | Test failed - screenshot attached from: latest_logs/tests.the_internet.ui_test_suite.test_jquery_ui_menu.TestJQueryUIMenus.test_jquery_ui_menus_functionality_2_Excel/screenshot.png
+11:58:26 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:27 | Tests JQueryUI - Menus.
+11:58:26 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:58:26 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:58:26 | INFO | MainPage:main_page.py:244 | Navigating to JQuery UI Menus page.
+11:58:27 | INFO | JQueryUIMenusPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+11:58:27 | INFO | JQueryUIMenusPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+11:58:27 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:31 | .
+11:58:31 | INFO | JQueryUIMenusPage:base_page.py:158 | Waiting for file 'menu.xls' to download (timeout: 3s).
+11:58:34 | WARNING | JQueryUIMenusPage:base_page.py:171 | File 'menu.xls' not found after 3s timeout.
+11:58:34 | INFO | TestJQueryUIMenus:test_jquery_ui_menu.py:47 | Verifying input number value.

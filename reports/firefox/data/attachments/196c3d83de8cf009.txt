@@ -1,0 +1,9 @@
+11:53:27 | INFO | TestChallengingDom:test_challenging_dom.py:54 | Verify cell content per column.
+11:53:27 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:53:27 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:53:27 | INFO | MainPage:main_page.py:85 | Navigating to Challenging DOM page.
+11:53:29 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+11:53:30 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+11:53:30 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Adipisci' text under column 'Dolor'.
+11:53:30 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Adipisci' text under column 'Dolor'.
+11:53:30 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Adipisci' text under column 'Dolor'.

@@ -1,0 +1,12 @@
+11:56:18 | INFO | TestDynamicLoading:test_dynamic_loading.py:32 | Tests Dynamic Loading - Example 2.
+11:56:18 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:56:18 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:56:18 | INFO | MainPage:main_page.py:153 | Navigating to Dynamic Loading page.
+11:56:18 | INFO | DynamicLoadingPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+11:56:18 | INFO | DynamicLoadingPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+11:56:18 | INFO | DynamicLoadingPage:dynamic_loading_page.py:33 | Navigating to Example 2: Element rendered after the fact page.
+11:56:19 | INFO | Example2Page:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.
+11:56:19 | INFO | Example2Page:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.
+11:56:19 | INFO | TestDynamicLoading:test_dynamic_loading.py:36 | Clicking start button.
+11:56:19 | INFO | Example2Page:base_page.py:132 | Waiting for loader to complete.
+11:56:24 | INFO | TestDynamicLoading:test_dynamic_loading.py:39 | Verifying success message.

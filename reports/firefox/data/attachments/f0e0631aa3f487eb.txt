@@ -1,0 +1,20 @@
+11:54:50 | INFO | TestFormAuthentication:test_form_authentication.py:34 | Tests Form Authentication.
+11:54:50 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:54:50 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:54:50 | INFO | MainPage:main_page.py:195 | Navigating to Form Authentication page.
+11:54:52 | INFO | FormAuthenticationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:54:52 | INFO | FormAuthenticationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:54:52 | INFO | TestFormAuthentication:test_form_authentication.py:38 | Entering username 'tomsmith'.
+11:54:52 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'tomsmith' to element '{'selector': 'username', 'by': 'id'}'.
+11:54:52 | INFO | TestFormAuthentication:test_form_authentication.py:41 | Entering password 'SuperSecretPassword!'.
+11:54:52 | INFO | FormAuthenticationPage:base_page.py:254 | Sending keys 'SuperSecretPassword!' to element '{'selector': 'password', 'by': 'id'}'.
+11:54:52 | INFO | TestFormAuthentication:test_form_authentication.py:45 | Clicking login button.
+11:54:52 | INFO | SecureAreaPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:54:53 | INFO | SecureAreaPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:54:53 | INFO | TestFormAuthentication:test_form_authentication.py:48 | Getting flash message.
+11:54:53 | INFO | TestFormAuthentication:test_form_authentication.py:51 | Verifying flash message after successfull login.
+11:54:53 | INFO | TestFormAuthentication:test_form_authentication.py:58 | Clicking logout button.
+11:54:53 | INFO | FormAuthenticationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h2', 'by': 'css selector'}' for 10s.
+11:54:53 | INFO | FormAuthenticationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h2', 'by': 'css selector'}'.
+11:54:53 | INFO | TestFormAuthentication:test_form_authentication.py:61 | Getting flash message.
+11:54:53 | INFO | TestFormAuthentication:test_form_authentication.py:64 | Verifying flash message after successfull login.

@@ -1,0 +1,31 @@
+11:54:15 | INFO | TestKeyPresses:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:26 | Tests Key Presses.
+11:54:16 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:54:16 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:54:16 | INFO | MainPage:main_page.py:267 | Navigating to Key Presses page.
+11:54:16 | INFO | KeyPressesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+11:54:16 | INFO | KeyPressesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:16 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:54:17 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.

@@ -1,0 +1,16 @@
+11:57:11 | INFO | TestInputs:test_inputs.py:23 | Tests Inputs.
+11:57:11 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:57:11 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:57:11 | INFO | MainPage:main_page.py:237 | Navigating to Inputs page.
+11:57:11 | INFO | InputsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+11:57:11 | INFO | InputsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+11:57:11 | INFO | TestInputs:test_inputs.py:27 | Entering input number.
+11:57:11 | INFO | InputsPage:base_page.py:254 | Sending keys '1337' to element '{'selector': 'input[type=number]', 'by': 'css selector'}'.
+11:57:12 | INFO | TestInputs:test_inputs.py:30 | Getting input number value.
+11:57:12 | INFO | TestInputs:test_inputs.py:33 | Verifying input number value.
+11:57:12 | INFO | TestInputs:test_inputs.py:40 | Increasing number value using keyboard arrow.
+11:57:12 | INFO | TestInputs:test_inputs.py:43 | Getting input increased number value.
+11:57:12 | INFO | TestInputs:test_inputs.py:46 | Verifying input number value.
+11:57:12 | INFO | TestInputs:test_inputs.py:53 | Decreasing number value using keyboard arrow.
+11:57:12 | INFO | TestInputs:test_inputs.py:56 | Getting decreased input number value.
+11:57:12 | INFO | TestInputs:test_inputs.py:59 | Verifying input number value.

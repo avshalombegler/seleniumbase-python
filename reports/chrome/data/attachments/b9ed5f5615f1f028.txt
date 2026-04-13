@@ -1,0 +1,11 @@
+11:52:53 | INFO | TestFloatingMenu:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+11:52:54 | INFO | TestFloatingMenu:test_floating_menu.py:27 | Tests Files Download.
+11:52:54 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:52:54 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:52:54 | INFO | MainPage:main_page.py:188 | Navigating to Floating Menu page.
+11:52:54 | INFO | FloatingMenuPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+11:52:54 | INFO | FloatingMenuPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+11:52:54 | INFO | TestFloatingMenu:test_floating_menu.py:31 | Scrolling down.
+11:52:54 | INFO | TestFloatingMenu:test_floating_menu.py:34 | Clicking floating menu item 'News'.
+11:52:55 | INFO | TestFloatingMenu:test_floating_menu.py:37 | Getting current URL.
+11:52:55 | INFO | TestFloatingMenu:test_floating_menu.py:40 | Verifying url updated after click on menu item.

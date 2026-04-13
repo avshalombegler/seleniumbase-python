@@ -1,0 +1,14 @@
+11:53:08 | INFO | TestNestedFrames:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+11:53:09 | INFO | TestNestedFrames:test_nested_frames.py:25 | Tests Nested Frames.
+11:53:09 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:53:09 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:53:09 | INFO | MainPage:main_page.py:202 | Navigating to Frames page.
+11:53:09 | INFO | FramesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+11:53:09 | INFO | FramesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+11:53:09 | INFO | TestNestedFrames:test_nested_frames.py:29 | Clicking Nested Frames link.
+11:53:10 | INFO | NestedFramesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'frameset', 'by': 'css selector'}' for 10s.
+11:53:10 | INFO | NestedFramesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'frameset', 'by': 'css selector'}'.
+11:53:10 | INFO | TestNestedFrames:test_nested_frames.py:32 | Switching to frame 'top'.
+11:53:10 | INFO | TestNestedFrames:test_nested_frames.py:35 | Switching to nested frame 'middle'.
+11:53:10 | INFO | TestNestedFrames:test_nested_frames.py:38 | Getting frame text.
+11:53:11 | INFO | TestNestedFrames:test_nested_frames.py:41 | Verifying frame text.

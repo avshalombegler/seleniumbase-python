@@ -1,0 +1,11 @@
+11:57:19 | INFO | TestFilesDownload:test_files_download.py:25 | Tests Files Download.
+11:57:19 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:57:19 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:57:19 | INFO | MainPage:main_page.py:174 | Navigating to File Download page.
+11:57:20 | INFO | FilesDownloadPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+11:57:20 | INFO | FilesDownloadPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+11:57:20 | INFO | TestFilesDownload:test_files_download.py:30 | Getting list of downloadable files.
+11:57:20 | INFO | TestFilesDownload:test_files_download.py:33 | Downloading all files in page.
+11:57:22 | INFO | TestFilesDownload:test_files_download.py:38 | Verifying downloaded files count equals to files in page.
+11:57:22 | INFO | TestFilesDownload:test_files_download.py:41 | Expected count: 8
+11:57:22 | INFO | TestFilesDownload:test_files_download.py:42 | Downloaded count: 8

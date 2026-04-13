@@ -1,0 +1,18 @@
+11:53:42 | INFO | TestDynamicControls:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw3
+11:53:43 | INFO | TestDynamicControls:test_dynamic_controls.py:19 | Test Remove/add checkbox area.
+11:53:43 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:53:44 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:53:44 | INFO | MainPage:main_page.py:146 | Navigating to Dynamic Controls page.
+11:53:44 | INFO | DynamicControlsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h4', 'by': 'css selector'}' for 10s.
+11:53:44 | INFO | DynamicControlsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h4', 'by': 'css selector'}'.
+11:53:44 | INFO | TestDynamicControls:test_dynamic_controls.py:23 | Checking if checkbox is present.
+11:53:44 | INFO | TestDynamicControls:test_dynamic_controls.py:26 | Clicking remove button.
+11:53:44 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+11:53:47 | INFO | TestDynamicControls:test_dynamic_controls.py:29 | Checking if checkbox absent.
+11:53:57 | INFO | TestDynamicControls:test_dynamic_controls.py:32 | Getting remove message text.
+11:53:57 | INFO | TestDynamicControls:test_dynamic_controls.py:35 | Verifying remove message text.
+11:53:57 | INFO | TestDynamicControls:test_dynamic_controls.py:38 | Clicking add button.
+11:53:57 | INFO | DynamicControlsPage:base_page.py:132 | Waiting for loader to complete.
+11:54:01 | INFO | TestDynamicControls:test_dynamic_controls.py:41 | Checking if checkbox is present.
+11:54:01 | INFO | TestDynamicControls:test_dynamic_controls.py:44 | Getting add message text.
+11:54:01 | INFO | TestDynamicControls:test_dynamic_controls.py:47 | Verifying add message text.

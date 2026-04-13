@@ -1,0 +1,11 @@
+11:54:48 | INFO | TestFilesDownload:ui_base_case.py:116 | Test failed - screenshot attached from: latest_logs/tests.the_internet.ui_test_suite.test_files_download.TestFilesDownload.test_files_download_functionality/screenshot.png
+11:54:49 | INFO | TestGeolocation:ui_base_case.py:37 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0
+11:54:50 | INFO | TestGeolocation:test_geolocation.py:21 | Tests Geolocation.
+11:54:50 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:54:50 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:54:50 | INFO | MainPage:main_page.py:209 | Navigating to Geolocation page.
+11:54:50 | INFO | GeolocationPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+11:54:50 | INFO | GeolocationPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+11:54:50 | INFO | TestGeolocation:test_geolocation.py:25 | Clicking 'Where am I' button.
+11:54:50 | INFO | TestGeolocation:test_geolocation.py:28 | Verifying geolocation latitude value.
+11:54:50 | INFO | TestGeolocation:test_geolocation.py:36 | Verifying geolocation longitude value.

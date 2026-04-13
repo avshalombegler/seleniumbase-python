@@ -1,0 +1,31 @@
+11:56:59 | INFO | TestJavaScriptOnloadRventError:ui_base_case.py:116 | Test failed - screenshot attached from: latest_logs/tests.the_internet.ui_test_suite.test_javascript_onload_event_error.TestJavaScriptOnloadRventError.test_javascript_onload_event_error_functionality/screenshot.png
+11:57:04 | INFO | TestKeyPresses:test_key_presses.py:26 | Tests Key Presses.
+11:57:05 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+11:57:05 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+11:57:05 | INFO | MainPage:main_page.py:267 | Navigating to Key Presses page.
+11:57:05 | INFO | KeyPressesPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h3', 'by': 'css selector'}' for 10s.
+11:57:05 | INFO | KeyPressesPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h3', 'by': 'css selector'}'.
+11:57:05 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:05 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:42 | Pressing key '{key}'.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:45 | Getting result.
+11:57:06 | INFO | TestKeyPresses:test_key_presses.py:48 | Verifying result matches key press.
