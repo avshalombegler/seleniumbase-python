@@ -40,7 +40,7 @@ Every feature follows a strict three-layer Page Object Model. Each layer has a d
 
 - All assertions — only `self.assert_equal`, `self.assert_in`, `self.assert_true`, `self.assert_false`
 - All `self.logger.info(...)` calls
-- All test data constants (credentials, expected messages, expected text)
+- All test data constants (credentials, expected messages, expected text) — see Section 6 for placement rules (class-level vs. module-level)
 - No selector strings — never reference locators directly
 
 ---
@@ -580,8 +580,7 @@ Rules:
 - **Body line 2**: `self.click_element(MainPageLocators.<FEATURE>_LINK)`
 - **Blank line** between `click_element` and `return` — part of the style
 - **Return**: `return <FeaturePage>(self.driver)`
-- Import for the new page object is added in **alphabetical order** in the import block of `main_page.py`
-- **Required:** After inserting the import, re-read the import block with the Read tool to confirm the line is present before proceeding to add the navigation method. A missing import will silently break every test for this feature at runtime.
+- Import for the new page object is added in **alphabetical order** in the import block of `main_page.py` (a missing import silently breaks every test for this feature at runtime — verify after inserting)
 
 ### Navigation method — URL-based (`get_<feature>_page`)
 
@@ -656,7 +655,7 @@ All markers registered in `pyproject.toml`. `--strict-markers` is enforced — u
 | Concern | Location |
 | --- | --- |
 | Selector strings | `locators.py` only — nowhere else |
-| Test data constants (credentials, expected messages) | Module level in test file |
+| Test data constants (credentials, expected messages) | Test file — class-level or module-level (see Section 6) |
 | Element wait logic | Page object methods via `BasePage` |
 | Assertions | Test methods only |
 | `self.logger.info(...)` | Test methods only |
