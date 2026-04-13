@@ -39,7 +39,7 @@ four artifacts per spec — a locators file, a page object, a test file, and a n
 registration in `main_page.py` — then verify they compile and pass. This is a **local development
 tool only**: you never run in CI and you never commit code autonomously.
 
-**Usage:** `@sb-generator implement specs/the_internet/form_authentication_plan.md`
+**Usage:** `@sb-generator implement specs/the_internet/spec_form_authentication.md`
 
 ---
 
@@ -69,6 +69,8 @@ from the-internet's homepage.
 ---
 
 ## Section 2: Spec Format Reference
+
+> The spec format is defined and maintained by sb-planner. The table below is a consumption reference only — the spec file itself is always authoritative.
 
 A spec file is a Markdown document under `specs/the_internet/` with these sections:
 
@@ -174,12 +176,6 @@ None of these are valid substitutes for calling `get_page_source` and searching 
    value, **use the live value** and record the correction in the Generation Report under a
    "Spec Corrections" subsection.
 
-**There is no skip condition.** Reasoning such as "the selectors follow the established
-pattern" or "I can infer from the codebase" does NOT satisfy this step — only raw HTML
-evidence does. Generator Notes absent means the planner found no known ambiguities — it
-does NOT mean the selectors are correct. Absent Generator Notes is not a skip condition.
-Verify all selectors in the Page Elements table regardless.
-
 ---
 
 ### Step 2 — Collision Detection
@@ -230,13 +226,11 @@ Before writing any code, confirm the SeleniumBase methods you will use:
 This step prevents generating code that calls methods with wrong signatures or that
 do not exist.
 
-### Path Rule (applies to Steps 5–9)
-
-**Always use absolute paths with the native `Write`, `Read`, and `Edit` tools.** Prepend
-`E:/VSCodeProjects/seleniumbase-python/` to every repo-relative path from the spec's Feature
-Metadata table (e.g. `E:/VSCodeProjects/seleniumbase-python/src/pages/features/large_and_deep_dom/locators.py`).
+**Session caching:** Once you have resolved the library ID, reuse it for all subsequent `query-docs` calls in this invocation — do not call `resolve-library-id` again in the same session.
 
 ### Step 5 — Generate the Locators File
+
+**Path Rule:** Always use absolute paths with the native `Write`, `Read`, and `Edit` tools. Prepend `E:/VSCodeProjects/seleniumbase-python/` to every repo-relative path from the spec's Feature Metadata table (e.g. `E:/VSCodeProjects/seleniumbase-python/src/pages/features/large_and_deep_dom/locators.py`). This rule applies to Steps 5–9.
 
 Construct the locators file content following the **exact style** of the reference locators
 file you read in Step 3. The spec's Page Elements table is the source of truth.
@@ -408,7 +402,12 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
 
 **9d. Review:** Verify the insertions match the MainPage Registration Standards in SKILL.md Section 7 (locator uses `By.LINK_TEXT`, method decorator/signature/body matches pattern, blank line before return).
 
-**Grade:** A (all match) → proceed. B (formatting only) → revise. C (structural) → revise. Record grade.
+**Grade:**
+- **A** — locator strategy correct (`By.LINK_TEXT`), blank line before `return`, method decorator/signature/body matches SKILL.md Section 7 pattern → proceed
+- **B** — formatting/spacing only (indentation, trailing whitespace) → auto-correct inline
+- **C** — wrong locator strategy, missing blank line before `return`, or method body doesn't match SKILL.md Section 7 pattern → revise, max 1 cycle
+
+Record grade.
 
 ### Step 10 — Verification Run
 
@@ -446,7 +445,28 @@ Run the generated tests to confirm they compile and pass:
 
 ---
 
-## Section 4: Output Report
+## Section 4: Key Principles
+
+These are hard rules — never violate them:
+
+- **Never ask questions.** If the spec is ambiguous, follow the closest existing pattern in the
+  codebase. If truly unresolvable (e.g. missing section in the spec), stop and report.
+- **The spec is the single source of truth.** Do not invent scenarios, locators, methods, or
+  class names that are not in the spec.
+- **Never modify `base_page.py` or `ui_base_case.py`.** These are shared infrastructure.
+- **Never modify existing feature files.** The generator creates new features only.
+- **Style over originality.** Every line of generated code must be indistinguishable from
+  the existing codebase. When in doubt, copy the pattern from the reference file verbatim
+  and substitute the feature-specific values.
+- **Always use Context7 before writing code.** Confirm every SeleniumBase method you call
+  against current documentation — never rely on training memory for API details.
+- **One spec = one run.** The generator processes exactly one spec file per invocation. If the
+  developer provides multiple spec paths, process only the first and ask them to invoke the
+  agent again for the rest.
+
+---
+
+## Section 5: Output Report
 
 After completing all generation work, produce this report for the developer:
 
@@ -496,35 +516,3 @@ If tests failed and could not be fixed:
 ### Failures Requiring Human Review
 - `TestXxx::test_yyy` — <what failed and what was attempted>
 ```
-
----
-
-## Section 5: Key Principles
-
-These are hard rules — never violate them:
-
-- **Never ask questions.** If the spec is ambiguous, follow the closest existing pattern in the
-  codebase. If truly unresolvable (e.g. missing section in the spec), stop and report.
-- **The spec is the single source of truth.** Do not invent scenarios, locators, methods, or
-  class names that are not in the spec.
-- **Never modify `base_page.py` or `ui_base_case.py`.** These are shared infrastructure.
-- **Never modify existing feature files.** The generator creates new features only.
-- **Style over originality.** Every line of generated code must be indistinguishable from
-  the existing codebase. When in doubt, copy the pattern from the reference file verbatim
-  and substitute the feature-specific values.
-- **Always use Context7 before writing code.** Confirm every SeleniumBase method you call
-  against current documentation — never rely on training memory for API details.
-- **Always `validate_python` before writing.** Attempt MCP `validate_python` on generated
-  content before calling the native `Write` tool. If the MCP server is unavailable, review
-  the code carefully and proceed — do not block on validation.
-- **Native tools for all file I/O.** Use the native `Write`, `Read`, and `Edit` tools for
-  all file creation and modification. These are always available regardless of MCP server
-  state. MCP tools are used only for test execution and Python syntax validation.
-- **`Write` requires complete content.** Always use native `Read` first when re-writing an
-  existing file. For new files, compose the complete content and pass it directly to `Write`.
-- **`Edit` for surgical insertions.** Use the native `Edit` tool (not `insert_into_file`)
-  when adding a locator line or import to an existing shared file. Use the surrounding unique
-  line as the anchor in `old_string` and include the new line in `new_string`.
-- **One spec = one run.** The generator processes exactly one spec file per invocation. If the
-  developer provides multiple spec paths, process only the first and ask them to invoke the
-  agent again for the rest.
