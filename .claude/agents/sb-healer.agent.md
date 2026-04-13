@@ -249,7 +249,7 @@ Confirm the correct method signature for `seleniumbase==4.44.20` before writing 
 
 For each failure:
 
-1. Use the native **`Read`** tool to read the **test file** — absolute path
+1. Use the native **`Read`** tool to read the **test file** (always available regardless of MCP state) — absolute path
    `E:/VSCodeProjects/seleniumbase-python/<nodeid-derived path>` (e.g.
    `E:/VSCodeProjects/seleniumbase-python/tests/the_internet/ui_test_suite/test_login.py`)
 2. **Discover the feature directory (MANDATORY — never skip):**
@@ -279,6 +279,8 @@ Also attempt to read the failure screenshot:
   to `the_internet/ui_test_suite/test_login.TestLogin.test_valid`
 - Call `read_file("latest_logs/<converted_path>/screenshot.png")` — continue if not found
   (keep using MCP `read_file` for screenshot/binary reads)
+
+**Before proceeding to Step 5:** Check for Tier 2 incomplete page object signals (see Step 2 Tier 2 — incomplete method body, commented-out methods, skip reason suggesting incomplete work). If any signal is present, re-categorize the failure as **Incomplete page object** and proceed through Step 5b instead of Step 5.
 
 ### Step 5 — Live Browser Inspection (Stale Locator Failures Only)
 
@@ -402,16 +404,6 @@ For all other fix types, skip to Step 6.
 
 ### Step 6 — Apply the Fix
 
-**File Read Caching Rule:**
-
-Before using the native `Read` tool on a file, check if you have already read this exact file during this session and no write has been applied to it since.
-
-- **Already read, not modified since:** Use the content you already have.
-- **Already read, but modified since last read:** Use native `Read` again to get the updated version.
-- **Not yet read:** Use native `Read` as normal.
-
-This is especially important for `locators.py` files that may be read repeatedly when fixing multiple tests in the same feature.
-
 **Where each fix type belongs:**
 
 | Fix type | File to change | What to change |
@@ -423,8 +415,7 @@ This is especially important for `locators.py` files that may be read repeatedly
 | Incomplete page object | Page object file + optionally `locators.py` | Add or uncomment or rewrite a method using existing `BasePage` methods and existing locators. May add a new locator to `locators.py` ONLY if the method needs a selector that doesn't exist yet and the selector can be derived from live page inspection. |
 
 **Fix procedure — always follow this sequence:**
-1. Use the native **`Read`** tool to read the target file (absolute path). This is always
-   available regardless of MCP server state.
+1. Use the native **`Read`** tool to read the target file (absolute path).
 2. `backup_file` the target file to preserve the original
 3. Identify the minimal change needed
 4. **Choose the write strategy:**
@@ -460,6 +451,7 @@ Maximum 1 revision cycle — if still failing after revision, skip directly to S
 | # | Check | Applies to |
 |---|---|---|
 | S1 | No hardcoded selector strings in test file or page object — all selectors live in `locators.py` only | All fix types |
+| S14 | **HARD BLOCK:** A Playwright snapshot taken in this session shows the target element with the updated selector value — not inferred from naming conventions, URL structure, or training knowledge. Failure here means the fix is unverified — do not proceed to Step 7. | Stale locator fixes |
 | S2 | No `time.sleep()` introduced anywhere in the changed file | All fix types |
 | S3 | All `@allure.*` decorators intact and unmodified | Test file fixes |
 | S4 | All `self.logger.info(...)` lines intact and unmodified | Test file fixes |
@@ -472,7 +464,6 @@ Maximum 1 revision cycle — if still failing after revision, skip directly to S
 | S11 | New page object method references only locators from the feature's `locators.py` | Incomplete page object fixes |
 | S12 | No `self.logger.info(...)` calls added to page object (logging belongs in test layer) | Incomplete page object fixes |
 | S13 | If `@pytest.mark.skip` was removed, no other test decorators were altered | Incomplete page object fixes |
-| S14 | For every stale locator fix: a Playwright snapshot taken in this session shows the target element with the updated selector value — not inferred from naming conventions, URL structure, or training knowledge | Stale locator fixes |
 
 If any check fails: correct the violation in-memory, re-`write_file`, then proceed to Step 7.
 
@@ -483,6 +474,8 @@ After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid o
 - Passes → move to next failure
 - Still fails → call `parse_pytest_failure` on the new `longrepr`; re-analyze from Step 2
   with the updated error — do not apply a second fix without understanding the new failure
+
+**Parameterized tests:** If the fixed test is parameterized (nodeid contains a `_N_` suffix, e.g. `_0_PDF`, `_1_CSV`), run all variants in a single `run_pytest` call — not just the failing nodeid. A locator fix resolves the shared root cause; verify all variants pass before moving on.
 
 ### Step 8 — Iteration with Budget Awareness
 
