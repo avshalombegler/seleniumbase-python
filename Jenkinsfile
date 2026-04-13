@@ -23,11 +23,12 @@ pipeline {
     stages {
         stage('Run Tests') {
             steps {
-                script {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    script {
                     def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api'
                     def testConfigs = isApiTest ? ['api'] : (params.BROWSER == 'both' ? ['chrome', 'firefox'] : [params.BROWSER])
-                    
-                    parallel testConfigs.collectEntries { config -> 
+
+                    parallel testConfigs.collectEntries { config ->
                         [(config): {
                             withCredentials([
                                 string(credentialsId: 'TEST_USERNAME', variable: 'TEST_USERNAME'),
@@ -53,10 +54,11 @@ pipeline {
                             }
                         } ]
                     }
+                    }
                 }
             }
         }
-        
+
         stage('Upload Reports') {
             steps {
                 script {
@@ -74,15 +76,9 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, testResults: 'reports/junit-*.xml'
-            cleanWs()
-        }
-        success {
             script {
-                echo "✓ Tests passed and report uploaded to Allure Docker Service!"
-                echo "View reports:"
-                
+                echo "View Allure reports:"
                 def isApiTest = params.MARKER == 'api' || params.BROWSER == 'api'
-                
                 if (isApiTest) {
                     echo "API: http://localhost:5050/allure-docker-service/projects/selenium-tests-api/reports/latest/index.html"
                 } else if (params.BROWSER == 'both') {
@@ -94,9 +90,13 @@ pipeline {
                     echo "Firefox: http://localhost:5050/allure-docker-service/projects/selenium-tests-firefox/reports/latest/index.html"
                 }
             }
+            cleanWs()
+        }
+        success {
+            echo "✓ All tests passed."
         }
         failure {
-            echo "✗ Tests failed. Check reports for details."
+            echo "✗ Tests failed. Check Allure report for details."
         }
     }
 }
