@@ -1,0 +1,7 @@
+12:27:53 | INFO | TestChallengingDom:test_challenging_dom.py:40 | Verify table head text per column.
+12:27:53 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'h1.heading', 'by': 'css selector'}' for 10s.
+12:27:53 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'h1.heading', 'by': 'css selector'}'.
+12:27:53 | INFO | MainPage:main_page.py:85 | Navigating to Challenging DOM page.
+12:27:53 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': 'div.example h3', 'by': 'css selector'}' for 10s.
+12:27:53 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': 'div.example h3', 'by': 'css selector'}'.
+12:27:53 | INFO | TestChallengingDom:test_challenging_dom.py:44 | Getting table head text of column 'Ipsum'.
