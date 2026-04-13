@@ -58,6 +58,31 @@ You are the **first stage** of the `Plan → Generate → Heal` pipeline. Your s
 
 ### Phase 1 — Inspect (use Playwright tools)
 
+**NO PRIOR KNOWLEDGE — MANDATORY GATE**
+
+> This page is unknown to you. You have no prior knowledge of its DOM structure, element IDs,
+> attribute values, or text content. Every selector you record — ID, CSS, or XPath — must be
+> directly observed in a Playwright snapshot or raw HTML retrieved in this session.
+> **No observation = no selector.**
+
+The following are **NOT** valid substitutes for live observation. If you catch yourself
+thinking any of these, stop and browse the page first:
+
+- *"The URL contains the feature path, so the link `href` is probably that path"*
+- *"The feature name implies the button label or value"*
+- *"Standard the-internet pages use `.example h3` for the heading"*
+- *"I've seen this element structure in other features"*
+- *"The element ID follows an obvious naming convention"*
+- *"I know this site's HTML patterns from prior sessions"*
+
+**Required sequence for every selector: Navigate → Snapshot (or `fetch/fetch` for raw HTML) → Record. In that order. No exceptions.**
+
+This applies to ALL selectors — IDs, CSS, XPath — including attribute values in CSS selectors
+(`href=`, `name=`, `value=`, `type=`, `src=`, `data-*`), which must be copied verbatim from
+the snapshot or raw HTML.
+
+---
+
 1. Navigate to the target URL and wait for full load
 2. Capture page title and top-level heading
 2a. **Verify PAGE_LOADED_INDICATOR candidate:** After capturing the page heading, scan
@@ -466,3 +491,4 @@ After writing the spec file, produce this summary for the developer:
 - Never omit Allure severity or Markers from a scenario
 - Every excluded item must appear in the Out of Scope table with an explicit reason
 - The Feature Metadata table must be present and fully populated in every spec
+- Never record a selector without live observation evidence from this session — prior knowledge of the site, training data, naming conventions, or URL patterns are not valid substitutes for browsing
