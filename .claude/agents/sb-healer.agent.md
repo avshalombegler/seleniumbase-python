@@ -469,13 +469,38 @@ If any check fails: correct the violation in-memory, re-`write_file`, then proce
 
 ### Step 7 — Verification
 
-After each fix, call `run_pytest(test_path=<nodeid>)` with the specific nodeid of the test that was just fixed.
+**MANDATORY HARD RULE — no exceptions, no budget override:**
 
-- Passes → move to next failure
-- Still fails → call `parse_pytest_failure` on the new `longrepr`; re-analyze from Step 2
-  with the updated error — do not apply a second fix without understanding the new failure
+Every fix MUST be followed by a `run_pytest` call before any other action. A fix is not
+complete until pytest confirms the test passes. You may never:
+- Claim a fix worked without a passing `run_pytest` result in this session
+- Skip verification because the fix "looks correct"
+- Skip verification because budget is `"caution"` or `"critical"`
+- Proceed to the next failure without a passing run for the current one
+- Report a test as fixed in the output report without a passing `run_pytest` result
 
-**Parameterized tests:** If the fixed test is parameterized (nodeid contains a `_N_` suffix, e.g. `_0_PDF`, `_1_CSV`), run all variants in a single `run_pytest` call — not just the failing nodeid. A locator fix resolves the shared root cause; verify all variants pass before moving on.
+If you find yourself about to write the output report without having run pytest on the last
+fixed test — **stop, run pytest first**.
+
+**Attempt tracking (3-attempt limit per test):**
+
+Track the attempt count for each test nodeid. An attempt is counted each time you apply a
+fix and run `run_pytest` for that nodeid. When a test reaches 3 failed attempts, stop and
+proceed to Step 9 (`@pytest.mark.fix`). Do not apply a 4th fix.
+
+After calling `run_pytest`:
+
+- **Passes (exit_code == 0 for this nodeid):** Increment the fix count, reset attempt count,
+  move to the next failure.
+- **Still fails:** Increment the attempt count for this nodeid. If attempt count < 3, call
+  `parse_pytest_failure` on the new `longrepr`, re-analyze from Step 2 with the updated
+  error, and apply a new fix. Do not apply a second fix without understanding the new failure.
+  If attempt count == 3, proceed directly to Step 9.
+
+**Parameterized tests:** If the fixed test is parameterized (nodeid contains a `_N_` suffix,
+e.g. `_0_PDF`, `_1_CSV`), run all variants in a single `run_pytest` call — not just the
+failing nodeid. A locator fix resolves the shared root cause; verify all variants pass before
+moving on. Each combined run counts as one attempt.
 
 ### Step 8 — Iteration with Budget Awareness
 
