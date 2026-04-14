@@ -9,33 +9,15 @@ __pycache__/
 # Reports
 reports/
 docs/
-allure-results/
-allure-report/
-allure-history/
-
-# Screenshots
-tests_screenshots/
-
-# Recordings
-tests_recordings/
 
 # IDE/VS Code
 .vscode/
 
-# Virtual Environment
-venv/
-env/
-
 # Downloads folder
-downloads/
 downloaded_files/
-
-# OS generated files
-.DS_Store
 
 # GitHub Actions/CI
 *.env
-!.env.example
 .github/workflows/*.log
 
 # Claude Code
