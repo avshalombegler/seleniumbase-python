@@ -14,7 +14,7 @@ tools:
   - read_file
   - fetch/fetch
   - sequential-thinking/sequentialthinking
-model: sonnet
+model: opus
 mcp-servers:
   seleniumbase:
     type: stdio
