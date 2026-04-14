@@ -11,7 +11,6 @@ authors = [
 
 dependencies = [
     "allure-pytest>=2.15.0",
-    "allure-python-commons>=2.15.0",
     "beautifulsoup4>=4.14.2",
     "colorama>=0.4.6",
     "filelock>=3.20.0",
@@ -19,12 +18,10 @@ dependencies = [
     "pydantic[email]>=2.12.5",
     "pydantic-settings>=2.12.0",
     "pytest>=8.4.2",
-    "pytest-html>=4.0.2",
     "pytest-rerunfailures>=16.1",
     "pytest-sugar>=1.1.1",
     "pytest-xdist>=3.8.0",
     "python-dotenv>=1.1.1",
-    "python-json-logger>=4.0.0",
     "requests>=2.32.5",
     "seleniumbase>=4.44.20",
     "structlog>=25.5.0",
@@ -59,8 +56,9 @@ addopts = [
         "--disable-warnings",
         # disable internal capturing of stdout and stderr
         # "--show-capture=no",
-        # Disable pytest's built-in log capture so allure-pytest does not add a duplicate "log" section
-        "-p no:logging",
+        
+    # Disable pytest's built-in log capture so allure-pytest does not add a duplicate "log" section
+    "-p no:logging",
 
     # Multi-threading:
     # "-nauto",
