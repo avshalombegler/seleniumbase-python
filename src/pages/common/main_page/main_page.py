@@ -44,6 +44,7 @@ from src.pages.features.notification_messages.notification_messages_page import 
 from src.pages.features.redirect_link.redirect_link_page import RedirectLinkPage
 from src.pages.features.shadow_dom.shadow_dom_page import ShadowDomPage
 from src.pages.features.shifting_content.shifting_content_page import ShiftingContentPage
+from src.pages.features.sortable_data_tables.sortable_data_tables_page import SortableDataTablesPage
 
 
 class MainPage(BasePage):
@@ -310,3 +311,10 @@ class MainPage(BasePage):
         self.click_element(MainPageLocators.SHIFTING_CONTENT_LINK)
 
         return ShiftingContentPage(self.driver)
+
+    @allure.step("Navigate to {page_name} page")
+    def click_sortable_data_tables_link(self, page_name: str = "Sortable Data Tables") -> SortableDataTablesPage:
+        self.logger.info(f"Navigating to {page_name} page.")
+        self.click_element(MainPageLocators.SORTABLE_DATA_TABLES_LINK)
+
+        return SortableDataTablesPage(self.driver)

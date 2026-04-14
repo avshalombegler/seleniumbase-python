@@ -43,3 +43,4 @@ class MainPageLocators:
     REDIRECT_LINK_LINK: Locator = {"selector": "Redirect Link", "by": By.LINK_TEXT}
     SHADOW_DOM_LINK: Locator = {"selector": "Shadow DOM", "by": By.LINK_TEXT}
     SHIFTING_CONTENT_LINK: Locator = {"selector": "Shifting Content", "by": By.LINK_TEXT}
+    SORTABLE_DATA_TABLES_LINK: Locator = {"selector": "Sortable Data Tables", "by": By.LINK_TEXT}
