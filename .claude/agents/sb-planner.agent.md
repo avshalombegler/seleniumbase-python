@@ -33,6 +33,15 @@ mcp-servers:
     args:
       - -y
       - "@modelcontextprotocol/server-sequential-thinking"
+  playwright:
+    type: stdio
+    command: npx
+    args:
+      - playwright
+      - run-mcp-server
+      - --headless
+      - --browser
+      - chromium
 ---
 
 # sb-planner — QA Test Design Agent
