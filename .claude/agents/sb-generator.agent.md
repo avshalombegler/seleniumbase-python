@@ -349,13 +349,7 @@ read in Step 3. The spec's Test Scenarios section is the source of truth.
    from the returned content in your response. If you cannot show it, treat the write as
    failed — do NOT proceed.
 
-### Step 8 — Create `__init__.py` in the Feature Directory
-
-Use the **native `Write` tool** with the absolute path
-`E:/VSCodeProjects/seleniumbase-python/src/pages/features/<feature_directory>/__init__.py`
-and empty string content (`""`) to ensure the new feature directory is a proper Python package.
-
-### Step 9 — Register Navigation in MainPage
+### Step 8 — Register Navigation in MainPage
 
 This step modifies a shared file (`main_page.py`) — proceed carefully.
 
@@ -408,7 +402,7 @@ This step modifies a shared file (`main_page.py`) — proceed carefully.
 
 Record grade.
 
-### Step 10 — Verification Run
+### Step 9 — Verification Run
 
 **Manual code review does NOT substitute for `run_pytest`.** Never write "tests passing" in
 the report without `run_pytest` output confirming `exit_code == 0`, `failed == 0`, and
@@ -438,7 +432,7 @@ Run the generated tests to confirm they compile and pass:
    - **Maximum 3 fix iterations.** If tests still fail after 3 attempts, do NOT delete or
      mark the generated code. Report the failures to the developer and stop.
 
-### Step 11 — Cleanup and Report
+### Step 10 — Cleanup and Report
 
 1. Produce the generation report.
 
