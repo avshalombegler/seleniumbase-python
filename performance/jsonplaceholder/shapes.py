@@ -31,7 +31,8 @@ SPIKE_STAGES = [
     {"duration": 10, "users": 10, "spawn_rate": 1},
     {"duration": 15, "users": 50, "spawn_rate": 10},
     {"duration": 20, "users": 10, "spawn_rate": 10},
-    {"duration": 30, "users": 0, "spawn_rate": 1},
+    {"duration": 30, "users": 10, "spawn_rate": 1},
+    {"duration": 40, "users": 0, "spawn_rate": 1},
 ]
 
 

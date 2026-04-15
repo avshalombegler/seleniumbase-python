@@ -25,7 +25,7 @@ def update_post(user) -> None:
     post_id = random.choice(user.post_ids)
     user.client.put(
         f"/posts/{post_id}",
-        name="/posts/{id}",
+        name="/posts/{id} PUT",
         json={
             "id": post_id,
             "title": "updated title",
@@ -37,4 +37,4 @@ def update_post(user) -> None:
 
 def delete_post(user) -> None:
     post_id = random.choice(user.post_ids)
-    user.client.delete(f"/posts/{post_id}", name="/posts/{id}")
+    user.client.delete(f"/posts/{post_id}", name="/posts/{id} DELETE")

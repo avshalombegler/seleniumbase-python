@@ -14,9 +14,10 @@ def create_comment(user) -> None:
     user.client.post(
         "/comments",
         json={
-            "title": "test title",
+            "name": "test name",
+            "email": "test@email.com",
             "body": "test body",
-            "userId": random.randint(1, 10),
+            "postId": random.randint(1, 10),
         },
     )
 
@@ -25,16 +26,17 @@ def update_comment(user) -> None:
     comment_id = random.choice(user.comment_ids)
     user.client.put(
         f"/comments/{comment_id}",
-        name="/comments/{id}",
+        name="/comments/{id} PUT",
         json={
             "id": comment_id,
-            "title": "updated title",
+            "name": "updated name",
+            "email": "updated@email.com",
             "body": "updated body",
-            "userId": random.randint(1, 10),
+            "postId": random.randint(1, 10),
         },
     )
 
 
 def delete_comment(user) -> None:
     comment_id = random.choice(user.comment_ids)
-    user.client.delete(f"/comments/{comment_id}", name="/comments/{id}")
+    user.client.delete(f"/comments/{comment_id}", name="/comments/{id} DELETE")
