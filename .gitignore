@@ -51,3 +51,6 @@ test_logs.jsonl
 
 # Chrome
 chrome_user_data/
+
+# Locust
+performance/jsonplaceholder/results_*.csv
