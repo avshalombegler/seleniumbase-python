@@ -7,7 +7,7 @@ from tasks import albums, comments, photos, posts, todos, users
 @events.test_start.add_listener
 def on_test_start(environment, **kwargs) -> None:
     logging.info(f"Starting load test — target: {environment.host}")
-    num_users = getattr(environment.parsed_options, 'num_users', 'unknown')
+    num_users = getattr(environment.parsed_options, "num_users", "unknown")
     logging.info(f"Users: {num_users}")
 
 
