@@ -6,9 +6,9 @@ from locust import LoadTestShape
 Ramp up to peak users, hold steady, then ramp down.
 
 Timeline:
-    0-10s  : ramp up   0 → 10 users
-    10-30s : steady    10 users
-    30-40s : ramp down 10 → 0 users
+    0-10s  : ramp up     0 → 10 users (spawn_rate: 1)
+    10-30s : steady      10 users
+    30-40s : ramp down   10 → 0 users (spawn_rate: 1)
 """
 RAMP_STAGES = [
     {"duration": 10, "users": 10, "spawn_rate": 1},
@@ -18,13 +18,14 @@ RAMP_STAGES = [
 
 
 """
-Spike to peak users, hold steady, then ramp down.
+Ramp up to baseline, spike up to peak users, spike down to baseline, then ramp down.
 
 Timeline:
-    0-10s  : ramp up   0 → 10 users
-    10-15s : spike     50 users
-    15-20s : ramp down 10 users
-    20-30s : steady    10 → 0 users
+    0-10s  : ramp up      0 → 10 users (spawn_rate: 1)
+    10-15s : spike up     10 → 50 users (spawn_rate: 10)
+    15-20s : spike down   50 → 10 users (spawn_rate: 10)
+    20-30s : steady       10 users
+    30s+ :   ramp down    10 → 0 users  (spawn_rate: 1)
 """
 SPIKE_STAGES = [
     {"duration": 10, "users": 10, "spawn_rate": 1},
