@@ -18,10 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    defaults:
-      run:
-        working-directory: performance/jsonplaceholder
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,6 +43,7 @@ jobs:
         run: curl -sf https://jsonplaceholder.typicode.com/posts/1 > /dev/null
 
       - name: Run load test
+        working-directory: performance/jsonplaceholder
         run: |
           locust -f locustfile.py \
             --headless \
@@ -54,6 +51,7 @@ jobs:
             --csv=results
 
       - name: Check thresholds
+        working-directory: performance/jsonplaceholder
         run: python check_thresholds.py
 
       - name: Upload CSV results
