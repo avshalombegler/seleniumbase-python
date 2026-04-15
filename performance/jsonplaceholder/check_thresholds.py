@@ -4,6 +4,8 @@ import sys
 DEFAULT_P95_MS = 500
 DEFAULT_FAILURE_RATE = 0.0
 
+# Only GET endpoints are listed here. Write operations (PUT, DELETE) are not
+# listed and fall back to DEFAULT_P95_MS / DEFAULT_FAILURE_RATE.
 ENDPOINT_THRESHOLDS: dict[str, dict] = {
     "/albums": {"p95_ms": 150},
     "/albums/{id}": {"p95_ms": 350},
