@@ -1,6 +1,7 @@
 import logging
 
 from locust import HttpUser, between, events, tag, task
+from shapes import RampUpSteadyRampDown  # noqa: F401
 from tasks import albums, comments, photos, posts, todos, users
 
 
