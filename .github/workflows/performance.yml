@@ -3,8 +3,16 @@ name: Performance Tests
 on:
   workflow_dispatch:
     inputs:
+      shape:
+        description: 'Load test shape'
+        type: choice
+        options:
+          - ramp
+          - spike
+        default: ramp
+        required: true
       run_time:
-        description: 'Load test duration'
+        description: 'Max run time (safety cap — shape controls actual duration)'
         type: choice
         options:
           - 60s
@@ -47,6 +55,8 @@ jobs:
         run: curl -sf https://jsonplaceholder.typicode.com/posts/1 > /dev/null
 
       - name: Run load test
+        env:
+          LOCUST_SHAPE: ${{ github.event.inputs.shape }}
         run: |
           locust -f locustfile.py \
             --headless \
