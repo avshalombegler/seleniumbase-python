@@ -1,5 +1,23 @@
-from locust import HttpUser, between, tag, task
+import logging
+
+from locust import HttpUser, between, events, tag, task
 from tasks import albums, comments, photos, posts, todos, users
+
+
+@events.test_start.add_listener
+def on_test_start(environment, **kwargs) -> None:
+    logging.info(f"Starting load test — target: {environment.host}")
+    num_users = getattr(environment.parsed_options, 'num_users', 'unknown')
+    logging.info(f"Users: {num_users}")
+
+
+@events.test_stop.add_listener
+def on_test_stop(environment, **kwargs) -> None:
+    logging.info("Load test finished")
+    stats = environment.stats.total
+    logging.info(f"Total requests: {stats.num_requests}")
+    logging.info(f"Failed requests: {stats.num_failures}")
+    logging.info(f"Median response time: {stats.median_response_time}ms")
 
 
 class JSONPlaceholderUser(HttpUser):
