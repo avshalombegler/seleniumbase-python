@@ -5,9 +5,18 @@ DEFAULT_P95_MS = 500
 DEFAULT_FAILURE_RATE = 0.0
 
 ENDPOINT_THRESHOLDS: dict[str, dict] = {
-    "/photos": {"p95_ms": 400},
-    "/photos/{id}": {"p95_ms": 600},
-    "/comments": {"p95_ms": 350},
+    "/albums": {"p95_ms": 150},
+    "/albums/{id}": {"p95_ms": 350},
+    "/comments": {"p95_ms": 150},
+    "/comments/{id}": {"p95_ms": 600},
+    "/photos": {"p95_ms": 300},
+    "/photos/{id}": {"p95_ms": 500},
+    "/posts": {"p95_ms": 100},
+    "/posts/{id}": {"p95_ms": 200},
+    "/todos": {"p95_ms": 100},
+    "/todos/{id}": {"p95_ms": 300},
+    "/users": {"p95_ms": 100},
+    "/users/{id}": {"p95_ms": 200},
 }
 
 
