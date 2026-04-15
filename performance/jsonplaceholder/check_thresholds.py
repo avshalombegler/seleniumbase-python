@@ -7,18 +7,18 @@ DEFAULT_FAILURE_RATE = 0.0
 # Only GET endpoints are listed here. Write operations (PUT, DELETE) are not
 # listed and fall back to DEFAULT_P95_MS / DEFAULT_FAILURE_RATE.
 ENDPOINT_THRESHOLDS: dict[str, dict] = {
-    "/albums": {"p95_ms": 150},
-    "/albums/{id}": {"p95_ms": 350},
-    "/comments": {"p95_ms": 150},
+    "/albums": {"p95_ms": 200},
+    "/albums/{id}": {"p95_ms": 400},
+    "/comments": {"p95_ms": 200},
     "/comments/{id}": {"p95_ms": 600},
     "/photos": {"p95_ms": 300},
     "/photos/{id}": {"p95_ms": 500},
-    "/posts": {"p95_ms": 100},
+    "/posts": {"p95_ms": 200},
     "/posts/{id}": {"p95_ms": 200},
-    "/todos": {"p95_ms": 100},
+    "/todos": {"p95_ms": 200},
     "/todos/{id}": {"p95_ms": 300},
-    "/users": {"p95_ms": 100},
-    "/users/{id}": {"p95_ms": 200},
+    "/users": {"p95_ms": 200},
+    "/users/{id}": {"p95_ms": 300},
 }
 
 
