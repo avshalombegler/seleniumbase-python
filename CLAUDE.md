@@ -44,6 +44,8 @@ C:/Users/Avshalom/anaconda3/envs/seleniumbase-python/python.exe tools/seleniumba
 
 ## Architecture
 
+> **Coding standards:** `.claude/skills/sb-test-standards/SKILL.md` is the authoritative reference for locator, page object, and test file conventions (method signatures, assertion rules, decorator order, parameterization, etc.). The Architecture section below is a high-level map — consult SKILL.md for the full detail, and update SKILL.md when a convention changes.
+
 ### Three-Layer Page Object Model
 
 Every feature follows this strict three-layer pattern:
@@ -127,7 +129,7 @@ Writes `specs/the_internet/spec_<feature_dir>.md`. Does not write test code.
 @sb-generator implement specs/the_internet/spec_<feature_dir>.md
 ```
 
-Specs live in `specs/the_internet/` as Markdown files. The spec is the authoritative source — the generator never invents names or scenarios. Uses the MCP server tools and Context7 for SeleniumBase API verification.
+Specs live in `specs/the_internet/` as Markdown files (`spec_<feature_dir>.md`) and are **tracked in git** — they are the authoritative contract between planner and generator and serve as documentation of test design decisions. The generator never invents names or scenarios. Uses the MCP server tools and Context7 for SeleniumBase API verification.
 
 **`sb-healer`** — Diagnoses and fixes failing tests. Runs failing tests, parses errors, applies fixes using `write_file`/`insert_into_file`, and marks unresolvable tests with `@pytest.mark.fix`.
 
