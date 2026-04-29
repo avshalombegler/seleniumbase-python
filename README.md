@@ -2,7 +2,7 @@
 
 [![CI Status](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml/badge.svg)](https://github.com/avshalombegler/selenium-python/actions/workflows/ci.yml)
 
-A modern, maintainable test automation suite using **SeleniumBase** for <https://the-internet.herokuapp.com>.
+A modern, maintainable test automation suite covering two targets: **UI tests** against <https://the-internet.herokuapp.com> (driven by **SeleniumBase**) and **API tests** against the **JSONPlaceholder** REST API (<https://jsonplaceholder.typicode.com>).
 Built with a **three-layer Page Object Model**, **pytest**, **Allure reporting**, **Docker Compose orchestration**, and **CI/CD** (GitHub Actions & Jenkins).
 
 ## Table of Contents
