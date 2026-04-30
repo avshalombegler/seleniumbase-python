@@ -1,0 +1,9 @@
+14:41:25 | INFO | TestChallengingDom:test_challenging_dom.py:54 | Verify cell content per column.
+14:41:25 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+14:41:25 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+14:41:25 | INFO | MainPage:main_page.py:85 | Navigating to Challenging DOM page.
+14:41:26 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+14:41:26 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+14:41:26 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Apeirian' text under column 'Ipsum'.
+14:41:26 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Apeirian' text under column 'Ipsum'.
+14:41:26 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Apeirian' text under column 'Ipsum'.
