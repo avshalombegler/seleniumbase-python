@@ -12,12 +12,12 @@ class LargeAndDeepDomLocators:
     TABLE: Locator = {"selector": "large-table", "by": By.ID}
     FIRST_HEADER: Locator = {"selector": "header-1", "by": By.ID}
     LAST_HEADER: Locator = {"selector": "header-50", "by": By.ID}
-    FIRST_DATA_ROW: Locator = {"selector": "table#large-table tbody tr:first-child", "by": By.CSS_SELECTOR}
+    FIRST_DATA_ROW: Locator = {"selector": "#large-table tbody tr:first-child", "by": By.CSS_SELECTOR}
     FIRST_DATA_CELL: Locator = {
-        "selector": "table#large-table tbody tr:first-child td:first-child",
+        "selector": "#large-table tbody tr:first-child td:first-child",
         "by": By.CSS_SELECTOR,
     }
     LAST_DATA_CELL: Locator = {
-        "selector": "table#large-table tbody tr:last-child td:last-child",
+        "selector": "#large-table tbody tr:last-child td:last-child",
         "by": By.CSS_SELECTOR,
     }

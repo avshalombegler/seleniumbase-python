@@ -70,7 +70,7 @@ class TestChallengingDom(UiBaseCase):
         main_page = MainPage(self)
         page = main_page.click_challenging_dom_link()
 
-        for i in range(3):  # reduced repetition for faster tests; expand as needed
+        for i in range(1, 4):  # reduced repetition for faster tests; expand as needed
             self.logger.info(f"Clicking edit button in row {i}.")
             page.click_edit_button(i)
 

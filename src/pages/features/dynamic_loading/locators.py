@@ -15,13 +15,13 @@ class DynamicLoadingPageLocators:
 
 class Example1PageLocators:
     PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h4", "by": By.CSS_SELECTOR}
-    START_BTN: Locator = {"selector": "div#start > button", "by": By.CSS_SELECTOR}
-    WAIT_LOADER: Locator = {"selector": "div#loading", "by": By.CSS_SELECTOR}
-    SUCCESS_MSG: Locator = {"selector": "div#finish > h4", "by": By.CSS_SELECTOR}
+    START_BTN: Locator = {"selector": "#start > button", "by": By.CSS_SELECTOR}
+    WAIT_LOADER: Locator = {"selector": "#loading", "by": By.CSS_SELECTOR}
+    SUCCESS_MSG: Locator = {"selector": "#finish > h4", "by": By.CSS_SELECTOR}
 
 
 class Example2PageLocators:
     PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h4", "by": By.CSS_SELECTOR}
-    START_BTN: Locator = {"selector": "div#start > button", "by": By.CSS_SELECTOR}
-    WAIT_LOADER: Locator = {"selector": "div#loading", "by": By.CSS_SELECTOR}
-    SUCCESS_MSG: Locator = {"selector": "div#finish > h4", "by": By.CSS_SELECTOR}
+    START_BTN: Locator = {"selector": "#start > button", "by": By.CSS_SELECTOR}
+    WAIT_LOADER: Locator = {"selector": "#loading", "by": By.CSS_SELECTOR}
+    SUCCESS_MSG: Locator = {"selector": "#finish > h4", "by": By.CSS_SELECTOR}

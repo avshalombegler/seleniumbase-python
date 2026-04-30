@@ -8,7 +8,7 @@ from src.pages.base.base_page import Locator
 
 
 class MainPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = {"selector": "h1.heading", "by": By.CSS_SELECTOR}
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".heading", "by": By.CSS_SELECTOR}
 
     AB_TESTING_LINK: Locator = {"selector": "A/B Testing", "by": By.LINK_TEXT}
     ADD_REMOVE_ELEMENTS_LINK: Locator = {"selector": "Add/Remove Elements", "by": By.LINK_TEXT}
