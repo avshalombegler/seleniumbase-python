@@ -254,6 +254,7 @@ file you read in Step 3. The spec's Page Elements table is the source of truth.
    | L8 | Every locator from spec's Page Elements table is present — none missing, none invented |
    | L9 | No methods, no `__init__`, no class inheritance |
    | L10 | No blank lines between locator definitions |
+   | L11 | Locator quality rules in SKILL.md Section 2 satisfied: no redundant tag prefix before `#id`/`.class` (e.g. `div#start` → `#start`), no `[id=foo]` attribute form (use `By.ID`), no `:nth-*`/`:first-child`/`:last-child` when a functional attribute exists, no deep descendant chains where intermediate hops don't disambiguate, XPath targets the interactable element (not a child), XPath positional predicates are numeric (`tr[{n}]` not `tr['{n}']`) |
 
    **Grade:** A (all pass) → proceed. B (L5/L10 only) → auto-correct. C (other) → revise (max 2 cycles). Record grade.
 
