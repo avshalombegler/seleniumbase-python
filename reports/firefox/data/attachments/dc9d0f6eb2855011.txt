@@ -1,0 +1,22 @@
+14:44:51 | INFO | TestAddRemoveElements:test_add_remove_elements.py:42 | Tests for remove elements.
+14:44:51 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+14:44:51 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+14:44:51 | INFO | MainPage:main_page.py:66 | Navigating to Add/Remove Elements page.
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '#content h3', 'by': 'css selector'}' for 10s.
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '#content h3', 'by': 'css selector'}'.
+14:44:52 | INFO | TestAddRemoveElements:test_add_remove_elements.py:46 | Ensure there are elements to remove
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+14:44:52 | INFO | TestAddRemoveElements:test_add_remove_elements.py:49 | Remove all elements
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:26 | Clicking Delete Element button.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:26 | Clicking Delete Element button.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+14:44:52 | INFO | TestAddRemoveElements:test_add_remove_elements.py:52 | Getting delete buttons count.
+14:44:52 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+14:44:52 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+14:44:52 | INFO | TestAddRemoveElements:test_add_remove_elements.py:55 | Verifying delete buttons count.

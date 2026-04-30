@@ -1,0 +1,7 @@
+14:45:21 | INFO | TestChallengingDom:test_challenging_dom.py:27 | Verify each button in page is clickable.
+14:45:21 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+14:45:21 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+14:45:21 | INFO | MainPage:main_page.py:86 | Navigating to Challenging DOM page.
+14:45:22 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+14:45:22 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+14:45:22 | INFO | TestChallengingDom:test_challenging_dom.py:31 | Clicking red button.

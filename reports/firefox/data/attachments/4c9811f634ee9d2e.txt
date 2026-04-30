@@ -1,0 +1,15 @@
+14:44:33 | INFO | root:conftest.py:92 | Running in CI environment - preserving existing results in: reports/allure-results
+14:44:33 | INFO | root:conftest.py:163 | Directory cleaned and recreated at: downloaded_files/gw1.
+14:44:45 | INFO | TestAddRemoveElements:test_add_remove_elements.py:22 | Tests for add elements.
+14:44:45 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+14:44:45 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+14:44:45 | INFO | MainPage:main_page.py:66 | Navigating to Add/Remove Elements page.
+14:44:46 | INFO | AddRemoveElementsPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '#content h3', 'by': 'css selector'}' for 10s.
+14:44:46 | INFO | AddRemoveElementsPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '#content h3', 'by': 'css selector'}'.
+14:44:46 | INFO | TestAddRemoveElements:test_add_remove_elements.py:26 | Add two elements.
+14:44:46 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+14:44:46 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:21 | Clicking Add Element button.
+14:44:46 | INFO | TestAddRemoveElements:test_add_remove_elements.py:29 | Getting delete buttons count.
+14:44:46 | INFO | AddRemoveElementsPage:add_remove_elements_page.py:30 | Counting Delete Element button(s).
+14:44:46 | INFO | AddRemoveElementsPage:base_page.py:451 | Counting elements with locator: '{'selector': '#elements > button', 'by': 'css selector'}'.
+14:44:46 | INFO | TestAddRemoveElements:test_add_remove_elements.py:32 | Verifying delete buttons count.
