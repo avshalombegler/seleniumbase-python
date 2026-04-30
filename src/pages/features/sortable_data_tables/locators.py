@@ -15,10 +15,16 @@ class SortableDataTablesLocators:
     TABLE2_HEADERS: Locator = {"selector": "#table2 thead th", "by": By.CSS_SELECTOR}
     TABLE1_ROWS: Locator = {"selector": "#table1 tbody tr", "by": By.CSS_SELECTOR}
     TABLE2_ROWS: Locator = {"selector": "#table2 tbody tr", "by": By.CSS_SELECTOR}
-    TABLE1_HEADER_LAST_NAME: Locator = {"selector": "#table1 thead th:nth-child(1)", "by": By.CSS_SELECTOR}
-    TABLE1_HEADER_DUE: Locator = {"selector": "#table1 thead th:nth-child(4)", "by": By.CSS_SELECTOR}
-    TABLE2_HEADER_LAST_NAME: Locator = {"selector": "#table2 thead th:nth-child(1)", "by": By.CSS_SELECTOR}
-    TABLE2_HEADER_DUE: Locator = {"selector": "#table2 thead th:nth-child(4)", "by": By.CSS_SELECTOR}
+    TABLE1_HEADER_LAST_NAME: Locator = {
+        "selector": "//table[@id='table1']//th[normalize-space()='Last Name']",
+        "by": By.XPATH,
+    }
+    TABLE1_HEADER_DUE: Locator = {"selector": "//table[@id='table1']//th[normalize-space()='Due']", "by": By.XPATH}
+    TABLE2_HEADER_LAST_NAME: Locator = {
+        "selector": "//table[@id='table2']//th[normalize-space()='Last Name']",
+        "by": By.XPATH,
+    }
+    TABLE2_HEADER_DUE: Locator = {"selector": "//table[@id='table2']//th[normalize-space()='Due']", "by": By.XPATH}
     TABLE1_FIRST_ROW_LAST_NAME: Locator = {
         "selector": "#table1 tbody tr:first-child td:first-child",
         "by": By.CSS_SELECTOR,

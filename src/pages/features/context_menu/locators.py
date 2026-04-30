@@ -8,5 +8,5 @@ from src.pages.base.base_page import Locator
 
 
 class ContextMenuPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
-    HOT_SPOT_BOX: Locator = {"selector": "div#hot-spot", "by": By.CSS_SELECTOR}
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    HOT_SPOT_BOX: Locator = {"selector": "#hot-spot", "by": By.CSS_SELECTOR}

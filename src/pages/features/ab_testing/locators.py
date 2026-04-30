@@ -8,6 +8,6 @@ from src.pages.base.base_page import Locator
 
 
 class AbTestingPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
-    TITLE: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
-    CONTENT_PARAGRAPH: Locator = {"selector": "div#content p", "by": By.CSS_SELECTOR}
+    PAGE_LOADED_INDICATOR: Locator = {"selector": "#content h3", "by": By.CSS_SELECTOR}
+    TITLE: Locator = {"selector": "#content h3", "by": By.CSS_SELECTOR}
+    CONTENT_PARAGRAPH: Locator = {"selector": "#content p", "by": By.CSS_SELECTOR}

@@ -11,7 +11,7 @@ class FilesUploadPageLocators:
     PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
     FILE_UPLOAD: Locator = {"selector": "file-upload", "by": By.ID}
     UPLOAD_BTN: Locator = {"selector": "file-submit", "by": By.ID}
-    UPLOAD_BOX: Locator = {"selector": "div[id=drag-drop-upload]", "by": By.CSS_SELECTOR}
+    UPLOAD_BOX: Locator = {"selector": "#drag-drop-upload", "by": By.CSS_SELECTOR}
 
 
 class FileUploadedPageLocators:
