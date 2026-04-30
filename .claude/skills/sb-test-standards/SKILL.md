@@ -94,7 +94,7 @@ self.click_element(formatted)
 ```python
 # In locators.py:
 class CheckboxesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
 
 # In page object __init__:
 self.wait_for_page_to_load(CheckboxesPageLocators.PAGE_LOADED_INDICATOR)
@@ -118,8 +118,8 @@ self.wait_for_page_to_load(CheckboxesPageLocators.PAGE_LOADED_INDICATOR)
    LOGIN_BTN: Locator = {"selector": "button[type=submit]", "by": By.CSS_SELECTOR}
    LOGOUT_BTN: Locator = {"selector": "a[href='/logout']", "by": By.CSS_SELECTOR}
    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
-   CHECKBOXES: Locator = {"selector": "form#checkboxes input[type=checkbox]", "by": By.CSS_SELECTOR}
-   START_BTN: Locator = {"selector": "div#start > button", "by": By.CSS_SELECTOR}
+   CHECKBOXES: Locator = {"selector": "#checkboxes input[type=checkbox]", "by": By.CSS_SELECTOR}
+   START_BTN: Locator = {"selector": "#start > button", "by": By.CSS_SELECTOR}
    ```
 
 3. **`By.XPATH`** — only when CSS cannot express the query. Acceptable cases: text-based matching, ancestor traversal. Always a last resort:
@@ -137,9 +137,46 @@ self.wait_for_page_to_load(CheckboxesPageLocators.PAGE_LOADED_INDICATOR)
 
 5. **Forbidden**: `By.CLASS_NAME` alone, `By.TAG_NAME` alone — too brittle or too broad.
 
+### Locator quality rules
+
+These rules apply on top of the strategy priority above.
+
+1. **No redundant tag prefix before `#id` or `.class`.**
+   - Bad: `div#content`, `form#checkboxes`, `div.example h3`
+   - Good: `#content`, `#checkboxes`, `.example h3`
+   - Tag prefix is only allowed when it actually disambiguates (e.g. multiple elements share the class and only one is the right tag).
+
+2. **Use the native `By.ID` strategy, not the attribute form.**
+   - Bad: `{"selector": "div[id=foo]", "by": By.CSS_SELECTOR}`
+   - Good: `{"selector": "foo", "by": By.ID}`
+
+3. **Avoid structural-position selectors when a functional attribute exists.**
+   - `:nth-child`, `:nth-of-type`, `:first-child`, `:last-child` are brittle to column/row reordering.
+   - Acceptable only when the DOM provides no functional differentiator (e.g. the Hovers page renders three identical `.figure` blocks; the Add/Remove page renders identical Delete buttons). When using positional selectors, leave a brief comment explaining why.
+
+4. **Avoid deep descendant chains where intermediate hops don't disambiguate.**
+   - Bad: `//div[contains(@class,'example')]//table//tbody//tr/td` (anchor on wrapper + redundant `tbody`/`tr` traversal)
+   - Good: `//table//td` (or anchor on table id when multiple tables exist)
+   - A multi-level chain is fine when each hop is a meaningful structural narrowing (e.g. `.figure > .figcaption > h5`).
+
+5. **Prefer functional attributes over stylistic class names.**
+   - Stylistic/utility class names (Foundation grid: `.large-2`, `.row`; Bootstrap: `.button`, `.close`) are brittle to theme/CSS changes.
+   - Prefer `id`, `name`, `type=`, `data-*`, `aria-*`, or text-based XPath when available.
+   - When the stylistic class **is** the only available identifier (e.g. `<a class="close">×</a>` with no aria-label), it is acceptable — but anchor it on a stable parent (`#flash a.close`).
+
+6. **XPath should target the interactable element, not a child.**
+   - Bad: `//button//i`, `//a/span` (clicks may fire on the wrong node depending on CSS)
+   - Good: `//button[contains(.,'Submit')]`, `//a[normalize-space()='Edit']`
+
+7. **XPath positional predicates take a number, not a quoted string.**
+   - Bad: `//tr['{row_num}']` — this is a boolean truthy test on a string, not a position lookup.
+   - Good: `//tr[{row_num}]`
+
 ---
 
 ## Section 3: Locators File Standards
+
+> See "Locator quality rules" in Section 2 for selector-shape requirements (no redundant tag prefixes, no `:nth-*` when avoidable, etc.).
 
 A correct `locators.py` file follows this exact structure:
 
@@ -154,8 +191,8 @@ from src.pages.base.base_page import Locator
 
 
 class CheckboxesPageLocators:
-    PAGE_LOADED_INDICATOR: Locator = {"selector": "div.example h3", "by": By.CSS_SELECTOR}
-    CHECKBOXES: Locator = {"selector": "form#checkboxes input[type=checkbox]", "by": By.CSS_SELECTOR}
+    PAGE_LOADED_INDICATOR: Locator = {"selector": ".example h3", "by": By.CSS_SELECTOR}
+    CHECKBOXES: Locator = {"selector": "#checkboxes input[type=checkbox]", "by": By.CSS_SELECTOR}
 ```
 
 *(Source: `src/pages/features/checkboxes/locators.py`)*
