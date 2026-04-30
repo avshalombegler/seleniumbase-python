@@ -257,6 +257,7 @@ violations are resolved.
 | L8 | For any `By.ID` locator on a table row, table cell, or repeating list item: raw page source (via `fetch/fetch`) confirms the `id` attribute exists on that specific element type. |
 | L9 | For every CSS selector that includes an attribute value (href=, name=, value=, type=, etc.): the attribute value is copied verbatim from the Playwright snapshot or raw HTML source — not derived from the URL path, feature name, link text, or assumed from naming conventions |
 | L10 | `PAGE_LOADED_INDICATOR` selector confirmed present in the Playwright snapshot — not assumed from the standard `.example h3` pattern. If `.example h3` is not visible in the snapshot output, a different selector must be chosen and recorded. |
+| L11 | Locator quality rules in SKILL.md Section 2 satisfied: no redundant tag prefix before `#id`/`.class` (e.g. `div#start` → `#start`); no `[id=foo]` attribute-form CSS (use `By.ID`); `:nth-*`/`:first-child`/`:last-child` only when no functional differentiator exists (id/name/type=/data-*/aria-*/distinguishing class) — flag the absence in Generator Notes when used; stylistic/utility class names (`.large-2`, `.row`, generic `.button`/`.close`) avoided when a functional attribute exists; XPath targets the interactable element, not a child (e.g. `//button[contains(.,'Submit')]`, not `//button//i`); XPath positional predicates are numeric (`tr[{n}]`, never `tr['{n}']`); no deep descendant chains where intermediate hops don't disambiguate. |
 
 ### T — Test Design Checks
 
