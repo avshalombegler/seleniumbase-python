@@ -1,0 +1,8 @@
+06:47:09 | INFO | TestChallengingDom:ui_base_case.py:36 | Chrome download directory set to download_path=/home/runner/work/seleniumbase-python/seleniumbase-python/downloaded_files/gw0
+06:47:10 | INFO | TestChallengingDom:test_challenging_dom.py:40 | Verify table head text per column.
+06:47:10 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+06:47:10 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+06:47:10 | INFO | MainPage:main_page.py:86 | Navigating to Challenging DOM page.
+06:47:10 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+06:47:10 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+06:47:10 | INFO | TestChallengingDom:test_challenging_dom.py:44 | Getting table head text of column 'Sit'.
