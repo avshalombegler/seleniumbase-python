@@ -24,11 +24,11 @@ Built with a **three-layer Page Object Model**, **AI-powered test generation and
 
 ## Features
 
-- **Three-layer Page Object Model** — Locators, Page Objects, and Tests are strictly separated
-- **AI-powered agents** — `sb-planner`, `sb-generator`, and `sb-healer` automate test creation and repair
-- **MCP server** — 19 tools across 5 groups expose file I/O, pytest execution, and scaffolding to AI agents
-- **Two test suites** — UI tests (40+ features on the-internet) and API tests (JSONPlaceholder, 6 resources)
-- **Structured JSON logging** — per-test context with per-worker log files for safe parallel runs
+- **Three-layer Page Object Model** – Locators, Page Objects, and Tests are strictly separated
+- **AI-powered agents** – `sb-planner`, `sb-generator`, and `sb-healer` automate test creation and repair
+- **MCP server** – 19 tools across 5 groups expose file I/O, pytest execution, and scaffolding to AI agents
+- **Two test suites** – UI tests (40+ features on the-internet) and API tests (JSONPlaceholder, 6 resources)
+- **Structured JSON logging** – per-test context with per-worker log files for safe parallel runs
 - Multi-browser support (Chrome & Firefox)
 - Headless & headed mode
 - Parallel test execution via `pytest-xdist`
@@ -55,8 +55,8 @@ Built with a **three-layer Page Object Model**, **AI-powered test generation and
 ### System Requirements
 
 - **Python:** 3.10 or higher
-- **Conda:** Anaconda or Miniconda (recommended — the project uses a conda environment)
-- **Node.js:** Latest LTS (required for AI agent MCP servers — Playwright MCP and Context7)
+- **Conda:** Anaconda or Miniconda (recommended – the project uses a conda environment)
+- **Node.js:** Latest LTS (required for AI agent MCP servers – Playwright MCP and Context7)
 - **Git:** Latest version
 - **Browsers:**
   - Chrome 120+ / ChromeDriver (auto-managed)
@@ -170,11 +170,11 @@ TEST_PASSWORD=SuperSecretPassword!
 
 ### Test Markers
 
-The project uses strict markers — only registered markers are valid:
+The project uses strict markers – only registered markers are valid:
 
 | Marker | Purpose |
 | --- | --- |
-| `@pytest.mark.ui` | UI tests — auto-navigates to `BASE_URL` in setUp |
+| `@pytest.mark.ui` | UI tests – auto-navigates to `BASE_URL` in setUp |
 | `@pytest.mark.regression` | Full regression suite |
 | `@pytest.mark.smoke` | Critical path tests |
 | `@pytest.mark.api` | API tests |
@@ -224,7 +224,7 @@ View Allure report locally:
 allure serve reports/allure-results
 ```
 
-Optional — generate a static HTML report:
+Optional – generate a static HTML report:
 
 ```bash
 allure generate reports/allure-results -o reports/allure-report
@@ -235,10 +235,10 @@ allure generate reports/allure-results -o reports/allure-report
 GitHub Actions automatically runs tests on every push or pull request to the main branch.
 For manual runs, go to the Actions tab, select the CI workflow, and click "Run workflow".
 
-- **Browser**: Choose browser (`both`, `chrome`, `firefox`) — default: `both`
-- **Marker**: Select test marker (`smoke`, `regression`, `ui`, `api`) — default: `smoke`
-- **Workers**: Number of parallel workers (e.g., `auto`, `2`, `4`) — default: `auto`
-- **Clean History**: Clean all history and start fresh (boolean) — default: `false`
+- **Browser**: Choose browser (`both`, `chrome`, `firefox`) – default: `both`
+- **Marker**: Select test marker (`smoke`, `regression`, `ui`, `api`) – default: `smoke`
+- **Workers**: Number of parallel workers (e.g., `auto`, `2`, `4`) – default: `auto`
+- **Clean History**: Clean all history and start fresh (boolean) – default: `false`
 
 ### Running in Jenkins
 
@@ -279,7 +279,7 @@ Strategy priority: `By.ID` → `By.CSS_SELECTOR` → `By.XPATH`. Never `By.CLASS
 
 - **`BasePage`** (`src/pages/base/base_page.py`): All page objects inherit this. Wraps SeleniumBase's `BaseCase` as `self.driver`. Provides methods for waiting, clicking, typing, file downloads, element state queries, and navigation.
 
-- **`UiBaseCase`** (`src/pages/base/ui_base_case.py`): All test classes inherit this (extends `BaseCase`). Its `setUp` auto-navigates to `settings.BASE_URL` when the test is marked `@pytest.mark.ui` — no explicit navigation needed in test methods. Handles per-worker download directories for parallel runs and attaches failure screenshots to Allure on teardown.
+- **`UiBaseCase`** (`src/pages/base/ui_base_case.py`): All test classes inherit this (extends `BaseCase`). Its `setUp` auto-navigates to `settings.BASE_URL` when the test is marked `@pytest.mark.ui` – no explicit navigation needed in test methods. Handles per-worker download directories for parallel runs and attaches failure screenshots to Allure on teardown.
 
 ### Navigation Hub
 
@@ -289,7 +289,7 @@ Strategy priority: `By.ID` → `By.CSS_SELECTOR` → `By.XPATH`. Never `By.CLASS
 
 Three Claude agents automate the full test authoring and maintenance lifecycle:
 
-### `sb-planner` — Test Design Agent
+### `sb-planner` – Test Design Agent
 
 Inspects a live page with a headless browser and produces a structured spec file.
 
@@ -299,7 +299,7 @@ Inspects a live page with a headless browser and produces a structured spec file
 
 Output: `specs/the_internet/spec_<feature_dir>.md`
 
-### `sb-generator` — Code Generation Agent
+### `sb-generator` – Code Generation Agent
 
 Generates the full three-file set (locators, page object, test) plus `MainPage` registration from a spec file.
 
@@ -307,9 +307,9 @@ Generates the full three-file set (locators, page object, test) plus `MainPage` 
 @sb-generator implement specs/the_internet/spec_<feature_dir>.md
 ```
 
-The spec is the authoritative source — the generator never invents names or scenarios. Verifies SeleniumBase API via Context7 docs before writing code.
+The spec is the authoritative source – the generator never invents names or scenarios. Verifies SeleniumBase API via Context7 docs before writing code.
 
-### `sb-healer` — Test Repair Agent
+### `sb-healer` – Test Repair Agent
 
 Diagnoses and fixes failing tests. Runs failing tests, parses errors, applies fixes, and marks unresolvable cases with `@pytest.mark.fix`.
 
@@ -343,17 +343,17 @@ The custom `seleniumbase` server exposes **19 tools** across 5 groups:
 | Scaffold | `create_test_file`, `create_page_object_file`, `create_locators_file`, `get_code_template` |
 | Budget | `get_session_stats`, `reset_session_stats` |
 
-`write_file` validates Python syntax before writing — it will refuse to write syntactically invalid code.
+`write_file` validates Python syntax before writing – it will refuse to write syntactically invalid code.
 
 ## Test Suites
 
-### UI Test Suite — `tests/the_internet/ui_test_suite/`
+### UI Test Suite – `tests/the_internet/ui_test_suite/`
 
 40+ feature tests against <https://the-internet.herokuapp.com>, covering:
 
 A/B Testing, Add/Remove Elements, Basic Auth, Broken Images, Challenging DOM, Checkboxes, Context Menu, Digest Auth, Drag and Drop, Dropdown List, Dynamic Content, Dynamic Controls, Dynamic Loading, Entry Ad, Exit Intent, File Download, File Upload, Floating Menu, Form Authentication, Frames, Geolocation, Horizontal Slider, Hovers, Infinite Scroll, Inputs, JavaScript Alerts, JavaScript Onload Event Error, JQuery UI Menus, Key Presses, and more.
 
-### API Test Suite — `tests/jsonplaceholder/api_test_suite/`
+### API Test Suite – `tests/jsonplaceholder/api_test_suite/`
 
 Full CRUD + model validation + negative tests against the [JSONPlaceholder API](https://jsonplaceholder.typicode.com), covering 6 resources:
 
@@ -409,9 +409,9 @@ Reports are generated by the Jenkins pipeline, stored in the Allure server, and 
 
 📊 **Local Access:** [View Report](http://localhost:8080) (via Nginx reverse proxy to Allure UI)
 
-📊 **Public Access:** [View Live Report](https://unpleated-braxton-nondynastical.ngrok-free.dev) *(live demo — kept running for review)*
+📊 **Public Access:** [View Live Report](https://unpleated-braxton-nondynastical.ngrok-free.dev) *(live demo – kept running for review)*
 
-> **Note:** ngrok will display a warning page on first visit — click "Visit Site" to proceed to the dashboard.
+> **Note:** ngrok will display a warning page on first visit – click "Visit Site" to proceed to the dashboard.
 
 > Reports update automatically after each CI run.
 
@@ -473,17 +473,17 @@ seleniumbase-python/
 ### With AI Agents (recommended)
 
 ```bash
-# Step 1 — Inspect the live page and generate a spec
+# Step 1 – Inspect the live page and generate a spec
 @sb-planner plan the-internet/<feature>
 
-# Step 2 — Generate locators, page object, test, and MainPage registration
+# Step 2 – Generate locators, page object, test, and MainPage registration
 @sb-generator implement specs/the_internet/spec_<feature_dir>.md
 ```
 
 ### Manually
 
-1. Create `src/pages/features/<feature>/locators.py` — `XxxLocators` class with `Locator` attributes, `PAGE_LOADED_INDICATOR` first.
-2. Create `src/pages/features/<feature>/<feature>_page.py` — `XxxPage(BasePage)`, `__init__` calls `super().__init__(driver)` then `wait_for_page_to_load(...)`, all methods decorated with `@allure.step`.
+1. Create `src/pages/features/<feature>/locators.py` – `XxxLocators` class with `Locator` attributes, `PAGE_LOADED_INDICATOR` first.
+2. Create `src/pages/features/<feature>/<feature>_page.py` – `XxxPage(BasePage)`, `__init__` calls `super().__init__(driver)` then `wait_for_page_to_load(...)`, all methods decorated with `@allure.step`.
 3. Add `FEATURE_LINK: Locator` to `MainPageLocators` in `src/pages/common/main_page/locators.py`.
 4. Add import and `click_<feature>_link()` method to `src/pages/common/main_page/main_page.py`.
-5. Create `tests/the_internet/ui_test_suite/test_<feature>.py` — `TestXxx(UiBaseCase)` with Allure class decorators.
+5. Create `tests/the_internet/ui_test_suite/test_<feature>.py` – `TestXxx(UiBaseCase)` with Allure class decorators.
