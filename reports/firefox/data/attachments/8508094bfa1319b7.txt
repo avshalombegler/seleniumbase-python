@@ -1,0 +1,11 @@
+06:43:55 | INFO | root:conftest.py:92 | Running in CI environment - preserving existing results in: reports/allure-results
+06:43:56 | INFO | root:conftest.py:163 | Directory cleaned and recreated at: downloaded_files/gw0.
+06:44:16 | INFO | TestChallengingDom:test_challenging_dom.py:54 | Verify cell content per column.
+06:44:16 | INFO | MainPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.heading', 'by': 'css selector'}' for 10s.
+06:44:16 | INFO | MainPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.heading', 'by': 'css selector'}'.
+06:44:16 | INFO | MainPage:main_page.py:86 | Navigating to Challenging DOM page.
+06:44:17 | INFO | ChallengingDomPage:base_page.py:82 | Waiting for page to load with indicator '{'selector': '.example h3', 'by': 'css selector'}' for 10s.
+06:44:17 | INFO | ChallengingDomPage:base_page.py:84 | Page loaded successfully with indicator '{'selector': '.example h3', 'by': 'css selector'}'.
+06:44:17 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Iuvaret' text under column 'Lorem'.
+06:44:17 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Iuvaret' text under column 'Lorem'.
+06:44:17 | INFO | TestChallengingDom:test_challenging_dom.py:60 | Getting table cell 'Iuvaret' text under column 'Lorem'.
