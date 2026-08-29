@@ -18,19 +18,40 @@ if ($existingProcess) {
 # Your static domain from ngrok dashboard
 $staticDomain = "unpleated-braxton-nondynastical.ngrok-free.dev"
 
-# Start ngrok with static domain in the background
+# Start ngrok with static domain in the background, capturing its output
+$ngrokOut = Join-Path $env:TEMP "ngrok-start.out.log"
+$ngrokErr = Join-Path $env:TEMP "ngrok-start.err.log"
 Write-Host "Starting ngrok tunnel..." -ForegroundColor Green
-Start-Process -WindowStyle Hidden -FilePath "ngrok" -ArgumentList "http", "8080", "--domain=$staticDomain"
+$ngrokProcess = Start-Process -PassThru -WindowStyle Hidden -FilePath "ngrok" `
+    -ArgumentList "http", "8080", "--domain=$staticDomain" `
+    -RedirectStandardOutput $ngrokOut -RedirectStandardError $ngrokErr
+
+# Fail fast if the agent died on startup (outdated agent, bad authtoken, unclaimed domain).
+# Without this the script burns all its retries against a 4040 port that never opened.
+Start-Sleep -Seconds 3
+if ($ngrokProcess.HasExited) {
+    Write-Host "`nngrok exited immediately (code $($ngrokProcess.ExitCode)). Reason:" -ForegroundColor Red
+    Get-Content $ngrokErr, $ngrokOut -ErrorAction SilentlyContinue |
+        Where-Object { $_ -match "ERR_NGROK|ERROR|lvl=(eror|crit)" } |
+        Select-Object -First 5 |
+        ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+    Write-Host "`nIf the agent is too old (ERR_NGROK_121), run: ngrok update" -ForegroundColor Yellow
+    exit 1
+}
 
 # Wait longer for ngrok to initialize
 Write-Host "Waiting for ngrok to start..." -ForegroundColor Yellow
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 7
 
 $maxRetries = 5
 $retryCount = 0
 $success = $false
 
 while ($retryCount -lt $maxRetries -and -not $success) {
+    if ($ngrokProcess.HasExited) {
+        Write-Host "`nngrok stopped running (exit code $($ngrokProcess.ExitCode)). See $ngrokErr" -ForegroundColor Red
+        exit 1
+    }
     try {
         $response = Invoke-RestMethod -Uri "http://127.0.0.1:4040/api/tunnels" -ErrorAction Stop
         $httpsUrl = $response.tunnels | Where-Object { $_.proto -eq "https" } | Select-Object -First 1 -ExpandProperty public_url
